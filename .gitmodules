@@ -1,0 +1,3 @@
+[submodule "unicore-mx"]
+	path = unicore-mx
+	url = https://github.com/insane-adding-machines/unicore-mx

@@ -1,0 +1,5 @@
+src/*.bin
+src/*.elf
+src/*.d
+src/*.o
+src/*.map
