@@ -10,7 +10,7 @@ If you prefer OpenOCD to UrJTAG, I suggest using Zoobab's fork of Versaloon firm
 
 ## How to flash DirtyJTAG on a "Blue Pill" board
 
-Download a pre-built version of the firmware (available [on the release page](https://github.com/jeanthomas/dirtyjtag/releases)) or build the firmware yourself (instructions provided below). Install [stlink](https://github.com/texane/stlink), then use this command :
+Download a pre-built version of the firmware (available [on the release page](https://github.com/jeanthom/dirtyjtag/releases)) or build the firmware yourself (instructions provided below). Install [stlink](https://github.com/texane/stlink), then use this command :
 
 ```
 st-flash write /path/to/dirtyjtag.bin 0x8000000
