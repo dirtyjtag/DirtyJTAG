@@ -4,7 +4,7 @@ DirtyJTAG is a JTAG adapter firmware for $2 STM32 development boards ("blue pill
 
 DirtyJTAG is dirty and dirt cheap, but is not fast nor a perfect implementation of the JTAG protocol. Yet it is a bit less than 500 sloccount lines, therefore it is easily understandable and hackable.
 
-DirtyJTAG is supported in mainline UrJTAG, see the [Installing UrJTAG with DirtyJTAG support section](#installing-urjtag-with-dirtyjtag-support).
+DirtyJTAG is supported in mainline UrJTAG, see the [Installing UrJTAG with DirtyJTAG support](#installing-urjtag-with-dirtyjtag-support) section.
 
 If you prefer OpenOCD to UrJTAG, I suggest using Zoobab's fork of Versaloon firmware, which is available [on his GitHub repository](https://github.com/zoobab/versaloon).
 
@@ -31,7 +31,7 @@ Pin definition can be modified in `src/jtag.c`.
 
 ## Installing UrJTAG with DirtyJTAG support
 
-Mainline UrJTAG has DirtyJTAG since [763bbc](https://sourceforge.net/p/urjtag/git/ci/763bbce1213f5759e2925773d0dd5f3b537368f6/tree/) revision. However, most package sources still use 2011 UrJTAG sources, so you'll need to compile UrJTAG :
+Mainline UrJTAG has DirtyJTAG support since [763bbc](https://sourceforge.net/p/urjtag/git/ci/763bbce1213f5759e2925773d0dd5f3b537368f6/tree/) revision. However, most package sources still use 2011 UrJTAG sources, so you'll need to compile UrJTAG :
 
 ```bash
 cd /tmp
