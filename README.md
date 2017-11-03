@@ -29,6 +29,22 @@ st-flash write /path/to/dirtyjtag.bin 0x8000000
 
 Pin definition can be modified in `src/jtag.c`.
 
+## USB VID and PID
+
+Once the bluepill dongle has been flashed, you should see the following USB VID=1209
+and PID=c0ca belonging to "InterBiometrics" once plugged in on a linux computer:
+
+```
+$ lsusb
+[...]
+Bus 002 Device 003: ID 1209:c0ca InterBiometrics
+```
+
+The VID/PID was obtained through http://pid.codes, which is a registry of USB
+PID codes for open source hardware projects.
+
+More infos: http://pid.codes/1209/C0CA/
+
 ## Installing UrJTAG with DirtyJTAG support
 
 Mainline UrJTAG has DirtyJTAG support since [763bbc](https://sourceforge.net/p/urjtag/git/ci/763bbce1213f5759e2925773d0dd5f3b537368f6/tree/) revision. However, most package sources still use 2011 UrJTAG sources, so you'll need to compile UrJTAG :
