@@ -1,3 +1,5 @@
+PLATFORM = bluepill
+
 OBJS := src/dirtyjtag.o src/jtag.o src/usb.o src/delay.o src/cmd.o
 
 PREFIX ?= arm-none-eabi
@@ -14,6 +16,7 @@ CFLAGS = -g
 CFLAGS += -Wall -Wextra -Werror
 CFLAGS += -fno-common -ffunction-sections -fdata-sections
 CFLAGS += -std=gnu11
+CFLAGS += -DPLATFORM='HW_$(PLATFORM)'
 
 CPPFLAGS = -MD -g
 CPPFLAGS += -Wall -Wundef
