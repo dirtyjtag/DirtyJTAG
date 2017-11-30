@@ -34,7 +34,7 @@ If for some reason the flashing process fails because the reported flash size is
 
 ### Using your *brand new* DirtyJTAG dongle with a JTAG target
 
-This is the new pinout for your DirtyJTAG dongle. You may want to glue it to the case for pratical reasons.
+This is the new pinout for your DirtyJTAG dongle. You may want to print it and glue it to the case for practical reasons.
 
 ![ST-Link v2 pinout with DirtyJTAG firmware](docs/img/stlinkv2-pinout.svg)
 
