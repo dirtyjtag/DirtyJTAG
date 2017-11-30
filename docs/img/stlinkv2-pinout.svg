@@ -1,0 +1,713 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="39.02253mm"
+   height="32.16021mm"
+   viewBox="0 0 39.02253 32.16021"
+   version="1.1"
+   id="svg3823"
+   inkscape:version="0.92.2 (5c3e80d, 2017-08-06)"
+   sodipodi:docname="stlinkv2-pinout.svg">
+  <defs
+     id="defs3817" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.4"
+     inkscape:cx="-52.147002"
+     inkscape:cy="96.443095"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:window-width="1366"
+     inkscape:window-height="664"
+     inkscape:window-x="0"
+     inkscape:window-y="26"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata3820">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Calque 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-53.208826,-126.71208)">
+    <g
+       partID="854103190"
+       id="g117"
+       transform="matrix(0.05025033,0,0,0.05025033,76.729421,126.71208)">
+      <g
+         transform="translate(49.9944)"
+         id="g115">
+        <g
+           transform="rotate(90)"
+           id="g113">
+          <g
+             id="breadboard">
+            <rect
+               x="0"
+               y="0"
+               id="bgnd"
+               width="640"
+               height="278.733"
+               style="fill:#1a1a1a;stroke:none;stroke-width:0" />
+            <rect
+               x="0"
+               y="0"
+               id="top inset"
+               width="640"
+               height="31.0888"
+               style="fill:#2a2a29;stroke:none;stroke-width:0" />
+            <rect
+               x="0"
+               y="247.645"
+               id="bottom inset"
+               width="640"
+               height="31.0888"
+               style="fill:#595959;stroke:none;stroke-width:0" />
+            <path
+               d="M 0,0 V 278.733 L 31.0888,247.645 V 31.0888 Z"
+               id="left inset"
+               inkscape:connector-curvature="0"
+               style="fill:#373737;stroke:none;stroke-width:0" />
+            <path
+               d="M 640,0 V 278.733 L 608.911,247.645 V 31.0888 Z"
+               id="right inset"
+               inkscape:connector-curvature="0"
+               style="fill:#474747;stroke:none;stroke-width:0" />
+            <rect
+               x="0"
+               y="0"
+               id="top border"
+               width="640"
+               height="19.9776"
+               style="fill:#404040;stroke:none;stroke-width:0" />
+            <rect
+               x="0"
+               y="258.75601"
+               id="bottom border"
+               width="640"
+               height="19.9776"
+               style="fill:#404040;stroke:none;stroke-width:0" />
+            <rect
+               x="0"
+               y="0"
+               id="left border"
+               width="19.9776"
+               height="278.733"
+               style="fill:#404040;stroke:none;stroke-width:0" />
+            <rect
+               x="620.02197"
+               y="0"
+               id="right border"
+               width="19.9776"
+               height="278.733"
+               style="fill:#404040;stroke:none;stroke-width:0" />
+            <rect
+               x="138.894"
+               y="76.778"
+               id="upper connector bgnd"
+               width="42.211102"
+               height="42.211102"
+               style="fill:#141414;stroke:none;stroke-width:0" />
+            <rect
+               x="147.228"
+               y="85.111397"
+               id="connector9pin"
+               width="25.544399"
+               height="25.544399"
+               style="fill:#8c8663;stroke:none;stroke-width:0" />
+            <rect
+               x="147.228"
+               y="85.111397"
+               id="upper connector top inset"
+               width="25.544399"
+               height="6.1999998"
+               style="fill:#b8af82;stroke:none;stroke-width:0" />
+            <rect
+               x="147.228"
+               y="104.456"
+               id="upper connector bottom inset"
+               width="25.544399"
+               height="6.1999998"
+               style="fill:#5e5b43;stroke:none;stroke-width:0" />
+            <path
+               d="m 147.228,85.1114 v 25.5446 l 6.2,-6.2 V 91.3114 Z"
+               id="upper connector left inset"
+               inkscape:connector-curvature="0"
+               style="fill:#9a916c;stroke:none;stroke-width:0" />
+            <path
+               d="m 172.772,85.1114 v 25.5446 l -6.2,-6.2 V 91.3114 Z"
+               id="upper connector right inset"
+               inkscape:connector-curvature="0"
+               style="fill:#9a916c;stroke:none;stroke-width:0" />
+            <rect
+               x="218.894"
+               y="76.778"
+               id="rect17"
+               width="42.211102"
+               height="42.211102"
+               style="fill:#141414;stroke:none;stroke-width:0" />
+            <rect
+               x="227.228"
+               y="85.111397"
+               id="connector8pin"
+               width="25.544399"
+               height="25.544399"
+               style="fill:#8c8663;stroke:none;stroke-width:0" />
+            <rect
+               x="227.228"
+               y="85.111397"
+               id="rect20"
+               width="25.544399"
+               height="6.1999998"
+               style="fill:#b8af82;stroke:none;stroke-width:0" />
+            <rect
+               x="227.228"
+               y="104.456"
+               id="rect22"
+               width="25.544399"
+               height="6.1999998"
+               style="fill:#5e5b43;stroke:none;stroke-width:0" />
+            <path
+               d="m 227.228,85.1114 v 25.5446 l 6.2,-6.2 V 91.3114 Z"
+               id="path24"
+               inkscape:connector-curvature="0"
+               style="fill:#9a916c;stroke:none;stroke-width:0" />
+            <path
+               d="m 252.772,85.1114 v 25.5446 l -6.2,-6.2 V 91.3114 Z"
+               id="path26"
+               inkscape:connector-curvature="0"
+               style="fill:#9a916c;stroke:none;stroke-width:0" />
+            <rect
+               x="298.89401"
+               y="76.778"
+               id="rect28"
+               width="42.211102"
+               height="42.211102"
+               style="fill:#141414;stroke:none;stroke-width:0" />
+            <rect
+               x="307.228"
+               y="85.111397"
+               id="connector7pin"
+               width="25.544399"
+               height="25.544399"
+               style="fill:#8c8663;stroke:none;stroke-width:0" />
+            <rect
+               x="307.228"
+               y="85.111397"
+               id="rect31"
+               width="25.544399"
+               height="6.1999998"
+               style="fill:#b8af82;stroke:none;stroke-width:0" />
+            <rect
+               x="307.228"
+               y="104.456"
+               id="rect33"
+               width="25.544399"
+               height="6.1999998"
+               style="fill:#5e5b43;stroke:none;stroke-width:0" />
+            <path
+               d="m 307.228,85.1114 v 25.5446 l 6.2,-6.2 V 91.3114 Z"
+               id="path35"
+               inkscape:connector-curvature="0"
+               style="fill:#9a916c;stroke:none;stroke-width:0" />
+            <path
+               d="m 332.772,85.1114 v 25.5446 l -6.2,-6.2 V 91.3114 Z"
+               id="path37"
+               inkscape:connector-curvature="0"
+               style="fill:#9a916c;stroke:none;stroke-width:0" />
+            <rect
+               x="378.89401"
+               y="76.778"
+               id="rect39"
+               width="42.211102"
+               height="42.211102"
+               style="fill:#141414;stroke:none;stroke-width:0" />
+            <rect
+               x="387.228"
+               y="85.111397"
+               id="connector6pin"
+               width="25.544399"
+               height="25.544399"
+               style="fill:#8c8663;stroke:none;stroke-width:0" />
+            <rect
+               x="387.228"
+               y="85.111397"
+               id="rect42"
+               width="25.544399"
+               height="6.1999998"
+               style="fill:#b8af82;stroke:none;stroke-width:0" />
+            <rect
+               x="387.228"
+               y="104.456"
+               id="rect44"
+               width="25.544399"
+               height="6.1999998"
+               style="fill:#5e5b43;stroke:none;stroke-width:0" />
+            <path
+               d="m 387.228,85.1114 v 25.5446 l 6.2,-6.2 V 91.3114 Z"
+               id="path46"
+               inkscape:connector-curvature="0"
+               style="fill:#9a916c;stroke:none;stroke-width:0" />
+            <path
+               d="m 412.772,85.1114 v 25.5446 l -6.2,-6.2 V 91.3114 Z"
+               id="path48"
+               inkscape:connector-curvature="0"
+               style="fill:#9a916c;stroke:none;stroke-width:0" />
+            <rect
+               x="458.89401"
+               y="76.778"
+               id="rect50"
+               width="42.211102"
+               height="42.211102"
+               style="fill:#141414;stroke:none;stroke-width:0" />
+            <rect
+               x="467.228"
+               y="85.111397"
+               id="connector5pin"
+               width="25.544399"
+               height="25.544399"
+               style="fill:#8c8663;stroke:none;stroke-width:0" />
+            <rect
+               x="467.228"
+               y="85.111397"
+               id="rect53"
+               width="25.544399"
+               height="6.1999998"
+               style="fill:#b8af82;stroke:none;stroke-width:0" />
+            <rect
+               x="467.228"
+               y="104.456"
+               id="rect55"
+               width="25.544399"
+               height="6.1999998"
+               style="fill:#5e5b43;stroke:none;stroke-width:0" />
+            <path
+               d="m 467.228,85.1114 v 25.5446 l 6.2,-6.2 V 91.3114 Z"
+               id="path57"
+               inkscape:connector-curvature="0"
+               style="fill:#9a916c;stroke:none;stroke-width:0" />
+            <path
+               d="m 492.772,85.1114 v 25.5446 l -6.2,-6.2 V 91.3114 Z"
+               id="path59"
+               inkscape:connector-curvature="0"
+               style="fill:#9a916c;stroke:none;stroke-width:0" />
+            <rect
+               x="138.894"
+               y="156.778"
+               id="lower connector bgnd"
+               width="42.211102"
+               height="42.211102"
+               style="fill:#141414;stroke:none;stroke-width:0" />
+            <rect
+               x="147.228"
+               y="165.11099"
+               id="connector0pin"
+               width="25.544399"
+               height="25.544399"
+               style="fill:#8c8663;stroke:none;stroke-width:0" />
+            <rect
+               x="147.228"
+               y="165.11099"
+               id="lower connector top inset"
+               width="25.544399"
+               height="6.1999998"
+               style="fill:#b8af82;stroke:none;stroke-width:0" />
+            <rect
+               x="147.228"
+               y="184.45599"
+               id="lower connector bottom inset"
+               width="25.544399"
+               height="6.1999998"
+               style="fill:#5e5b43;stroke:none;stroke-width:0" />
+            <path
+               d="m 147.228,165.111 v 25.545 l 6.2,-6.2 v -13.145 z"
+               id="lower connector left inset"
+               inkscape:connector-curvature="0"
+               style="fill:#9a916c;stroke:none;stroke-width:0" />
+            <path
+               d="m 172.772,165.111 v 25.545 l -6.2,-6.2 v -13.145 z"
+               id="lower connector right inset"
+               inkscape:connector-curvature="0"
+               style="fill:#9a916c;stroke:none;stroke-width:0" />
+            <rect
+               x="218.894"
+               y="156.778"
+               id="rect67"
+               width="42.211102"
+               height="42.211102"
+               style="fill:#141414;stroke:none;stroke-width:0" />
+            <rect
+               x="227.228"
+               y="165.11099"
+               id="connector1pin"
+               width="25.544399"
+               height="25.544399"
+               style="fill:#8c8663;stroke:none;stroke-width:0" />
+            <rect
+               x="227.228"
+               y="165.11099"
+               id="rect70"
+               width="25.544399"
+               height="6.1999998"
+               style="fill:#b8af82;stroke:none;stroke-width:0" />
+            <rect
+               x="227.228"
+               y="184.45599"
+               id="rect72"
+               width="25.544399"
+               height="6.1999998"
+               style="fill:#5e5b43;stroke:none;stroke-width:0" />
+            <path
+               d="m 227.228,165.111 v 25.545 l 6.2,-6.2 v -13.145 z"
+               id="path74"
+               inkscape:connector-curvature="0"
+               style="fill:#9a916c;stroke:none;stroke-width:0" />
+            <path
+               d="m 252.772,165.111 v 25.545 l -6.2,-6.2 v -13.145 z"
+               id="path76"
+               inkscape:connector-curvature="0"
+               style="fill:#9a916c;stroke:none;stroke-width:0" />
+            <rect
+               x="298.89401"
+               y="156.778"
+               id="rect78"
+               width="42.211102"
+               height="42.211102"
+               style="fill:#141414;stroke:none;stroke-width:0" />
+            <rect
+               x="307.228"
+               y="165.11099"
+               id="connector2pin"
+               width="25.544399"
+               height="25.544399"
+               style="fill:#8c8663;stroke:none;stroke-width:0" />
+            <rect
+               x="307.228"
+               y="165.11099"
+               id="rect81"
+               width="25.544399"
+               height="6.1999998"
+               style="fill:#b8af82;stroke:none;stroke-width:0" />
+            <rect
+               x="307.228"
+               y="184.45599"
+               id="rect83"
+               width="25.544399"
+               height="6.1999998"
+               style="fill:#5e5b43;stroke:none;stroke-width:0" />
+            <path
+               d="m 307.228,165.111 v 25.545 l 6.2,-6.2 v -13.145 z"
+               id="path85"
+               inkscape:connector-curvature="0"
+               style="fill:#9a916c;stroke:none;stroke-width:0" />
+            <path
+               d="m 332.772,165.111 v 25.545 l -6.2,-6.2 v -13.145 z"
+               id="path87"
+               inkscape:connector-curvature="0"
+               style="fill:#9a916c;stroke:none;stroke-width:0" />
+            <rect
+               x="378.89401"
+               y="156.778"
+               id="rect89"
+               width="42.211102"
+               height="42.211102"
+               style="fill:#141414;stroke:none;stroke-width:0" />
+            <rect
+               x="387.228"
+               y="165.11099"
+               id="connector3pin"
+               width="25.544399"
+               height="25.544399"
+               style="fill:#8c8663;stroke:none;stroke-width:0" />
+            <rect
+               x="387.228"
+               y="165.11099"
+               id="rect92"
+               width="25.544399"
+               height="6.1999998"
+               style="fill:#b8af82;stroke:none;stroke-width:0" />
+            <rect
+               x="387.228"
+               y="184.45599"
+               id="rect94"
+               width="25.544399"
+               height="6.1999998"
+               style="fill:#5e5b43;stroke:none;stroke-width:0" />
+            <path
+               d="m 387.228,165.111 v 25.545 l 6.2,-6.2 v -13.145 z"
+               id="path96"
+               inkscape:connector-curvature="0"
+               style="fill:#9a916c;stroke:none;stroke-width:0" />
+            <path
+               d="m 412.772,165.111 v 25.545 l -6.2,-6.2 v -13.145 z"
+               id="path98"
+               inkscape:connector-curvature="0"
+               style="fill:#9a916c;stroke:none;stroke-width:0" />
+            <rect
+               x="458.89401"
+               y="156.778"
+               id="rect100"
+               width="42.211102"
+               height="42.211102"
+               style="fill:#141414;stroke:none;stroke-width:0" />
+            <rect
+               x="467.228"
+               y="165.11099"
+               id="connector4pin"
+               width="25.544399"
+               height="25.544399"
+               style="fill:#8c8663;stroke:none;stroke-width:0" />
+            <rect
+               x="467.228"
+               y="165.11099"
+               id="rect103"
+               width="25.544399"
+               height="6.1999998"
+               style="fill:#b8af82;stroke:none;stroke-width:0" />
+            <rect
+               x="467.228"
+               y="184.45599"
+               id="rect105"
+               width="25.544399"
+               height="6.1999998"
+               style="fill:#5e5b43;stroke:none;stroke-width:0" />
+            <path
+               d="m 467.228,165.111 v 25.545 l 6.2,-6.2 v -13.145 z"
+               id="path107"
+               inkscape:connector-curvature="0"
+               style="fill:#9a916c;stroke:none;stroke-width:0" />
+            <path
+               d="m 492.772,165.111 v 25.545 l -6.2,-6.2 v -13.145 z"
+               id="path109"
+               inkscape:connector-curvature="0"
+               style="fill:#9a916c;stroke:none;stroke-width:0" />
+            <rect
+               x="252.761"
+               y="224.39799"
+               id="slot"
+               width="134.478"
+               height="54.335499"
+               style="fill:#1a1a1a;stroke:none;stroke-width:0" />
+          </g>
+        </g>
+      </g>
+    </g>
+    <g
+       transform="matrix(0.56506765,0,0,0.56506765,51.132864,126.25455)"
+       partID="854103330"
+       id="g124">
+      <g
+         transform="translate(54.8023,25.1012)"
+         id="g122">
+        <g
+           id="g120">
+          <text
+             style="font-size:7.19999981px;font-family:'Droid Sans';text-anchor:middle;fill:#787878;stroke-width:0"
+             x="10.8"
+             xml:space="preserve"
+             y="6.48"
+             id="label"
+             font-size="7.2">TCK</text>
+        </g>
+      </g>
+    </g>
+    <g
+       transform="matrix(0.56506765,0,0,0.56506765,51.132864,126.25455)"
+       partID="854103310"
+       id="g132">
+      <g
+         transform="translate(54.8023,17.6224)"
+         id="g130">
+        <g
+           id="g128">
+          <text
+             style="font-size:7.19999981px;font-family:'Droid Sans';text-anchor:middle;fill:#787878;stroke-width:0"
+             x="10.8"
+             xml:space="preserve"
+             y="6.48"
+             id="text126"
+             font-size="7.2">GND</text>
+        </g>
+      </g>
+    </g>
+    <g
+       transform="matrix(0.56506765,0,0,0.56506765,51.132864,126.25455)"
+       partID="854103280"
+       id="g140">
+      <g
+         transform="translate(54.8023,10.8128)"
+         id="g138">
+        <g
+           id="g136">
+          <text
+             style="font-size:7.19999981px;font-family:'Droid Sans';text-anchor:middle;fill:#787878;stroke-width:0"
+             x="10.8"
+             xml:space="preserve"
+             y="6.48"
+             id="text134"
+             font-size="7.2">TDO</text>
+        </g>
+      </g>
+    </g>
+    <g
+       transform="matrix(0.56506765,0,0,0.56506765,51.132864,126.25455)"
+       partID="854103350"
+       id="g148">
+      <g
+         transform="translate(54.8023,31.7427)"
+         id="g146">
+        <g
+           id="g144">
+          <text
+             style="font-size:7.19999981px;font-family:'Droid Sans';text-anchor:middle;fill:#787878;stroke-width:0"
+             x="10.8"
+             xml:space="preserve"
+             y="6.48"
+             id="text142"
+             font-size="7.2">3V3</text>
+        </g>
+      </g>
+    </g>
+    <g
+       transform="matrix(0.56506765,0,0,0.56506765,51.132864,126.25455)"
+       partID="854103370"
+       id="g156">
+      <g
+         transform="translate(58.4023,39.1389)"
+         id="g154">
+        <g
+           id="g152">
+          <text
+             style="font-size:7.19999981px;font-family:'Droid Sans';text-anchor:middle;fill:#787878;stroke-width:0"
+             x="7.1999998"
+             xml:space="preserve"
+             y="6.48"
+             id="text150"
+             font-size="7.2">5V</text>
+        </g>
+      </g>
+    </g>
+    <g
+       transform="matrix(0.56506765,0,0,0.56506765,51.132864,126.25455)"
+       partID="854103420"
+       id="g164">
+      <g
+         transform="translate(0,31.4151)"
+         id="g162">
+        <g
+           id="g160">
+          <text
+             style="font-size:7.19999981px;font-family:'Droid Sans';text-anchor:middle;fill:#787878;stroke-width:0"
+             x="10.8"
+             xml:space="preserve"
+             y="6.48"
+             id="text158"
+             font-size="7.2">3V3</text>
+        </g>
+      </g>
+    </g>
+    <g
+       transform="matrix(0.56506765,0,0,0.56506765,51.132864,126.25455)"
+       partID="854103430"
+       id="g172">
+      <g
+         transform="translate(3.6,38.8114)"
+         id="g170">
+        <g
+           id="g168">
+          <text
+             style="font-size:7.19999981px;font-family:'Droid Sans';text-anchor:middle;fill:#787878;stroke-width:0"
+             x="7.1999998"
+             xml:space="preserve"
+             y="6.48"
+             id="text166"
+             font-size="7.2">5V</text>
+        </g>
+      </g>
+    </g>
+    <g
+       transform="matrix(0.56506765,0,0,0.56506765,51.132864,126.25455)"
+       partID="854103410"
+       id="g180">
+      <g
+         transform="translate(0,17.2949)"
+         id="g178">
+        <g
+           id="g176">
+          <text
+             style="font-size:7.19999981px;font-family:'Droid Sans';text-anchor:middle;fill:#787878;stroke-width:0"
+             x="10.8"
+             xml:space="preserve"
+             y="6.48"
+             id="text174"
+             font-size="7.2">GND</text>
+        </g>
+      </g>
+    </g>
+    <g
+       transform="matrix(0.56506765,0,0,0.56506765,51.132864,126.25455)"
+       partID="854103390"
+       id="g188">
+      <g
+         transform="translate(0,10.4853)"
+         id="g186">
+        <g
+           id="g184">
+          <text
+             style="font-size:7.19999981px;font-family:'Droid Sans';text-anchor:middle;fill:#787878;stroke-width:0"
+             x="10.8"
+             xml:space="preserve"
+             y="6.48"
+             id="text182"
+             font-size="7.2">TMS</text>
+        </g>
+      </g>
+    </g>
+    <g
+       transform="matrix(0.56506765,0,0,0.56506765,51.132864,126.25455)"
+       partID="854103400"
+       id="g196">
+      <g
+         transform="translate(0,24.7736)"
+         id="g194">
+        <g
+           id="g192">
+          <text
+             style="font-size:7.19999981px;font-family:'Droid Sans';text-anchor:middle;fill:#787878;stroke-width:0"
+             x="10.8"
+             xml:space="preserve"
+             y="6.48"
+             id="text190"
+             font-size="7.2">TDI</text>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>
