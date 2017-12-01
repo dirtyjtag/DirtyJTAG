@@ -1,6 +1,6 @@
 # DirtyJTAG
 
-DirtyJTAG is a JTAG adapter firmware for $2 ST-Link clones and generic STM32 development boards ("blue pill"/"black pill" STM32F103-based ARM boards). The DirtyJTAG project was created to find an alternative to the obsolete (but cheap) LPT Wiggler cables, and expensive USB JTAG probes.
+DirtyJTAG is a JTAG adapter firmware for $2 ST-Link clones and generic STM32 development boards ("blue pill"/"black pill" STM32F101 and STM32F103 based ARM boards). The DirtyJTAG project was created to find an alternative to the obsolete (but cheap) LPT Wiggler cables, and expensive USB JTAG probes.
 
 DirtyJTAG is dirty and dirt cheap, but is not fast nor a perfect implementation of the JTAG protocol. Yet it is around 500 sloccount lines, therefore it is easily understandable and hackable.
 
@@ -10,7 +10,7 @@ If you prefer OpenOCD to UrJTAG, I suggest using Zoobab's fork of Versaloon firm
 
 ## Complete instructions for installing DirtyJTAG on a $2 chinese ST-Link clone
 
-The $2 chinese ST-Link clones that you can find on Aliexpress/eBay are based on a STM32F103 chip. They can be repurposed into a JTAG adapter using the DirtyJTAG firmware. However, due to the limited number of GPIO available to the user, only the bare minimum JTAG pins are available : `TDI/TDO/TMS/TCK` (no `SRST` or `TRST`).
+The $2 chinese ST-Link clones that you can find on Aliexpress/eBay are based on a STM32F101 chip. They can be repurposed into a JTAG adapter using the DirtyJTAG firmware. However, due to the limited number of GPIO available to the user, only the bare minimum JTAG pins are available : `TDI/TDO/TMS/TCK` (no `SRST` or `TRST`).
 
 ### Taking apart the adapter
 
@@ -31,6 +31,15 @@ st-flash write /path/to/dirtyjtag-stlink.bin 0x8000000
 ```
 
 If for some reason the flashing process fails because the reported flash size is 0, [there is a fix](https://github.com/texane/stlink/issues/172#issuecomment-347887271).
+
+If you have pogopins around, you could make your own flashing jig by soldering 4 of those on 2 pieces of stripboard, and hold them with a clothespin:
+
+![Flashing jig with 4 pogopins and a clothespin](docs/img/stlinkv2-jig-1.jpg)
+![Flashing jig with 4 pogopins and a clothespin bis](docs/img/stlinkv2-jig-2.jpg)
+
+Otherwise some male to female header cable works great, it fits the pad hole snugly and doesn't make a loose connection.
+
+![ST-Link connected together with header cable](docs/img/stlinkv2-header-cable.jpg)
 
 ### Using your *brand new* DirtyJTAG dongle with a JTAG target
 
