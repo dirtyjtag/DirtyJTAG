@@ -32,6 +32,11 @@ st-flash write /path/to/dirtyjtag-stlink.bin 0x8000000
 
 If for some reason the flashing process fails because the reported flash size is 0, [there is a fix](https://github.com/texane/stlink/issues/172#issuecomment-347887271).
 
+If you have pogopins around, you could make your own flashing jig by soldering 4 of those on 2 pieces of stripboard, and hold them with a clothespin:
+
+![Flashing jig with 4 pogopins and a clothespin](docs/img/stlinkv2-jig-1.jpg)
+![Flashing jig with 4 pogopins and a clothespin bis](docs/img/stlinkv2-jig-2.jpg)
+
 ### Using your *brand new* DirtyJTAG dongle with a JTAG target
 
 This is the new pinout for your DirtyJTAG dongle. You may want to print it and glue it to the case for practical reasons.
