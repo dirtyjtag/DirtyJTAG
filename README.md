@@ -37,6 +37,10 @@ If you have pogopins around, you could make your own flashing jig by soldering 4
 ![Flashing jig with 4 pogopins and a clothespin](docs/img/stlinkv2-jig-1.jpg)
 ![Flashing jig with 4 pogopins and a clothespin bis](docs/img/stlinkv2-jig-2.jpg)
 
+Otherwise some male to female header cable works great, it fits the pad hole snugly and doesn't make a loose connection.
+
+![ST-Link connected together with header cable](docs/img/stlinkv2-header-cable.jpg)
+
 ### Using your *brand new* DirtyJTAG dongle with a JTAG target
 
 This is the new pinout for your DirtyJTAG dongle. You may want to print it and glue it to the case for practical reasons.
