@@ -168,4 +168,4 @@ Once the build is completed, your freshly compiled firmware will be available in
  * [neroJtag](https://github.com/makestuff/neroJtag)
  * [clujtag-avr](https://github.com/ClusterM/clujtag-avr)
  * [CuVoodoo page on JTAG and ST-Link v2 adapters](https://wiki.cuvoodoo.info/doku.php?id=jtag)
- * [https://github.com/zoobab/versaloon](https://github.com/zoobab/versaloon)
+ * [versaloon jtag](https://github.com/zoobab/versaloon)
