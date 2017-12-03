@@ -181,6 +181,7 @@ Once the build is completed, your freshly compiled firmware will be available in
 * speed table comparison with FTDI FT2232
 * reflash with BlackMagicProbe (BMP) firmware, st-link is a proprietary firmware from ST
 * document the backup of the st-link dongle proprietary firmware before flashing
+* add docker documentation
 
 ## Inspiration
 
