@@ -183,6 +183,7 @@ Once the build is completed, your freshly compiled firmware will be available in
 * document the backup of the st-link dongle proprietary firmware before flashing
 * add docker documentation
 * document how to flash a bluepill just with a usb-serial adaptor
+* make stickers label with the JTAG pinout to glue on the stlinkv2 dongle
 
 ## Inspiration
 
