@@ -178,3 +178,4 @@ Once the build is completed, your freshly compiled firmware will be available in
  * [clujtag-avr](https://github.com/ClusterM/clujtag-avr)
  * [CuVoodoo page on JTAG and ST-Link v2 adapters](https://wiki.cuvoodoo.info/doku.php?id=jtag)
  * [versaloon jtag](https://github.com/zoobab/versaloon)
+ * [blackmagic probe on st-link-v2 clones](https://madnessinthedarkness.transsys.com/blog:2017:0122_black_magic_probe_bmp_on_st-link_v2_clones)
