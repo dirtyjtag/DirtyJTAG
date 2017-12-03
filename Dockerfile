@@ -19,3 +19,4 @@ WORKDIR /home/$user/code/
 RUN git submodule init
 RUN git submodule update
 RUN PLATFORM=bluepill make
+RUN PLATFORM=stlinkv2 make
