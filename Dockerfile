@@ -18,4 +18,5 @@ RUN sudo chown $user.$user -R /home/$user/code
 WORKDIR /home/$user/code/
 RUN git submodule init
 RUN git submodule update
-RUN PLATFORM=bluepill make
+RUN make PLATFORM=bluepill
+RUN make PLATFORM=stlinkv2

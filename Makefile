@@ -41,7 +41,7 @@ all: dirtyjtag
 
 clean: dirtyjtag-clean ucmx-clean
 
-dirtyjtag: ucmx src/dirtyjtag.elf src/dirtyjtag.bin
+dirtyjtag: ucmx src/dirtyjtag.$(PLATFORM).elf src/dirtyjtag.$(PLATFORM).bin
 
 dirtyjtag-clean:
 	$(Q)$(RM) src/*.d src/*.o src/*.map src/*.bin src/*.elf
