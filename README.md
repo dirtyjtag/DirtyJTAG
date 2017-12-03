@@ -171,6 +171,17 @@ Currently there are two platforms :
 
 Once the build is completed, your freshly compiled firmware will be available in `src/dirtyjtag.bin`.
 
+## Todo
+
+* package stlink for debian/ubuntu in OpenBuildSystem (OBS)
+* find a debian maintainer for stlink
+* docker oneliner to flash the firmware
+* add a second bluepill to validate the complete setup (jtag detect)
+* add pictures of the bluepill dongle attached to an openwrt router
+* speed table comparison with FTDI FT2232
+* reflash with BlackMagicProbe (BMP) firmware, st-link is a proprietary firmware from ST
+* document the backup of the st-link dongle proprietary firmware before flashing
+
 ## Inspiration
 
  * [opendous-jtag](https://github.com/vfonov/opendous-jtag)
