@@ -182,6 +182,7 @@ Once the build is completed, your freshly compiled firmware will be available in
 * reflash with BlackMagicProbe (BMP) firmware, st-link is a proprietary firmware from ST
 * document the backup of the st-link dongle proprietary firmware before flashing
 * add docker documentation
+* document how to flash a bluepill just with a usb-serial adaptor
 
 ## Inspiration
 
