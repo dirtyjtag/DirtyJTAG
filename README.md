@@ -177,6 +177,20 @@ Once the build is completed, your freshly compiled firmware will be available in
 
 If you have [Docker](https://www.docker.com/) installed on your computer, you can run the `./build.sh` script that will automatically build DirtyJTAG and copy the firmware files out of the container.
 
+## Todo
+
+* package stlink for debian/ubuntu in OpenBuildSystem (OBS)
+* find a debian maintainer for stlink
+* docker oneliner to flash the firmware
+* add a second bluepill to validate the complete setup (jtag detect)
+* add pictures of the bluepill dongle attached to an openwrt router
+* speed table comparison with FTDI FT2232
+* reflash with BlackMagicProbe (BMP) firmware, st-link is a proprietary firmware from ST
+* document the backup of the st-link dongle proprietary firmware before flashing
+* add docker documentation
+* document how to flash a bluepill just with a usb-serial adaptor
+* make stickers label with the JTAG pinout to glue on the stlinkv2 dongle
+
 ## Inspiration
 
  * [opendous-jtag](https://github.com/vfonov/opendous-jtag)
