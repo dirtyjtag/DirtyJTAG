@@ -138,6 +138,8 @@ jtag>
 
 ## DirtyJTAG compilation
 
+### Manual build
+
 In order to compile DirtyJTAG, you will need the following software :
 
  * git
@@ -169,7 +171,11 @@ Currently there are two platforms :
  * bluepill : Default build setting
  * stlinkv2 : Chinese ST-Link clone with specific pinout
 
-Once the build is completed, your freshly compiled firmware will be available in `src/dirtyjtag.bin`.
+Once the build is completed, your freshly compiled firmware will be available in `src/` as a binary file.
+
+### Docker build
+
+If you have [Docker](https://www.docker.com/) installed on your computer, you can run the `./build.sh` script that will automatically build DirtyJTAG and copy the firmware files out of the container.
 
 ## Inspiration
 
