@@ -100,6 +100,15 @@ the SWD connector, VCC can be 3.3V or 5V, it works with both voltages:
 
 ![Flashing DirtyJTAG with USB-serial adaptor](docs/img/bluepill-stm32flash-squaredpins-nosoldering.jpg)
 
+You have to connect:
+
+| USB-SERIAL | BLUEPILL |
+|-------|------|
+| 5V(or 3.3V)    | SWD_3.3  |
+| GND   | SWD_GND  |
+| TX   | A10  |
+| RX   | A9   |
+
 Then, you have to install `stm32flash`, which can be obtained in your
 distribution (`apt-get install stm32flash` for debian/ubuntu), and flash the
 firmware with this command:
