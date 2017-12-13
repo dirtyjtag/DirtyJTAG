@@ -85,9 +85,10 @@ st-flash write /path/to/dirtyjtag.bin 0x8000000
 ### Via a USB-serial adaptor
 
 You can flash DirtyJTAG with a usb-serial dongle (such as based on chips such
-as wch340g, pl2303, cp2102, ft232r, etc...).
+as wch340g, pl2303, cp2102, ft232r, etc...). In the following example, we use a
+cheap ch340g usb-serial dongle with can be bought on Aliexpress for 0.67USD.
 
-Before flashing, you have to put the yellow jumpers BOOT0 to 1, and keep BOOT1
+Before flashing, you have to put the yellow jumpers `BOOT0` to 1, and keep `BOOT1`
 at 0, like on the following picture:
 
 ![Set the yellow jumpers BOOT0=1 and BOOT1=0](docs/img/bluepill-boot0-boot1-flashmode.png)
@@ -139,7 +140,7 @@ Starting execution at address 0x08000000... done.
 $
 ```
 
-Then unplug it, put back the BOOT0 jumper to 0, and plug it in USB, you should
+Then unplug it, put back the `BOOT0` jumper to 0, and plug it in USB, you should
 see the "1209:c0ca InterBiometrics" in the output of `lsusb`:
 
 ```
