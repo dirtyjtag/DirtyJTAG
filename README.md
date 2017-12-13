@@ -95,8 +95,7 @@ at 0, like on the following picture:
 If you don't want to solder the yellow 2 rows of headers on the side of the
 board, you can prepare 2 bended pins at the end of 2 female-to-female wires,
 and connect them to A9 and A10, while pressing the head againt the jumpers
-block to maintain stability. You can also connect GND and VCC on the 2 pins of
-the SWD connector, VCC can be 3.3V or 5V, it works with both voltages:
+block to maintain stability.
 
 ![Flashing DirtyJTAG with USB-serial adaptor](docs/img/bluepill-stm32flash-squaredpins-nosoldering.jpg)
 
@@ -108,6 +107,9 @@ You have to connect:
 | GND   | SWD_GND  |
 | TX   | A10  |
 | RX   | A9   |
+
+Note that the flashing works with either 5V or 3V3 as supplied voltage from
+the USB-serial adaptor.
 
 Then, you have to install `stm32flash`, which can be obtained in your
 distribution (`apt-get install stm32flash` for debian/ubuntu), and flash the
@@ -138,7 +140,18 @@ $
 ```
 
 Then unplug it, put back the BOOT0 jumper to 0, and plug it in USB, you should
-see the "1209:c0ca InterBiometrics" in the output of `lsusb`.
+see the "1209:c0ca InterBiometrics" in the output of `lsusb`:
+
+```
+$ lsusb
+Bus 001 Device 004: ID 2232:1024 Silicon Motion 
+Bus 001 Device 003: ID 8087:07da Intel Corp. 
+Bus 001 Device 002: ID 8087:0024 Intel Corp. Integrated Rate Matching Hub
+Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+Bus 003 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub
+Bus 002 Device 004: ID 1209:c0ca InterBiometrics 
+Bus 002 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+```
 
 ### Pinout
 
