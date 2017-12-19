@@ -258,6 +258,37 @@ Once the build is completed, your freshly compiled firmware will be available in
 
 If you have [Docker](https://www.docker.com/) installed on your computer, you can run the `./build.sh` script that will automatically build DirtyJTAG and copy the firmware files out of the container.
 
+## JTAG Validation
+
+You can validate that your DirtyJTAG cable works by using a target, in this example we take another bluepill board which has JTAG pins exposed.
+
+![Validate that JTAG is working by connecting another bluepill](docs/img/docs/img/bluepill-flash-another-bluepill-with-jtag.jpg)
+
+You should be able to detect something:
+
+```
+jtag> cable DirtyJTAG
+jtag> detect
+IR length: 9
+Chain length: 2
+Device Id: 00111011101000000000010001110111 (0x3BA00477)
+  Unknown manufacturer! (01000111011) (/usr/share/urjtag/MANUFACTURERS)
+Device Id: 00010110010000010000000001000001 (0x16410041)
+  Unknown manufacturer! (00000100000) (/usr/share/urjtag/MANUFACTURERS)
+```
+
+The MANUFACTURERS file or urjtag need to be updated with "ARM Ltd" and "SGS/Thomson":
+
+https://raw.githubusercontent.com/pmaupin/playtag/master/playtag/bsdl/data/manufacturers.txt
+
+```
+$ grep 01000111011 manufacturers.txt
+01000111011   ARM Ltd.
+
+$ grep 00000100000 manufacturers.txt
+00000100000   SGS/Thomson
+```
+
 ## Inspiration
 
  * [opendous-jtag](https://github.com/vfonov/opendous-jtag)
