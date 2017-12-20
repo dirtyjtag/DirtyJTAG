@@ -315,7 +315,24 @@ Device Id: 00100100011100010010000101111111 (0x2471217F)
 jtag>
 ```
 
-Further documentation is needed on how to dump the flash...
+Further documentation is needed on how to dump the flash. Some interesting webpage about a similar router:
+
+https://irgendwasistjaimmer.in-kiel.de/index.php?/archives/23-How-to-flash-a-new-CFE-into-your-bricked-Netgear-WGT634U.html
+
+Which made urjtag segfaults:
+
+```
+jtag> discovery
+[...]
+Detecting DR length for IR 11111011 ... 1
+Detecting DR length for IR 11111100 ... 1
+Detecting DR length for IR 11111101 ... 1
+Detecting DR length for IR 11111110 ... 1
+jtag> initbus ejtag_dma
+Initialized bus 5, active bus 0
+jtag> detectflash 0x1fc00000
+Segmentation fault (core dumped)
+```
 
 ## Inspiration
 
