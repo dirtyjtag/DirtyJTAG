@@ -260,7 +260,9 @@ If you have [Docker](https://www.docker.com/) installed on your computer, you ca
 
 ## JTAG Validation
 
-You can validate that your DirtyJTAG cable works by using a target, in this example we take another bluepill board which has JTAG pins exposed.
+You can validate that your DirtyJTAG cable works by using a target, in this example we take another bluepill board which has JTAG pins exposed (yellow pins on the bluepill pinout):
+
+![Bluepill pinout](docs/img/bluepill-pinout.gif)
 
 ![Validate that JTAG is working by connecting another bluepill](docs/img/bluepill-flash-another-bluepill-with-jtag.jpg)
 
