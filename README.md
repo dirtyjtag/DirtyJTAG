@@ -295,11 +295,11 @@ $ grep 00000100000 manufacturers.txt
 
 You can test the cable with a Linksys WRT54G router, which has a JTAG header where you need to solder the pins. The pinout is the following for a WRT54Gv22:
 
-[Linksys WRT54Gv22 JTAG pinout](docs/img/wrt54g-jtag-pinout.png)
+![Linksys WRT54Gv22 JTAG pinout](docs/img/wrt54g-jtag-pinout.png)
 
 Here is a picture of the setup:
 
-[DirtyJTAG connected to a WRT54G router JTAG header](docs/img/bluepill-wrt54g-jtag.jpg)
+![DirtyJTAG connected to a WRT54G router JTAG header](docs/img/bluepill-wrt54g-jtag.jpg)
 
 You should then be able to detect the chip:
 
