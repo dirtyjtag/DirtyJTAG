@@ -291,6 +291,10 @@ $ grep 00000100000 manufacturers.txt
 00000100000   SGS/Thomson
 ```
 
+## JTAG validation on a Linksys WRT54G router
+
+
+
 ## Inspiration
 
  * [opendous-jtag](https://github.com/vfonov/opendous-jtag)
