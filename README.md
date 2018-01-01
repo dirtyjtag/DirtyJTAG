@@ -31,7 +31,7 @@ PID codes for open source hardware projects. More infos: http://pid.codes/1209/C
 
  * [Compiling DirtyJTAG yourself](docs/building-dirtyjtag.md)
  * [Compiling UrJTAG with DirtyJTAG support](docs/urjtag-dirtyjtag.md)
- * [Validate your DirtyJTAG cable with JTAG targets](docs/jtag-validation.ùd)
+ * [Validate your DirtyJTAG cable with JTAG targets](docs/jtag-validation.md)
 
 ## Inspiration & links
 
