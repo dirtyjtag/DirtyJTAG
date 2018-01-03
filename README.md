@@ -27,6 +27,19 @@ Bus 002 Device 003: ID 1209:c0ca InterBiometrics
 The PID was obtained through http://pid.codes, which is a registry of USB
 PID codes for open source hardware projects. More infos: http://pid.codes/1209/C0CA/
 
+Dmesg also give some output where you can see the Manufacturer field as "DirtyJTAG":
+
+```
+$ dmesg
+[  148.223008] usb 2-1: USB disconnect, device number 2
+[  149.669794] usb 2-1: new full-speed USB device number 3 using xhci_hcd
+[  149.812853] usb 2-1: New USB device found, idVendor=1209, idProduct=c0ca
+[  149.812859] usb 2-1: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+[  149.812863] usb 2-1: Product: Jean THOMAS
+[  149.812866] usb 2-1: Manufacturer: DirtyJTAG
+[  149.812869] usb 2-1: SerialNumber: no serial :-)
+```
+
 ## Some docs
 
  * [Compiling DirtyJTAG yourself](docs/building-dirtyjtag.md)
