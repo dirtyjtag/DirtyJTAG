@@ -3,6 +3,8 @@ addons:
   apt:
     packages:
       - gcc-arm-none-eabi
+      - libnewlib-arm-none-eabi
+      - binutils-arm-none-eabi
 
 language: c
 dist: trusty
