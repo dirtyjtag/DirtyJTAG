@@ -1,0 +1,14 @@
+dist: trusty
+addons:
+  apt:
+    packages:
+      - gcc-arm-none-eabi
+
+language: c
+dist: trusty
+compiler: gcc
+
+notifications:
+  email: false
+
+script: ./.travis.sh
