@@ -6,7 +6,7 @@ PREFIX ?= arm-none-eabi
 TARGETS := stm32/f1
 DEFS += -DSTM32F1
 ARCH_FLAGS := -mthumb -mcpu=cortex-m3 -msoft-float -mfix-cortex-m3-ldrd
-LD_SCRIPT := dirtyjtag.ld
+LD_SCRIPT := ld/$(PLATFORM).ld
 
 UCMX_DIR := $(realpath unicore-mx)
 UCMX_INCLUDE_DIR := $(UCMX_DIR)/include
