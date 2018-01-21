@@ -27,26 +27,29 @@
 #include "delay.h"
 
 int main(void) {
+  /* Clock init */
+  rcc_clock_setup_in_hsi_out_48mhz();
+  
   /* Peripherals init */
   rcc_periph_clock_enable(RCC_GPIOA);
   rcc_periph_clock_enable(RCC_GPIOB);
   rcc_periph_clock_enable(RCC_GPIOC);
   rcc_periph_clock_enable(RCC_AFIO);
 
-  /* Clock init */
-  rcc_clock_setup_in_hsi_out_48mhz();
-
   /* Disable DirtyJTAG's own JTAG interface */
   AFIO_MAPR |= AFIO_MAPR_SWJ_CFG_JTAG_OFF_SW_ON;
-
-  usb_reenumerate();
 
   jtag_init();
 
   /* Turn on the onboard LED */
-  gpio_set_mode(GPIOC, GPIO_CNF_OUTPUT_PUSHPULL,
-		GPIO_MODE_OUTPUT_2_MHZ, GPIO13);
+  gpio_set_mode(GPIOC, GPIO_MODE_OUTPUT_2_MHZ,
+		GPIO_CNF_OUTPUT_PUSHPULL, GPIO13);
   gpio_set(GPIOC, GPIO13);
+
+  /* Force USB to reenumerate (bootloader exit, SWD flashing, etc.) */
+  usb_reenumerate();
+
+  rcc_periph_reset_pulse(RST_USB);
   
   usb_init();
   

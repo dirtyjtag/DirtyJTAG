@@ -22,7 +22,9 @@
 #include <stdlib.h>
 #include <unicore-mx/usbd/usbd.h>
 #include <unicore-mx/stm32/gpio.h>
+#include <unicore-mx/stm32/rcc.h>
 
+#include "delay.h"
 #include "cmd.h"
 #include "usb.h"
 
@@ -238,12 +240,11 @@ void usb_init(void) {
 }
 
 void usb_reenumerate(void) {
-  /* This hack puts D+ to LOW state to force USB enumeration.
-     Source : https://github.com/insane-adding-machines/unicore-mx/issues/60 */
-  
   gpio_set_mode(GPIOA, GPIO_MODE_OUTPUT_2_MHZ,
-		GPIO_CNF_OUTPUT_PUSHPULL, GPIO12);
+		GPIO_CNF_OUTPUT_OPENDRAIN, GPIO12);
   gpio_clear(GPIOA, GPIO12);
+
+  delay_us(500);
 }
 
 void usb_send(usbd_device *usbd_dev, uint8_t *sent_buffer, uint8_t sent_size) {
