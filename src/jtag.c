@@ -5,6 +5,7 @@
 #include "jtag.h"
 
 #define HW_stlinkv2 0
+#define HW_stlinkv2dfu 0
 #define HW_bluepill 1
 
 #if PLATFORM == HW_stlinkv2 /* Chinese ST-LinkV2 clone */

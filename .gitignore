@@ -4,3 +4,4 @@ src/*.d
 src/*.o
 src/*.map
 *.bin
+*.elf
