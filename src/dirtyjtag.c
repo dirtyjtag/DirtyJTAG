@@ -31,7 +31,7 @@
 #define HW_stlinkv2 1
 #define HW_stlinkv2dfu 2
 
-static void clean_nvic(void) {
+void clean_nvic(void) {
   uint8_t i;
 
   /* Reset all IRQs. This is necessary on ST-Linkv2 DFU target
@@ -43,8 +43,6 @@ static void clean_nvic(void) {
 }
 
 int main(void) {
-  uint8_t i;
-
   /* Clock init */
   rcc_clock_setup_in_hse_8mhz_out_72mhz();
 
