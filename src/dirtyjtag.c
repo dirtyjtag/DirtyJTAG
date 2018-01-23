@@ -31,6 +31,17 @@
 #define HW_stlinkv2 1
 #define HW_stlinkv2dfu 2
 
+static void clean_nvic(void) {
+  uint8_t i;
+
+  /* Reset all IRQs. This is necessary on ST-Linkv2 DFU target
+   because the bootloader would handle USB transaction instead
+   of DirtyJTAG */
+  for (i = 0; i < 255; i++) {
+    nvic_disable_irq(i);
+  }
+}
+
 int main(void) {
   uint8_t i;
 
@@ -40,11 +51,7 @@ int main(void) {
   /* ST-Link v2 specific */
 #if PLATFORM == HW_stlinkv2dfu
   rcc_periph_reset_pulse(RST_USB);
-
-  /* Reset USB interrupts (otherwise catched by ST's bootloader) */
-  for (i = 0; i < 255; i++) {
-    nvic_disable_irq(i);
-  }
+  clean_nvic();
 #endif
   
   /* Peripherals reset/init */
