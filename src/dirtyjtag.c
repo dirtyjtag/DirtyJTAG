@@ -21,16 +21,33 @@
 
 #include <unicore-mx/stm32/rcc.h>
 #include <unicore-mx/stm32/gpio.h>
+#include <unicore-mx/cm3/nvic.h>
 
 #include "jtag.h"
 #include "usb.h"
 #include "delay.h"
 
+#define HW_bluepill 0
+#define HW_stlinkv2 1
+#define HW_stlinkv2dfu 2
+
 int main(void) {
+  uint8_t i;
+
   /* Clock init */
-  rcc_clock_setup_in_hsi_out_48mhz();
+  rcc_clock_setup_in_hse_8mhz_out_72mhz();
+
+  /* ST-Link v2 specific */
+#if PLATFORM == HW_stlinkv2dfu
+  rcc_periph_reset_pulse(RST_USB);
+
+  /* Reset USB interrupts (otherwise catched by ST's bootloader) */
+  for (i = 0; i < 255; i++) {
+    nvic_disable_irq(i);
+  }
+#endif
   
-  /* Peripherals init */
+  /* Peripherals reset/init */
   rcc_periph_clock_enable(RCC_GPIOA);
   rcc_periph_clock_enable(RCC_GPIOB);
   rcc_periph_clock_enable(RCC_GPIOC);
@@ -42,14 +59,18 @@ int main(void) {
   jtag_init();
 
   /* Turn on the onboard LED */
+#if PLATFORM == HW_bluepill
   gpio_set_mode(GPIOC, GPIO_MODE_OUTPUT_2_MHZ,
 		GPIO_CNF_OUTPUT_PUSHPULL, GPIO13);
   gpio_set(GPIOC, GPIO13);
+#elif PLATFORM == HW_stlinkv2 || PLATFORM == HW_stlinkv2dfu
+  gpio_set_mode(GPIOA, GPIO_MODE_OUTPUT_2_MHZ,
+		GPIO_CNF_OUTPUT_PUSHPULL, GPIO9);
+  gpio_set(GPIOA, GPIO9);
+#endif
 
   /* Force USB to reenumerate (bootloader exit, SWD flashing, etc.) */
   usb_reenumerate();
-
-  rcc_periph_reset_pulse(RST_USB);
   
   usb_init();
   

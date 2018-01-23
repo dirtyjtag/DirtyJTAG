@@ -24,6 +24,7 @@
 #include <unicore-mx/stm32/gpio.h>
 #include <unicore-mx/stm32/rcc.h>
 
+
 #include "delay.h"
 #include "cmd.h"
 #include "usb.h"
@@ -243,8 +244,8 @@ void usb_reenumerate(void) {
   gpio_set_mode(GPIOA, GPIO_MODE_OUTPUT_2_MHZ,
 		GPIO_CNF_OUTPUT_OPENDRAIN, GPIO12);
   gpio_clear(GPIOA, GPIO12);
-
-  delay_us(500);
+  
+  delay_us(20000);
 }
 
 void usb_send(usbd_device *usbd_dev, uint8_t *sent_buffer, uint8_t sent_size) {
