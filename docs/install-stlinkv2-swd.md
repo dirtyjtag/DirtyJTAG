@@ -1,5 +1,7 @@
 # Complete instructions for installing DirtyJTAG on a $2 chinese ST-Link clone (SWD method)
 
+In order to follow this tutorial, you will need an SWD programmer, like another $2 ST-Link dongle. If you don't have any lying around, you can follow the [DFU method](install-stlinkv2-dfu.md).
+
 The $2 chinese ST-Link clones that you can find on Aliexpress/eBay are based on a STM32F101 chip. They can be repurposed into a JTAG adapter using the DirtyJTAG firmware. However, due to the limited number of GPIO available to the user, only the bare minimum JTAG pins are available : `TDI/TDO/TMS/TCK` (no `SRST` or `TRST`).
 
 ## Taking apart the adapter
@@ -10,7 +12,7 @@ Press firmly the USB connector on a flat surface while holding the outer alumini
 
 ## Install DirtyJTAG firmware
 
-In order to install a newer firmware, you will need a SWD programmer. I chose to use another $2 ST-Link programmer. Connect them together like this :
+I chose to use another $2 ST-Link programmer as my SWD programmer. Connect them together like this :
 
 ![Two ST-Link clones connected together](img/stlinkv2-programming.png)
 

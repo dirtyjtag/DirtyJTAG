@@ -12,7 +12,8 @@ If you prefer OpenOCD to UrJTAG, I suggest using Zoobab's fork of Versaloon firm
 
 ## Build your DirtyJTAG adapter
 
- * [Instructions for $2 St-Link v2 clones](docs/install-stlinkv2.md)
+ * [Instructions for $2 St-Link v2 clones (DFU method)](docs/install-stlinkv2-dfu.md)
+ * [Instructions for $2 St-Link v2 clones (SWD method)](docs/install-stlinkv2-swd.md)
  * [Instructions for $2 Blue Pill development board](docs/install-bluepill.md)
 
 ## USB VID and PID
