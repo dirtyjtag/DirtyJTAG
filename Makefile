@@ -47,7 +47,7 @@ dirtyjtag-clean:
 	$(Q)$(RM) src/*.d src/*.o src/*.map src/*.bin src/*.elf *.bin *.elf
 
 ucmx:
-	$(Q)$(MAKE) -C $(UCMX_DIR)
+	$(Q)$(MAKE) -C $(UCMX_DIR) lib/stm32/f1
 
 ucmx-clean:
 	$(Q)$(MAKE) -C $(UCMX_DIR) clean

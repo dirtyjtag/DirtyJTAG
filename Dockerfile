@@ -1,9 +1,8 @@
-FROM debian:jessie
+FROM debian:jessie-slim
 MAINTAINER Benjamin Henrion <zoobab@gmail.com>
 LABEL Description="DirtyJTAG firmware for STM32 Bluepill board" 
 
-RUN DEBIAN_FRONTEND=noninteractive apt-get update -y -q
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y -q make gcc-arm-none-eabi binutils sudo python git-core
+RUN DEBIAN_FRONTEND=noninteractive apt-get update -y -q && apt-get install -y -q sudo make python gcc-arm-none-eabi git-core libnewlib-arm-none-eabi
 
 ENV user dirtyjtag
 RUN useradd -d /home/$user -m -s /bin/bash $user
