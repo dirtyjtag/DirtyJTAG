@@ -6,10 +6,24 @@ The DFU method needs fewer hardware (only an ST-Link dongle with its original fi
 
 Compile [stlink-tool](https://github.com/jeanthom/stlink-tool), and download the [DFU version](https://github.com/jeanthom/DirtyJTAG/releases) of the DirtyJTAG firmware.
 
-Then run :
+Then run:
 
 ```
 stlink-tool /path/to/dirtyjtag.stlinkv2dfu.bin
+```
+
+Example:
+
+```
+$ stlink-tool dirtyjtag.stlinkv2dfu.bin
+Firmware version : V2J17S4
+Loader version : 14152
+ST-Link ID : 52FF71064980495551302487
+Firmware encryption key : 91778A82FF794A003E83A476FC04BFF6
+Current mode : 1
+Loaded firmware : dirtyjtag.stlinkv2dfu.bin, size : 8588 bytes
+.........
+$ 
 ```
 
 Once the flashing process is complete, unplug and plug the dongle.
