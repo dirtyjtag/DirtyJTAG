@@ -83,7 +83,7 @@ static const struct usb_string_descriptor string_lang_list = {
 };
 
 /* Generated using unicore-mx/scripts/usb-strings.py */
-static const struct usb_string_descriptor string_0 = {
+static const struct usb_string_descriptor product_string = {
 	.bLength = USB_DT_STRING_SIZE(9),
 	.bDescriptorType = USB_DT_STRING,
 	/* "DirtyJTAG" */
@@ -93,7 +93,7 @@ static const struct usb_string_descriptor string_0 = {
 	}
 };
 
-static const struct usb_string_descriptor string_1 = {
+static const struct usb_string_descriptor man_string = {
 	.bLength = USB_DT_STRING_SIZE(11),
 	.bDescriptorType = USB_DT_STRING,
 	/* Jean THOMAS */
@@ -103,15 +103,14 @@ static const struct usb_string_descriptor string_1 = {
 	}
 };
 
-static struct usb_string_descriptor string_2 = {
+static struct usb_string_descriptor serial_string = {
 	.bLength = USB_DT_STRING_SIZE(24),
 	.bDescriptorType = USB_DT_STRING,
-	/* no serial :-) */
 	.wData = { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
 };
 
 static const struct usb_string_descriptor **string_data[1] = {
-  (const struct usb_string_descriptor *[]){&string_0, &string_1, &string_2}
+  (const struct usb_string_descriptor *[]){&man_string, &product_string, &serial_string}
 };
 
 static const struct usbd_info_string string = {
@@ -207,8 +206,8 @@ void usb_read_serial(void) {
   uid = (volatile uint8_t *)0x1FFFF7E8;
 
   for (i = 0; i < 12; i++) {
-    string_2.wData[2*i] = hex_to_ascii((uid[i] & 0xF0) >> 4);
-    string_2.wData[2*i+1] = hex_to_ascii(uid[i] & 0xF);
+    serial_string.wData[2*i] = hex_to_ascii((uid[i] & 0xF0) >> 4);
+    serial_string.wData[2*i+1] = hex_to_ascii(uid[i] & 0xF);
   }
 }
 
