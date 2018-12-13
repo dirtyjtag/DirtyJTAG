@@ -25,6 +25,11 @@
 #define DIRTYJTAG_WRITE_ENDPOINT 0x82
 
 /**
+ * @bried Update USB descriptor serial with the MCU's internal ID
+ */
+void usb_read_serial(void);
+
+/**
  * @brief Initialises USB peripheral on the STM32F103
  */
 void usb_init(void);

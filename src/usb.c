@@ -103,14 +103,11 @@ static const struct usb_string_descriptor string_1 = {
 	}
 };
 
-static const struct usb_string_descriptor string_2 = {
-	.bLength = USB_DT_STRING_SIZE(13),
+static struct usb_string_descriptor string_2 = {
+	.bLength = USB_DT_STRING_SIZE(24),
 	.bDescriptorType = USB_DT_STRING,
 	/* no serial :-) */
-	.wData = {
-		0x006e, 0x006f, 0x0020, 0x0073, 0x0065, 0x0072, 0x0069, 0x0061,
-		0x006c, 0x0020, 0x003a, 0x002d, 0x0029
-	}
+	.wData = { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
 };
 
 static const struct usb_string_descriptor **string_data[1] = {
@@ -199,6 +196,22 @@ static const struct usbd_info info = {
 	}}
 };
 
+static char hex_to_ascii(uint8_t c) {
+  return (c < 10) ? c + '0' : c + 'A' - 10;
+}
+
+void usb_read_serial(void) {
+  volatile uint8_t *uid;
+  size_t i;
+
+  uid = (volatile uint8_t *)0x1FFFF7E8;
+
+  for (i = 0; i < 12; i++) {
+    string_2.wData[2*i] = hex_to_ascii((uid[i] & 0xF0) >> 4);
+    string_2.wData[2*i+1] = hex_to_ascii(uid[i] & 0xF);
+  }
+}
+
 static void usb_set_config(usbd_device *usbd_dev,
 			   const struct usb_config_descriptor *cfg) {
   (void)cfg;
@@ -229,6 +242,8 @@ static void usb_control_request(usbd_device *usbd_dev, uint8_t ep,
 
 void usb_init(void) {
   usbd_device *usbd_dev;
+
+  usb_read_serial();
 
   /* USB device initialisation */
   usbd_dev = usbd_init(USBD_STM32_FSDEV, NULL, &info);
