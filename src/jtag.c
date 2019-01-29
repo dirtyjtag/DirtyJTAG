@@ -7,6 +7,7 @@
 #define HW_stlinkv2 0
 #define HW_stlinkv2dfu 0
 #define HW_bluepill 1
+#define HW_baite 2
 
 #if PLATFORM == HW_stlinkv2 /* Chinese ST-LinkV2 clone */
 
@@ -21,6 +22,20 @@
 
 #define JTAG_PORT_TMS GPIOB
 #define JTAG_PIN_TMS GPIO6
+
+#elif PLATFORM == HW_baite
+
+#define JTAG_PORT_TDI GPIOA
+#define JTAG_PORT_TDI GPIO7
+
+#define JTAG_PORT_TDO GPIOA
+#define JTAG_PIN_TDO GPIO6
+
+#define JTAG_PORT_TCK GPIOB
+#degine JTAG_PIN_TCK GPIO13
+
+#define JTAG_PORT_TMS GPIOB
+#define JTAG_PIN_TMS GPIO14
 
 #else /* Blue Pill platform (default) */
 
