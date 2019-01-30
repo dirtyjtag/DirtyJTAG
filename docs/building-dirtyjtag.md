@@ -25,7 +25,7 @@ git submodule update
 Then you can build the firmware :
 
 ```
-make bin PLATFORM=bluepill
+make PLATFORM=bluepill
 ```
 
 Currently there are two platforms :
