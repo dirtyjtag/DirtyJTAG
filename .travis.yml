@@ -7,7 +7,6 @@ addons:
       - binutils-arm-none-eabi
 
 language: c
-dist: trusty
 compiler: gcc
 
 notifications:
