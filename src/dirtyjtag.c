@@ -30,6 +30,7 @@
 #define HW_bluepill 0
 #define HW_stlinkv2 1
 #define HW_stlinkv2dfu 2
+#define HW_baite 3
 
 void clean_nvic(void) {
   uint8_t i;
@@ -72,6 +73,10 @@ int main(void) {
   gpio_set_mode(GPIOA, GPIO_MODE_OUTPUT_2_MHZ,
 		GPIO_CNF_OUTPUT_PUSHPULL, GPIO9);
   gpio_set(GPIOA, GPIO9);
+#elif PLATFORM == HW_baite
+  gpio_set_mode(GPIOA, GPIO_MODE_OUTPUT_2_MHZ,
+                GPIO_CNF_OUTPUT_PUSHPULL, GPIO9);
+  gpio_clear(GPIOA, GPIO9);
 #endif
 
   /* Force USB to reenumerate (bootloader exit, SWD flashing, etc.) */
