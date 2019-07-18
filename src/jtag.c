@@ -66,6 +66,12 @@
 #error "Not enough pins defined for proper JTAG operation"
 #endif
 
+#if JTAG_PORT_TDI == JTAG_PORT_TDO && \
+  JTAG_PORT_TDI == JTAG_PORT_TCK && \
+  JTAG_PORT_TDI == JTAG_PORT_TMS
+#define JTAG_UNIPORT
+#endif
+
 static uint32_t period = 1;
 
 void jtag_init(void) {
