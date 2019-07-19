@@ -240,6 +240,25 @@ void jtag_transfer(uint16_t length, const uint8_t *in, uint8_t *out) {
   timer_disable_irq(TIM2, TIM_DIER_UIE);
 }
 
+void jtag_strobe(uint8_t pulses, bool tms, bool tdi) {
+  const uint8_t buf1[8] = { 0, 0, 0, 0, 0, 0, 0, 0 };
+  uint8_t buf2[8];
+
+  /* Set TMS and TDI states */
+  jtag_set_tms(tms);
+  jtag_set_tdi(tdi);
+
+  xfer_length = pulses;
+  xfer_i = 0;
+  xfer_in = buf2;
+  xfer_out = (uint8_t*)buf1;
+  xfer_clk_hi = true;
+
+  timer_enable_irq(TIM2, TIM_DIER_UIE);
+  while (xfer_length > 0);
+  timer_disable_irq(TIM2, TIM_DIER_UIE);
+}
+
 void tim2_isr(void) {
   if (timer_get_flag(TIM2, TIM_SR_UIF)) {
     if (xfer_clk_hi && xfer_i < xfer_length) {
