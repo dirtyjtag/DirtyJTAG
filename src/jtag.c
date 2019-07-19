@@ -3,7 +3,6 @@
 #include <unicore-mx/stm32/timer.h>
 #include <unicore-mx/cm3/nvic.h>
 
-#include "delay.h"
 #include "jtag.h"
 
 #define F_CPU 72000000UL
@@ -75,8 +74,6 @@
   JTAG_PORT_TDI == JTAG_PORT_TMS
 #define JTAG_UNIPORT
 #endif
-
-static uint32_t period = 1;
 
 static uint8_t* xfer_in;
 static uint8_t* xfer_out;
@@ -159,17 +156,6 @@ void jtag_set_frequency(uint32_t frequency) {
 
   timer_set_prescaler(TIM2, 1);
   timer_set_period(TIM2, F_CPU/(2*frequency*1000));
-}
-
-void jtag_clock(void) {
-  delay_us(period/2);
-  
-  gpio_set(JTAG_PORT_TCK, JTAG_PIN_TCK);
-
-  delay_us(period);
-
-  gpio_clear(JTAG_PORT_TCK, JTAG_PIN_TCK);
-  delay_us(period/2);
 }
 
 void jtag_set_tck(uint8_t value) {

@@ -36,11 +36,6 @@ void jtag_init(void);
 void jtag_set_frequency(uint32_t frequency);
 
 /**
- * @brief Send a JTAG clock pulse
- */
-void jtag_clock(void);
-
-/**
  * @brief Set TCK state
  *
  * @param value TCK logic level
