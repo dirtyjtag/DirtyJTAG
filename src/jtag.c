@@ -1,8 +1,11 @@
 #include <stdint.h>
 #include <unicore-mx/stm32/gpio.h>
+#include <unicore-mx/stm32/timer.h>
 
 #include "delay.h"
 #include "jtag.h"
+
+#define F_CPU 72000000UL
 
 #define HW_stlinkv2 0
 #define HW_stlinkv2dfu 0
@@ -74,6 +77,13 @@
 
 static uint32_t period = 1;
 
+static uint8_t* xfer_in;
+static uint8_t* xfer_out;
+static uint16_t xfer_length, xfer_i;
+static bool xfer_clk_hi;
+
+static void init_timer(void);
+
 void jtag_init(void) {
   /* GPIO configuration */
   gpio_set_mode(JTAG_PORT_TCK,
@@ -124,13 +134,33 @@ void jtag_init(void) {
 
   /* Set pull-down on TDO */
   gpio_clear(JTAG_PORT_TDO, JTAG_PIN_TDO);
+
+  init_timer();
+}
+
+static void init_timer(void) {
+  timer_reset(TIM2);
+
+  timer_set_mode(TIM2,
+                 TIM_CR1_CKD_CK_INT,
+                 TIM_CR1_CMS_EDGE,
+                 TIM_CR1_DIR_UP);
+
+  timer_set_prescaler(TIM2, 1);
+  timer_enable_preload(TIM2);
+  timer_continuous_mode(TIM2);
+  timer_set_period(TIM2, 36000);
+
+  timer_enable_counter(TIM2);
+  timer_enable_irq(TIM2, TIM_DIER_UIE);
 }
 
 void jtag_set_frequency(uint32_t frequency) {
-  /* The period is set in microseconds */
-  /* Frequency value is in kilohertz (kHz) */
-  //period = 1000/frequency;
-  (void)frequency;
+  timer_disable_counter(TIM2);
+  timer_set_counter(TIM2, 0);
+
+  timer_set_prescaler(TIM2, 1);
+  timer_set_period(TIM2, F_CPU/(2*frequency*1000));
 }
 
 void jtag_clock(void) {
@@ -197,18 +227,44 @@ void jtag_set_srst(uint8_t value) {
 }
 
 void jtag_transfer(uint16_t length, const uint8_t *in, uint8_t *out) {
-  uint16_t i;
-
   /* Set TMS low during transfer */
   jtag_set_tms(0);
 
-  /* Read TDO, then set TDI, then clock */
-  for (i = 0; i < length; i++) {
-    out[i/8] |= jtag_get_tdo() ? (0x80 >> (i%8)) : 0 ;
-    
-    jtag_set_tdi(in[i/8] & (0x80 >> (i%8)));
-    
-    jtag_clock();
+  /* Prepare transfer */
+  xfer_length = length;
+  xfer_i = 0;
+  xfer_in = (uint8_t*)in;
+  xfer_out = (uint8_t*)out;
+  xfer_clk_hi = true;
+
+  timer_enable_irq(TIM2, TIM_DIER_UIE);
+  while (xfer_length > 0);
+  timer_disable_irq(TIM2, TIM_DIER_UIE);
+}
+
+void tim2_isr(void) {
+  if (timer_get_flag(TIM2, TIM_SR_UIF)) {
+    if (xfer_clk_hi && xfer_i < xfer_length) {
+      xfer_out[xfer_i/8] |= gpio_get(JTAG_PORT_TDO, JTAG_PIN_TDO) ? (0x80 >> (xfer_i%8)) : 0 ;
+
+#ifdef JTAG_UNIPORT
+      if (xfer_in[xfer_i/8] & (0x80 >> (xfer_i%8))) {
+        GPIO_BSRR(JTAG_PORT_TCK) = JTAG_PIN_TCK | JTAG_PIN_TDI;
+      } else {
+        GPIO_BSRR(JTAG_PORT_TCK) = JTAG_PIN_TCK | (JTAG_PIN_TDI << 16);
+      }
+#else
+      jtag_set_tck(1);
+      jtag_set_tdi(xfer_in[xfer_i/8] & (0x80 >> (i%8)));
+#endif
+
+      xfer_clk_hi = false;
+    } else {
+      GPIO_BSRR(JTAG_PORT_TCK) = JTAG_PIN_TCK << 16;
+      xfer_clk_hi = true;
+    }
+
+    timer_clear_flag(TIM2, TIM_SR_UIF);
   }
 }
 
