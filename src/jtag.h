@@ -90,4 +90,14 @@ void jtag_set_srst(uint8_t value);
 void jtag_transfer(uint16_t length, const uint8_t *in,
 		   uint8_t *out);
 
+/**
+ * @brief Send clock pulses
+ *
+ * Send clock pulses with defined TMS and TDI logic
+ * levels.
+ *
+ * @param pulses Number of clock pulses
+ * @param tms Logic state of TMS
+ * @param tdi Logic state of TDI
+ */
 void jtag_strobe(uint8_t pulses, bool tms, bool tdi);
