@@ -255,7 +255,7 @@ void tim2_isr(void) {
       }
 #else
       jtag_set_tck(1);
-      jtag_set_tdi(xfer_in[xfer_i/8] & (0x80 >> (i%8)));
+      jtag_set_tdi(xfer_in[xfer_i/8] & (0x80 >> (xfer_i%8)));
 #endif
 
       xfer_clk_hi = false;
