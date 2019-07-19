@@ -70,7 +70,7 @@ uint8_t jtag_get_tdo(void);
  */
 void jtag_set_trst(uint8_t value);
 
-/** 
+/**
  * @brief Set SRST state
  *
  * @param value SRST logic level

@@ -227,17 +227,22 @@ void jtag_transfer(uint16_t length, const uint8_t *in, uint8_t *out) {
 }
 
 void jtag_strobe(uint8_t pulses, bool tms, bool tdi) {
-  const uint8_t buf1[8] = { 0, 0, 0, 0, 0, 0, 0, 0 };
-  uint8_t buf2[8];
+  uint8_t buf1[8], buf2[8];
 
-  /* Set TMS and TDI states */
+  /* Set TMS state */
   jtag_set_tms(tms);
-  jtag_set_tdi(tdi);
+
+  /* Fill output buffer */
+  if (tdi) {
+    memset(buf2, 0xFF, sizeof(buf2));
+  } else {
+    memset(buf2, 0x00, sizeof(buf2));
+  }
 
   xfer_length = pulses;
   xfer_i = 0;
   xfer_in = buf2;
-  xfer_out = (uint8_t*)buf1;
+  xfer_out = buf1;
   xfer_clk_hi = true;
 
   timer_enable_irq(TIM2, TIM_DIER_UIE);
