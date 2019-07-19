@@ -1,4 +1,5 @@
 #include <stdint.h>
+#include <string.h>
 #include <unicore-mx/stm32/gpio.h>
 #include <unicore-mx/stm32/timer.h>
 #include <unicore-mx/cm3/nvic.h>
