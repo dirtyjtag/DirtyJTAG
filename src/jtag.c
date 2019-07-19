@@ -1,6 +1,7 @@
 #include <stdint.h>
 #include <unicore-mx/stm32/gpio.h>
 #include <unicore-mx/stm32/timer.h>
+#include <unicore-mx/cm3/nvic.h>
 
 #include "delay.h"
 #include "jtag.h"
@@ -82,8 +83,6 @@ static uint8_t* xfer_out;
 static uint16_t xfer_length, xfer_i;
 static bool xfer_clk_hi;
 
-static void init_timer(void);
-
 void jtag_init(void) {
   /* GPIO configuration */
   gpio_set_mode(JTAG_PORT_TCK,
@@ -135,10 +134,9 @@ void jtag_init(void) {
   /* Set pull-down on TDO */
   gpio_clear(JTAG_PORT_TDO, JTAG_PIN_TDO);
 
-  init_timer();
-}
+  /* TIMER2 init */
+  nvic_enable_irq(NVIC_TIM2_IRQ);
 
-static void init_timer(void) {
   timer_reset(TIM2);
 
   timer_set_mode(TIM2,
