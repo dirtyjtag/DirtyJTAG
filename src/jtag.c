@@ -247,7 +247,7 @@ void jtag_strobe(uint8_t pulses, bool tms, bool tdi) {
   xfer_clk_hi = true;
 
   timer_enable_irq(TIM2, TIM_DIER_UIE);
-  while (xfer_length > 0);
+  while (xfer_i < xfer_length);
   timer_disable_irq(TIM2, TIM_DIER_UIE);
 }
 
@@ -268,6 +268,7 @@ void tim2_isr(void) {
 #endif
 
       xfer_clk_hi = false;
+      xfer_i++;
     } else {
       GPIO_BSRR(JTAG_PORT_TCK) = JTAG_PIN_TCK << 16;
       xfer_clk_hi = true;
