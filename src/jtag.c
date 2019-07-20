@@ -147,7 +147,7 @@ void jtag_init(void) {
   timer_continuous_mode(TIM2);
   timer_set_period(TIM2, 36000);
 
-  timer_enable_counter(TIM2);
+  timer_disable_counter(TIM2);
   timer_enable_irq(TIM2, TIM_DIER_UIE);
 }
 
@@ -219,12 +219,12 @@ void jtag_transfer(uint16_t length, const uint8_t *in, uint8_t *out) {
   xfer_length = length;
   xfer_i = 0;
   xfer_in = (uint8_t*)in;
-  xfer_out = (uint8_t*)out;
+  xfer_out = out;
   xfer_clk_hi = true;
 
-  timer_enable_irq(TIM2, TIM_DIER_UIE);
-  while (xfer_length > 0);
-  timer_disable_irq(TIM2, TIM_DIER_UIE);
+  timer_enable_counter(TIM2);
+  while (xfer_i < xfer_length);
+  timer_disable_counter(TIM2);
 }
 
 void jtag_strobe(uint8_t pulses, bool tms, bool tdi) {
@@ -246,9 +246,13 @@ void jtag_strobe(uint8_t pulses, bool tms, bool tdi) {
   xfer_out = buf1;
   xfer_clk_hi = true;
 
-  timer_enable_irq(TIM2, TIM_DIER_UIE);
+  gpio_toggle(GPIOC, GPIO13);
+
+  timer_enable_counter(TIM2);
   while (xfer_i < xfer_length);
-  timer_disable_irq(TIM2, TIM_DIER_UIE);
+  timer_disable_counter(TIM2);
+
+  gpio_toggle(GPIOC, GPIO13);
 }
 
 void tim2_isr(void) {

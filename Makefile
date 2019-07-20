@@ -12,7 +12,7 @@ UCMX_DIR := $(realpath unicore-mx)
 UCMX_INCLUDE_DIR := $(UCMX_DIR)/include
 UCMX_LIB_DIR := $(UCMX_DIR)/lib
 
-CFLAGS = -g
+CFLAGS = -O3
 CFLAGS += -Wall -Wextra -Werror
 CFLAGS += -fno-common -ffunction-sections -fdata-sections
 CFLAGS += -std=gnu11
