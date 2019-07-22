@@ -45,7 +45,7 @@ void clean_nvic(void) {
 
 int main(void) {
   /* Clock init */
-  rcc_clock_setup_in_hsi_out_48mhz();
+  rcc_clock_setup_in_hse_8mhz_out_72mhz();
 
   /* ST-Link v2 specific */
 #if PLATFORM == HW_stlinkv2dfu
@@ -58,6 +58,7 @@ int main(void) {
   rcc_periph_clock_enable(RCC_GPIOB);
   rcc_periph_clock_enable(RCC_GPIOC);
   rcc_periph_clock_enable(RCC_AFIO);
+  rcc_periph_clock_enable(RCC_TIM2);
 
   /* Disable DirtyJTAG's own JTAG interface */
   AFIO_MAPR |= AFIO_MAPR_SWJ_CFG_JTAG_OFF_SW_ON;
