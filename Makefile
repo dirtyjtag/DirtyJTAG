@@ -53,7 +53,7 @@ ucmx-clean:
 	$(Q)$(MAKE) -C $(UCMX_DIR) clean
 
 src/boot-bypass.elf: src/boot-bypass.S
-	$(Q)$(AS) $< -o $@
+	$(Q)$(CC) $(ARCH_FLAGS) -c $< -o $@
 
 src/boot-bypass.o: src/boot-bypass.bin
 	$(Q)$(LD) -r -b binary $< -o $@
