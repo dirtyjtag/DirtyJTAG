@@ -21,4 +21,8 @@
 
 .text
 _entry:
-	ldr pc, =0x08004000
+	ldr r0, JumpAddr
+	bx r0
+
+JumpAddr:
+	.word 0x08004000
