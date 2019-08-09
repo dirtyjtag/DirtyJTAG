@@ -23,7 +23,9 @@
 #include <string.h>
 #include <unicore-mx/usbd/usbd.h>
 #include <unicore-mx/stm32/gpio.h>
+#include <unicore-mx/stm32/flash.h>
 
+#include "boot-bypass.h"
 #include "jtag.h"
 #include "usb.h"
 #include "cmd.h"
@@ -35,6 +37,7 @@
 #define CMD_SETSIG 0x04
 #define CMD_GETSIG 0x05
 #define CMD_CLK 0x06
+#define CMD_BOOTLOADER_PATCH 0x07
 
 #define SIG_TCK (1 << 1)
 #define SIG_TDI (1 << 2)
@@ -42,6 +45,8 @@
 #define SIG_TMS (1 << 4)
 #define SIG_TRST (1 << 5)
 #define SIG_SRST (1 << 6)
+
+#define FLASH_PAGE_SIZE_F103 0x400
 
 /**
  * @brief Handle CMD_INFO command
@@ -102,6 +107,18 @@ static void cmd_getsig(usbd_device *usbd_dev);
  */
 static void cmd_clk(const uint8_t *commands);
 
+/**
+ * @brief Patch ST's bootloader to directly jump to DirtyJTAG firmware
+ *
+ * Patch the first instruction of the bootloader to directly jump to where
+ * DirtyJTAG is. This command takes one byte as parameter:
+ *  - 0x01 means "Kill the bootloader"
+ *  - 0x00 means "Re-enable the bootloader"
+ *
+ * @param commands Command data
+ */
+static void cmd_bootloader_patch(const uint8_t *commands);
+
 uint8_t cmd_handle(usbd_device *usbd_dev, const usbd_transfer *transfer) {
   uint8_t *commands;
 
@@ -136,6 +153,11 @@ uint8_t cmd_handle(usbd_device *usbd_dev, const usbd_transfer *transfer) {
     case CMD_CLK:
       cmd_clk(commands);
       commands += 2;
+      break;
+
+    case CMD_BOOTLOADER_PATCH:
+      cmd_bootloader_patch(commands);
+      commands += 1;
       break;
       
     default:
@@ -226,4 +248,19 @@ static void cmd_clk(const uint8_t *commands) {
   for (i = 0; i < clk_pulses; i++) {
     jtag_clock();
   }
+}
+
+static void cmd_bootloader_patch(const uint8_t *commands) {
+  uint8_t page_buf[FLASH_PAGE_SIZE_F103];
+  const void *start_addr = (void*)0x08000000;
+
+  /* Read bootloader page we're going to patch */
+  memcpy(page_buf, start_addr, sizeof(page_buf));
+
+  /* Todo; check CRC */
+
+  /* Copy patch */
+  memcpy(page_buf, _binary_src_boot_bypass_bin_start, _binary_src_boot_bypass_bin_size);
+
+  (void)commands;
 }

@@ -1,6 +1,6 @@
 PLATFORM ?= bluepill
 
-OBJS := src/dirtyjtag.o src/jtag.o src/usb.o src/delay.o src/cmd.o
+OBJS := src/dirtyjtag.o src/jtag.o src/usb.o src/delay.o src/cmd.o src/boot-bypass.o
 
 PREFIX ?= arm-none-eabi
 TARGETS := stm32/f1
@@ -32,7 +32,7 @@ LDLIBS	+= -lucmx_stm32f1
 LDLIBS	+= -Wl,--start-group -lc -lgcc -lnosys -Wl,--end-group
 
 CC := $(PREFIX)-gcc
-LD := $(PREFIX)-gcc
+LD := $(PREFIX)-ld
 AR := $(PREFIX)-ar
 AS := $(PREFIX)-as
 OBJCOPY := $(PREFIX)-objcopy
@@ -52,11 +52,17 @@ ucmx:
 ucmx-clean:
 	$(Q)$(MAKE) -C $(UCMX_DIR) clean
 
+src/boot-bypass.elf: src/boot-bypass.S
+	$(Q)$(AS) $< -o $@
+
+src/boot-bypass.o: src/boot-bypass.bin
+	$(Q)$(LD) -r -b binary $< -o $@
+
 %.bin: %.elf
 	$(Q)$(OBJCOPY) -Obinary $(*).elf $(*).bin
 
 %.elf %.map: $(OBJS) $(LD_SCRIPT)
-	$(Q)$(LD) $(LDFLAGS) $(ARCH_FLAGS) $(OBJS) $(LDLIBS) -o $(*).elf
+	$(Q)$(CC) $(LDFLAGS) $(ARCH_FLAGS) $(OBJS) $(LDLIBS) -o $(*).elf
 
 %.o: %.c
 	$(Q)$(CC) $(CFLAGS) $(CPPFLAGS) $(ARCH_FLAGS) -o $@ -c $<
