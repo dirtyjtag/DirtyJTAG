@@ -21,6 +21,7 @@
 
 #include <unicore-mx/stm32/rcc.h>
 #include <unicore-mx/stm32/gpio.h>
+#include <unicore-mx/stm32/iwdg.h>
 #include <unicore-mx/cm3/nvic.h>
 
 #include "jtag.h"
@@ -50,7 +51,11 @@ int main(void) {
   /* ST-Link v2 specific */
 #if PLATFORM == HW_stlinkv2dfu
   clean_nvic();
-  rcc_periph_reset_pulse(RST_USB);
+  rcc_periph_reset_pulse(RST_TIM1);
+  rcc_periph_reset_pulse(RST_TIM2);
+  rcc_periph_reset_pulse(RST_TIM3);
+  rcc_periph_reset_pulse(RST_TIM4);
+  IWDG_KR = 0;
 #endif
   
   /* Peripherals reset/init */
@@ -62,25 +67,32 @@ int main(void) {
   /* Disable DirtyJTAG's own JTAG interface */
   AFIO_MAPR |= AFIO_MAPR_SWJ_CFG_JTAG_OFF_SW_ON;
 
+  /* Force USB to reenumerate (bootloader exit, SWD flashing, etc.) */
+  rcc_periph_reset_pulse(RST_USB);
+  rcc_periph_reset_pulse(RST_OTGFS);
+  rcc_periph_reset_pulse(RST_AFIO);
+  usb_reenumerate();
+  rcc_periph_reset_pulse(RST_AFIO);
+  rcc_periph_reset_pulse(RST_GPIOA);
+  rcc_periph_reset_pulse(RST_USB);
+  rcc_periph_reset_pulse(RST_OTGFS);
+
   jtag_init();
 
   /* Turn on the onboard LED */
 #if PLATFORM == HW_bluepill
   gpio_set_mode(GPIOC, GPIO_MODE_OUTPUT_2_MHZ,
-		GPIO_CNF_OUTPUT_PUSHPULL, GPIO13);
+    GPIO_CNF_OUTPUT_PUSHPULL, GPIO13);
   gpio_set(GPIOC, GPIO13);
 #elif PLATFORM == HW_stlinkv2 || PLATFORM == HW_stlinkv2dfu
   gpio_set_mode(GPIOA, GPIO_MODE_OUTPUT_2_MHZ,
-		GPIO_CNF_OUTPUT_PUSHPULL, GPIO9);
+    GPIO_CNF_OUTPUT_PUSHPULL, GPIO9);
   gpio_set(GPIOA, GPIO9);
 #elif PLATFORM == HW_baite
   gpio_set_mode(GPIOA, GPIO_MODE_OUTPUT_2_MHZ,
                 GPIO_CNF_OUTPUT_PUSHPULL, GPIO9);
   gpio_clear(GPIOA, GPIO9);
 #endif
-
-  /* Force USB to reenumerate (bootloader exit, SWD flashing, etc.) */
-  usb_reenumerate();
   
   usb_init();
   
