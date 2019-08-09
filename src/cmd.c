@@ -251,16 +251,29 @@ static void cmd_clk(const uint8_t *commands) {
 }
 
 static void cmd_bootloader_patch(const uint8_t *commands) {
+  void *const start_addr = (void*)0x08000000;
   uint8_t page_buf[FLASH_PAGE_SIZE_F103];
-  const void *start_addr = (void*)0x08000000;
+  size_t i;
 
-  /* Read bootloader page we're going to patch */
+  /* Backup flash page */
   memcpy(page_buf, start_addr, sizeof(page_buf));
 
-  /* Todo; check CRC */
+  if (commands[1] == 0x01) {
+    /* Todo; check CRC */
 
-  /* Copy patch */
-  memcpy(page_buf, _binary_src_boot_bypass_bin_start, _binary_src_boot_bypass_bin_size);
+    /* Copy patch */
+    memcpy(page_buf, _binary_src_boot_bypass_bin_start, _binary_src_boot_bypass_bin_size);
 
-  (void)commands;
+    /* Unlock flash */
+    flash_unlock();
+
+    /* Erase flash page */
+    flash_erase_page((uint32_t)start_addr);
+    if(flash_get_status_flags() != FLASH_SR_EOP)
+      return;
+
+    for (i = 0; i < FLASH_PAGE_SIZE_F103; i += 4) {
+      flash_program_word((uint32_t)start_addr+i, *(uint32_t*)(page_buf+i));
+    }
+  }
 }
