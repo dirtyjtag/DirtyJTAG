@@ -50,11 +50,18 @@ int main(void) {
 
   /* ST-Link v2 specific */
 #if PLATFORM == HW_stlinkv2dfu
+  /* Resetting IRQs */
   clean_nvic();
+
+  /* Resetting peripherals */
   rcc_periph_reset_pulse(RST_TIM1);
   rcc_periph_reset_pulse(RST_TIM2);
   rcc_periph_reset_pulse(RST_TIM3);
   rcc_periph_reset_pulse(RST_TIM4);
+  rcc_periph_reset_pulse(RST_AFIO);
+  rcc_periph_reset_pulse(RST_USB);
+
+  /* Disable watchdog */
   IWDG_KR = 0;
 #endif
   
@@ -68,14 +75,10 @@ int main(void) {
   AFIO_MAPR |= AFIO_MAPR_SWJ_CFG_JTAG_OFF_SW_ON;
 
   /* Force USB to reenumerate (bootloader exit, SWD flashing, etc.) */
-  rcc_periph_reset_pulse(RST_USB);
-  rcc_periph_reset_pulse(RST_OTGFS);
-  rcc_periph_reset_pulse(RST_AFIO);
   usb_reenumerate();
   rcc_periph_reset_pulse(RST_AFIO);
   rcc_periph_reset_pulse(RST_GPIOA);
   rcc_periph_reset_pulse(RST_USB);
-  rcc_periph_reset_pulse(RST_OTGFS);
 
   jtag_init();
 
