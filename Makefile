@@ -35,6 +35,7 @@ CC := $(PREFIX)-gcc
 LD := $(PREFIX)-ld
 AR := $(PREFIX)-ar
 AS := $(PREFIX)-as
+SIZE := $(PREFIX)-size
 OBJCOPY := $(PREFIX)-objcopy
 
 all: dirtyjtag
@@ -62,7 +63,8 @@ src/boot-bypass.o: src/boot-bypass.bin
 	$(Q)$(OBJCOPY) -Obinary $(*).elf $(*).bin
 
 %.elf %.map: $(OBJS) $(LD_SCRIPT)
-	$(Q)$(CC) $(LDFLAGS) $(ARCH_FLAGS) $(OBJS) $(LDLIBS) -o $(*).elf
+	$(Q)$(LD) $(LDFLAGS) $(ARCH_FLAGS) $(OBJS) $(LDLIBS) -o $(*).elf
+	$(Q)$(SIZE) $(*).elf
 
 %.o: %.c
 	$(Q)$(CC) $(CFLAGS) $(CPPFLAGS) $(ARCH_FLAGS) -o $@ -c $<
