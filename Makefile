@@ -63,7 +63,7 @@ src/boot-bypass.o: src/boot-bypass.bin
 	$(Q)$(OBJCOPY) -Obinary $(*).elf $(*).bin
 
 %.elf %.map: $(OBJS) $(LD_SCRIPT)
-	$(Q)$(LD) $(LDFLAGS) $(ARCH_FLAGS) $(OBJS) $(LDLIBS) -o $(*).elf
+	$(Q)$(CC) $(LDFLAGS) $(ARCH_FLAGS) $(OBJS) $(LDLIBS) -o $(*).elf
 	$(Q)$(SIZE) $(*).elf
 
 %.o: %.c
