@@ -35,6 +35,7 @@ CC := $(PREFIX)-gcc
 LD := $(PREFIX)-gcc
 AR := $(PREFIX)-ar
 AS := $(PREFIX)-as
+SIZE := $(PREFIX)-size
 OBJCOPY := $(PREFIX)-objcopy
 
 all: dirtyjtag
@@ -57,6 +58,7 @@ ucmx-clean:
 
 %.elf %.map: $(OBJS) $(LD_SCRIPT)
 	$(Q)$(LD) $(LDFLAGS) $(ARCH_FLAGS) $(OBJS) $(LDLIBS) -o $(*).elf
+	$(Q)$(SIZE) $(*).elf
 
 %.o: %.c
 	$(Q)$(CC) $(CFLAGS) $(CPPFLAGS) $(ARCH_FLAGS) -o $@ -c $<
