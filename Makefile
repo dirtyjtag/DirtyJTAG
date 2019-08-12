@@ -40,16 +40,21 @@ OBJCOPY := $(PREFIX)-objcopy
 
 all: dirtyjtag
 
+.PHONY: clean
 clean: dirtyjtag-clean ucmx-clean
 
-dirtyjtag: ucmx src/dirtyjtag.$(PLATFORM).elf src/dirtyjtag.$(PLATFORM).bin
+.PHONY: dirtyjtag
+dirtyjtag: src/dirtyjtag.$(PLATFORM).elf src/dirtyjtag.$(PLATFORM).bin
 
+.PHONY: dirtyjtag
 dirtyjtag-clean:
 	$(Q)$(RM) src/*.d src/*.o src/*.map src/*.bin src/*.elf *.bin *.elf
 
+.PHONY: ucmx
 ucmx:
 	$(Q)$(MAKE) -C $(UCMX_DIR) lib/stm32/f1
 
+.PHONY: ucmx-clean
 ucmx-clean:
 	$(Q)$(MAKE) -C $(UCMX_DIR) clean
 
@@ -66,7 +71,7 @@ src/boot-bypass.o: src/boot-bypass.bin
 	$(Q)$(CC) $(LDFLAGS) $(ARCH_FLAGS) $(OBJS) $(LDLIBS) -o $(*).elf
 	$(Q)$(SIZE) $(*).elf
 
-%.o: %.c
+%.o: %.c | ucmx
 	$(Q)$(CC) $(CFLAGS) $(CPPFLAGS) $(ARCH_FLAGS) -o $@ -c $<
 
 .PHONY: clean dirtyjtag dirtyjtag-clean ucmx ucmx-clean
