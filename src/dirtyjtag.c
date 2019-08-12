@@ -22,6 +22,7 @@
 #include <unicore-mx/stm32/rcc.h>
 #include <unicore-mx/stm32/gpio.h>
 #include <unicore-mx/stm32/iwdg.h>
+#include <unicore-mx/stm32/st_usbfs.h>
 #include <unicore-mx/cm3/nvic.h>
 
 #include "jtag.h"
@@ -52,6 +53,11 @@ int main(void) {
 #if PLATFORM == HW_stlinkv2dfu
   /* Resetting IRQs */
   clean_nvic();
+
+  /* Turn off USB controller */
+  USB_CNTR = USB_CNTR_FRES;
+  USB_ISTR = 0;
+  USB_CNTR |= USB_CNTR_PDWN;
 
   /* Resetting peripherals */
   rcc_periph_reset_pulse(RST_TIM1);
