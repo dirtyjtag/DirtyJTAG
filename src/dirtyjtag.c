@@ -63,7 +63,6 @@ int main(void) {
   rcc_periph_reset_pulse(RST_TIM1);
   rcc_periph_reset_pulse(RST_TIM2);
   rcc_periph_reset_pulse(RST_TIM3);
-  rcc_periph_reset_pulse(RST_TIM4);
   rcc_periph_reset_pulse(RST_AFIO);
   rcc_periph_reset_pulse(RST_USB);
 
@@ -82,7 +81,6 @@ int main(void) {
 
   /* Force USB to reenumerate (bootloader exit, SWD flashing, etc.) */
   usb_reenumerate();
-  rcc_periph_reset_pulse(RST_AFIO);
   rcc_periph_reset_pulse(RST_GPIOA);
   rcc_periph_reset_pulse(RST_USB);
 
