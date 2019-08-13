@@ -260,6 +260,9 @@ void usb_reenumerate(void) {
   gpio_clear(GPIOA, GPIO12);
   
   delay_us(20000);
+
+  gpio_set_mode(GPIOA, GPIO_MODE_OUTPUT_50_MHZ,
+    GPIO_CNF_OUTPUT_ALTFN_PUSHPULL, GPIO12);
 }
 
 void usb_send(usbd_device *usbd_dev, uint8_t *sent_buffer, uint8_t sent_size) {

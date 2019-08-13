@@ -86,6 +86,8 @@ int main(void) {
   rcc_periph_reset_pulse(RST_GPIOA);
   rcc_periph_reset_pulse(RST_USB);
 
+  delay_us(100);
+
   jtag_init();
 
   /* Turn on the onboard LED */
