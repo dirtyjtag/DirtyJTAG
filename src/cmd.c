@@ -39,12 +39,12 @@ enum CommandIdentifier {
 };
 
 enum SignalIdentifier {
-  SIG_TCK = (1 << 1),
-  SIG_TDI = (1 << 2),
-  SIG_TDO = (1 << 3),
-  SIG_TMS = (1 << 4),
-  SIG_TRST = (1 << 5),
-  SIG_SRST = (1 << 6)
+  SIG_TCK = 1 << 1,
+  SIG_TDI = 1 << 2,
+  SIG_TDO = 1 << 3,
+  SIG_TMS = 1 << 4,
+  SIG_TRST = 1 << 5,
+  SIG_SRST = 1 << 6
 };
 
 /**
