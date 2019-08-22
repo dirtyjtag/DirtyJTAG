@@ -28,13 +28,15 @@
 #include "usb.h"
 #include "cmd.h"
 
-#define CMD_STOP 0x00
-#define CMD_INFO 0x01
-#define CMD_FREQ 0x02
-#define CMD_XFER 0x03
-#define CMD_SETSIG 0x04
-#define CMD_GETSIG 0x05
-#define CMD_CLK 0x06
+enum CommandIdentifier {
+  CMD_STOP = 0x00,
+  CMD_INFO = 0x01,
+  CMD_FREQ = 0x02,
+  CMD_XFER = 0x03,
+  CMD_SETSIG = 0x04,
+  CMD_GETSIG = 0x05,
+  CMD_CLK = 0x06
+};
 
 #define SIG_TCK (1 << 1)
 #define SIG_TDI (1 << 2)
