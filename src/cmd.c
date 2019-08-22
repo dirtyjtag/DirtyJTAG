@@ -38,12 +38,14 @@ enum CommandIdentifier {
   CMD_CLK = 0x06
 };
 
-#define SIG_TCK (1 << 1)
-#define SIG_TDI (1 << 2)
-#define SIG_TDO (1 << 3)
-#define SIG_TMS (1 << 4)
-#define SIG_TRST (1 << 5)
-#define SIG_SRST (1 << 6)
+enum SignalIdentifier {
+  SIG_TCK = (1 << 1),
+  SIG_TDI = (1 << 2),
+  SIG_TDO = (1 << 3),
+  SIG_TMS = (1 << 4),
+  SIG_TRST = (1 << 5),
+  SIG_SRST = (1 << 6)
+};
 
 /**
  * @brief Handle CMD_INFO command
