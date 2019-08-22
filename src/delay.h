@@ -20,14 +20,22 @@
 */
 
 /**
- * @brief Halts code executation
+ * @brief Initialises 
  *
  * Halts code execution for a specified amount of time
  * expressed in microseconds. The function was copied
  * from the superbitrf-firmware project.
  *
- * I haven't measured its accuracy yet.
+ */
+void delay_init(void);
+
+/**
+ * @brief Halts code executation
+ *
+ * Halts code execution for a specified amount of time
+ * expressed in microseconds. This function is blocking.
+ * Its accuracy is okay-ish.
  *
  * @param delay Delay in microseconds
  */
-void delay_us(uint32_t delay);
+void delay_us(const uint32_t delay);

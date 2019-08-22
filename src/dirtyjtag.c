@@ -46,7 +46,7 @@ void clean_nvic(void) {
 
 int main(void) {
   /* Clock init */
-  rcc_clock_setup_in_hsi_out_48mhz();
+  rcc_clock_setup_in_hse_8mhz_out_72mhz();
 
   /* ST-Link v2 specific */
 #if PLATFORM == HW_stlinkv2dfu
@@ -64,6 +64,8 @@ int main(void) {
   /* Disable watchdog */
   IWDG_KR = 0;
 #endif
+
+  delay_init();
   
   /* Peripherals reset/init */
   rcc_periph_clock_enable(RCC_GPIOA);

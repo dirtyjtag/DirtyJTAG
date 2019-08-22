@@ -19,17 +19,28 @@
   OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
+#include <unicore-mx/cm3/systick.h>
 #include <stdint.h>
 
-void delay_us(uint32_t delay) {
-  (void)delay;
-  
-  asm ("mov r1, #24;"
-       "mul r0, r0, r1;"
-       "b _delaycmp;"
-       "_delayloop:"
-       "subs r0, r0, #1;"
-       "_delaycmp:;"
-       "cmp r0, #0;"
-       " bne _delayloop;");
+#define F_CPU 72000000
+
+static bool wait_for_irq;
+
+void delay_init(void) {
+  systick_set_clocksource(STK_CSR_CLKSOURCE_AHB);
+}
+
+void delay_us(const uint32_t delay) {
+  wait_for_irq = true;
+
+  systick_set_reload(F_CPU * delay / 1000000);
+  systick_clear();
+  systick_interrupt_enable();
+
+  while (wait_for_irq);
+}
+
+void sys_tick_handler(void) {
+  wait_for_irq = false;
+  systick_interrupt_disable();
 }
