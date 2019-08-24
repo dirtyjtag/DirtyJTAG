@@ -38,4 +38,6 @@ void delay_init(void);
  *
  * @param delay Delay in microseconds
  */
-void delay_us(const uint32_t delay);
+void _internal_delay_us(const uint32_t delay_val);
+
+#define delay_us(X) _internal_delay_us(F_CPU * X / 1000000)
