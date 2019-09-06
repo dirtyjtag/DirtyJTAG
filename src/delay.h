@@ -19,6 +19,8 @@
   OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
+#define _DELAY_F_CPU 72000000ULL
+
 /**
  * @brief Initialises 
  *
@@ -40,4 +42,4 @@ void delay_init(void);
  */
 void _internal_delay_us(const uint32_t delay_val);
 
-#define delay_us(X) _internal_delay_us(F_CPU * X / 1000000)
+#define delay_us(X) _internal_delay_us(_DELAY_F_CPU * X / 1000000)

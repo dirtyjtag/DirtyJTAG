@@ -32,6 +32,7 @@
 #define HW_stlinkv2 1
 #define HW_stlinkv2dfu 2
 #define HW_baite 3
+#define HW_olimexstm32h103 4
 
 void clean_nvic(void) {
   uint8_t i;
@@ -72,6 +73,13 @@ int main(void) {
   rcc_periph_clock_enable(RCC_GPIOB);
   rcc_periph_clock_enable(RCC_GPIOC);
   rcc_periph_clock_enable(RCC_AFIO);
+
+  /* Olimex STM32-H103 specific */
+#if PLATFORM == HW_olimexstm32h103
+  gpio_set_mode(GPIOC, GPIO_MODE_OUTPUT_2_MHZ,
+                GPIO_CNF_OUTPUT_PUSHPULL, GPIO11);
+  gpio_clear(GPIOC, GPIO11);
+#endif
 
   /* Disable DirtyJTAG's own JTAG interface */
   AFIO_MAPR |= AFIO_MAPR_SWJ_CFG_JTAG_OFF_SW_ON;

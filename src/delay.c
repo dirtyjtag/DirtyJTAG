@@ -23,7 +23,7 @@
 #include <unicore-mx/stm32/gpio.h>
 #include <stdint.h>
 
-static bool wait_for_irq;
+static volatile bool wait_for_irq;
 
 void delay_init(void) {
   systick_set_clocksource(STK_CSR_CLKSOURCE_AHB);
@@ -33,15 +33,14 @@ void _internal_delay_us(const uint32_t delay_val) {
   wait_for_irq = true;
 
   systick_set_reload(delay_val);
-  STK_CVR = 0;
+  systick_clear();
   systick_interrupt_enable();
   systick_counter_enable();
 
-  //while (wait_for_irq);
+  while (wait_for_irq);
 }
 
 void sys_tick_handler(void) {
-  //wait_for_irq = false;
-  //systick_interrupt_disable();
-  gpio_toggle(GPIOA, GPIO5);
+  wait_for_irq = false;
+  systick_interrupt_disable();
 }
