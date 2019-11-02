@@ -285,8 +285,8 @@ void tim2_isr(void) {
         GPIO_BSRR(JTAG_PORT_TCK) = JTAG_PIN_TCK | (JTAG_PIN_TDI << 16);
       }
 #else
-      jtag_set_tck(1);
       jtag_set_tdi(xfer_in[xfer_i/8] & (0x80 >> (xfer_i%8)));
+      jtag_set_tck(1);
 #endif
 
       xfer_clk_hi = false;
