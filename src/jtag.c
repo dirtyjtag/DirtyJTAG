@@ -11,6 +11,7 @@
 #define HW_stlinkv2 0
 #define HW_stlinkv2dfu 0
 #define HW_bluepill 1
+#define HW_olimexstm32h103 1
 #define HW_baite 2
 
 #if PLATFORM == HW_stlinkv2 /* Chinese ST-LinkV2 clone */

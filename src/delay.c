@@ -1,6 +1,6 @@
 /*
   Copyright (c) 2017 Jean THOMAS.
-  
+
   Permission is hereby granted, free of charge, to any person obtaining
   a copy of this software and associated documentation files (the "Software"),
   to deal in the Software without restriction, including without limitation
@@ -9,7 +9,7 @@
   is furnished to do so, subject to the following conditions:
   The above copyright notice and this permission notice shall be included in
   all copies or substantial portions of the Software.
-  
+
   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
   OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -19,17 +19,28 @@
   OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
+#include <unicore-mx/cm3/systick.h>
+#include <unicore-mx/stm32/gpio.h>
 #include <stdint.h>
 
-void delay_us(uint32_t delay) {
-  (void)delay;
-  
-  asm ("mov r1, #24;"
-       "mul r0, r0, r1;"
-       "b _delaycmp;"
-       "_delayloop:"
-       "subs r0, r0, #1;"
-       "_delaycmp:;"
-       "cmp r0, #0;"
-       " bne _delayloop;");
+static volatile bool wait_for_irq;
+
+void delay_init(void) {
+  systick_set_clocksource(STK_CSR_CLKSOURCE_AHB);
+}
+
+void _internal_delay_us(const uint32_t delay_val) {
+  wait_for_irq = true;
+
+  systick_set_reload(delay_val);
+  systick_clear();
+  systick_interrupt_enable();
+  systick_counter_enable();
+
+  while (wait_for_irq);
+}
+
+void sys_tick_handler(void) {
+  wait_for_irq = false;
+  systick_interrupt_disable();
 }

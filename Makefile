@@ -32,9 +32,10 @@ LDLIBS	+= -lucmx_stm32f1
 LDLIBS	+= -Wl,--start-group -lc -lgcc -lnosys -Wl,--end-group
 
 CC := $(PREFIX)-gcc
-LD := $(PREFIX)-gcc
+LD := $(PREFIX)-ld
 AR := $(PREFIX)-ar
 AS := $(PREFIX)-as
+SIZE := $(PREFIX)-size
 OBJCOPY := $(PREFIX)-objcopy
 
 all: dirtyjtag
@@ -56,9 +57,10 @@ ucmx-clean:
 	$(Q)$(OBJCOPY) -Obinary $(*).elf $(*).bin
 
 %.elf %.map: $(OBJS) $(LD_SCRIPT)
-	$(Q)$(LD) $(LDFLAGS) $(ARCH_FLAGS) $(OBJS) $(LDLIBS) -o $(*).elf
+	$(Q)$(CC) $(LDFLAGS) $(ARCH_FLAGS) $(OBJS) $(LDLIBS) -o $(*).elf
+	$(Q)$(SIZE) $(*).elf
 
-%.o: %.c
+%.o: %.c | ucmx
 	$(Q)$(CC) $(CFLAGS) $(CPPFLAGS) $(ARCH_FLAGS) -o $@ -c $<
 
 .PHONY: clean dirtyjtag dirtyjtag-clean ucmx ucmx-clean

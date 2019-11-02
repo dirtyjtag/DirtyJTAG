@@ -19,15 +19,27 @@
   OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
+#define _DELAY_F_CPU 72000000ULL
+
 /**
- * @brief Halts code executation
+ * @brief Initialises 
  *
  * Halts code execution for a specified amount of time
  * expressed in microseconds. The function was copied
  * from the superbitrf-firmware project.
  *
- * I haven't measured its accuracy yet.
+ */
+void delay_init(void);
+
+/**
+ * @brief Halts code executation
+ *
+ * Halts code execution for a specified amount of time
+ * expressed in microseconds. This function is blocking.
+ * Its accuracy is okay-ish.
  *
  * @param delay Delay in microseconds
  */
-void delay_us(uint32_t delay);
+void _internal_delay_us(const uint32_t delay_val);
+
+#define delay_us(X) _internal_delay_us(_DELAY_F_CPU * X / 1000000)
