@@ -245,8 +245,6 @@ void jtag_transfer(uint16_t length, const uint8_t *in, uint8_t *out) {
   timer_enable_counter(TIM2);
   while (!xfer_done);
   timer_disable_counter(TIM2);
-
-  gpio_set(GPIOC, GPIO13);
 }
 
 void jtag_strobe(uint8_t pulses, bool tms, bool tdi) {
