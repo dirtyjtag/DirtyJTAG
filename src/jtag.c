@@ -77,11 +77,14 @@
 #define JTAG_UNIPORT
 #endif
 
-static uint8_t* xfer_in;
-static uint8_t* xfer_out;
-static uint16_t xfer_length, xfer_i;
-static bool xfer_clk_hi;
-static bool xfer_done;
+static const uint8_t xfer_const_1[8] = { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };
+static const uint8_t xfer_const_0[8] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
+
+static volatile const uint8_t *xfer_in;
+static volatile uint8_t *xfer_out;
+static volatile uint16_t xfer_length, xfer_i;
+static volatile bool xfer_clk_hi;
+static volatile bool xfer_done;
 
 void jtag_init(void) {
   /* GPIO configuration */
@@ -247,21 +250,20 @@ void jtag_transfer(uint16_t length, const uint8_t *in, uint8_t *out) {
 }
 
 void jtag_strobe(uint8_t pulses, bool tms, bool tdi) {
-  uint8_t buf1[8], buf2[8];
+  uint8_t buf1[8];
 
   /* Set TMS state */
   jtag_set_tms(tms);
 
   /* Fill output buffer */
   if (tdi) {
-    memset(buf2, 0xFF, sizeof(buf2));
+    xfer_in = xfer_const_1;
   } else {
-    memset(buf2, 0x00, sizeof(buf2));
+    xfer_in = xfer_const_0;
   }
 
   xfer_length = pulses;
   xfer_i = 0;
-  xfer_in = buf2;
   xfer_out = buf1;
   xfer_clk_hi = true;
   xfer_done = false;
@@ -272,21 +274,26 @@ void jtag_strobe(uint8_t pulses, bool tms, bool tdi) {
 }
 
 void tim2_isr(void) {
+  uint8_t bitmask;
+  
   if (timer_get_flag(TIM2, TIM_SR_UIF)) {
-    timer_clear_flag(TIM2, TIM_SR_UIF);
-    
     if (xfer_clk_hi && xfer_i < xfer_length) {
-      xfer_out[xfer_i/8] |= gpio_get(JTAG_PORT_TDO, JTAG_PIN_TDO) ? (0x80 >> (xfer_i%8)) : 0 ;
+      bitmask = 0x80 >> (xfer_i%8);
+      xfer_out[xfer_i/8] |= gpio_get(JTAG_PORT_TDO, JTAG_PIN_TDO) ? bitmask : 0 ;
 
 #ifdef JTAG_UNIPORT
-      if (xfer_in[xfer_i/8] & (0x80 >> (xfer_i%8))) {
+      if (xfer_in[xfer_i/8] & bitmask) {
         GPIO_BSRR(JTAG_PORT_TCK) = JTAG_PIN_TCK | JTAG_PIN_TDI;
       } else {
         GPIO_BSRR(JTAG_PORT_TCK) = JTAG_PIN_TCK | (JTAG_PIN_TDI << 16);
       }
 #else
-      jtag_set_tdi(xfer_in[xfer_i/8] & (0x80 >> (xfer_i%8)));
-      jtag_set_tck(1);
+      if (xfer_in[xfer_i/8] & bitmask) {
+        GPIO_BSRR(JTAG_PORT_TDI) = JTAG_PIN_TDI;
+      } else {
+        GPIO_BSRR(JTAG_PORT_TDI) = JTAG_PIN_TDI << 16;
+      }
+      GPIO_BSRR(JTAG_PORT_TCK) = JTAG_PIN_TCK;
 #endif
 
       xfer_clk_hi = false;
@@ -299,6 +306,8 @@ void tim2_isr(void) {
         xfer_done = true;
       }
     }
+
+    timer_clear_flag(TIM2, TIM_SR_UIF);
   }
 }
 
