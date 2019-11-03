@@ -152,7 +152,7 @@ void jtag_init(void) {
   timer_set_counter(TIM2,0);
   timer_set_prescaler(TIM2, 1);
   timer_continuous_mode(TIM2);
-  timer_set_period(TIM2, 360);
+  timer_set_period(TIM2, 180);
   timer_enable_irq(TIM2, TIM_DIER_UIE);
 
   timer_disable_oc_output(TIM2, TIM_OC1);
@@ -171,11 +171,11 @@ void jtag_set_frequency(uint32_t frequency) {
     frequency = 1000;
   }
   
-  /* timer_disable_counter(TIM2); */
-  /* timer_set_counter(TIM2, 0); */
+  timer_disable_counter(TIM2);
+  timer_set_counter(TIM2, 0);
 
-  /* timer_set_prescaler(TIM2, 1); */
-  /* timer_set_period(TIM2, F_CPU/(2*frequency*1000)); */
+  timer_set_prescaler(TIM2, 1);
+  timer_set_period(TIM2, F_CPU/(4*frequency*1000));
 }
 
 void jtag_set_tck(uint8_t value) {
