@@ -80,10 +80,10 @@
 static const uint8_t xfer_const_1[8] = { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };
 static const uint8_t xfer_const_0[8] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
 
-static volatile const uint8_t *xfer_in;
-static volatile uint8_t *xfer_out;
-static volatile uint16_t xfer_length, xfer_i;
-static volatile bool xfer_clk_hi;
+static const uint8_t *xfer_in;
+static uint8_t *xfer_out;
+static uint16_t xfer_length, xfer_i;
+static bool xfer_clk_hi;
 static volatile bool xfer_done;
 
 void jtag_init(void) {
@@ -273,11 +273,13 @@ void jtag_strobe(uint8_t pulses, bool tms, bool tdi) {
 
 void tim2_isr(void) {
   uint8_t bitmask;
-  
-  if (timer_get_flag(TIM2, TIM_SR_UIF)) {
+
+  if (TIM_SR(TIM2) & TIM_SR_UIF) {
     if (xfer_clk_hi && xfer_i < xfer_length) {
-      bitmask = 0x80 >> (xfer_i%8);
-      xfer_out[xfer_i/8] |= gpio_get(JTAG_PORT_TDO, JTAG_PIN_TDO) ? bitmask : 0 ;
+      bitmask = 0x80 >> (xfer_i%8) ;
+      if (GPIO_IDR(JTAG_PORT_TDO) & JTAG_PIN_TDO) {
+        xfer_out[xfer_i/8] |= bitmask;
+      }
 
 #ifdef JTAG_UNIPORT
       if (xfer_in[xfer_i/8] & bitmask) {
@@ -305,7 +307,7 @@ void tim2_isr(void) {
       }
     }
 
-    timer_clear_flag(TIM2, TIM_SR_UIF);
+    TIM_SR(TIM2) = ~TIM_SR_UIF;
   }
 }
 
