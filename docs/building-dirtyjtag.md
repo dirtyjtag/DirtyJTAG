@@ -31,7 +31,10 @@ make PLATFORM=bluepill
 Currently there are two platforms :
 
  * bluepill : Default build setting
- * stlinkv2 : Chinese ST-Link clone with specific pinout
+ * stlinkv2 : Chinese ST-Link clone with specific pinout (the one that looks like a USB key)
+ * stlinkv2dfu : Same as above but can be loaded by the bootloader (unsupported, known to be buggy)
+ * olimexstm32h103 : STM32F103 board from Olimex
+ * baite : "Baite" ST-Link dongle 
 
 Once the build is completed, your freshly compiled firmware will be available in `src/` as a binary file.
 
