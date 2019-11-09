@@ -36,11 +36,6 @@ void jtag_init(void);
 void jtag_set_frequency(uint32_t frequency);
 
 /**
- * @brief Send a JTAG clock pulse
- */
-void jtag_clock(void);
-
-/**
  * @brief Set TCK state
  *
  * @param value TCK logic level
@@ -75,7 +70,7 @@ uint8_t jtag_get_tdo(void);
  */
 void jtag_set_trst(uint8_t value);
 
-/** 
+/**
  * @brief Set SRST state
  *
  * @param value SRST logic level
@@ -94,3 +89,15 @@ void jtag_set_srst(uint8_t value);
  */
 void jtag_transfer(uint16_t length, const uint8_t *in,
 		   uint8_t *out);
+
+/**
+ * @brief Send clock pulses
+ *
+ * Send clock pulses with defined TMS and TDI logic
+ * levels.
+ *
+ * @param pulses Number of clock pulses
+ * @param tms Logic state of TMS
+ * @param tdi Logic state of TDI
+ */
+void jtag_strobe(uint8_t pulses, bool tms, bool tdi);

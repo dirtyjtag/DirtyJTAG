@@ -217,17 +217,10 @@ static void cmd_getsig(usbd_device *usbd_dev) {
 }
 
 static void cmd_clk(const uint8_t *commands) {
-  uint8_t signals, clk_pulses, i;
+  uint8_t signals, clk_pulses;
 
   signals = commands[1];
   clk_pulses = commands[2];
 
-  /* Set TDI & TMS signals */
-  jtag_set_tms(signals & SIG_TMS);
-  jtag_set_tdi(signals & SIG_TDI);
-
-  /* Send clock pulses */
-  for (i = 0; i < clk_pulses; i++) {
-    jtag_clock();
-  }
+  jtag_strobe(clk_pulses, signals & SIG_TMS, signals & SIG_TDI);
 }

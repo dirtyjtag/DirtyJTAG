@@ -73,6 +73,7 @@ int main(void) {
   rcc_periph_clock_enable(RCC_GPIOB);
   rcc_periph_clock_enable(RCC_GPIOC);
   rcc_periph_clock_enable(RCC_AFIO);
+  rcc_periph_clock_enable(RCC_TIM2);
 
   /* Olimex STM32-H103 specific */
 #if PLATFORM == HW_olimexstm32h103

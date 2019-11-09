@@ -1,8 +1,12 @@
 #include <stdint.h>
+#include <string.h>
 #include <unicore-mx/stm32/gpio.h>
+#include <unicore-mx/stm32/timer.h>
+#include <unicore-mx/cm3/nvic.h>
 
-#include "delay.h"
 #include "jtag.h"
+
+#define F_CPU 72000000UL
 
 #define HW_stlinkv2 0
 #define HW_stlinkv2dfu 0
@@ -67,7 +71,14 @@
 #error "Not enough pins defined for proper JTAG operation"
 #endif
 
-static uint32_t period = 1;
+static const uint8_t xfer_const_1[8] = { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };
+static const uint8_t xfer_const_0[8] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
+
+static const uint8_t *xfer_in;
+static uint8_t *xfer_out;
+static uint16_t xfer_length, xfer_i;
+static bool xfer_clk_hi;
+static volatile bool xfer_done;
 
 void jtag_init(void) {
   /* GPIO configuration */
@@ -119,24 +130,46 @@ void jtag_init(void) {
 
   /* Set pull-down on TDO */
   gpio_clear(JTAG_PORT_TDO, JTAG_PIN_TDO);
+
+  /* TIMER2 init */
+  nvic_enable_irq(NVIC_TIM2_IRQ);
+
+  timer_reset(TIM2);
+
+  timer_set_mode(TIM2,
+                 TIM_CR1_CKD_CK_INT,
+                 TIM_CR1_CMS_EDGE,
+                 TIM_CR1_DIR_UP);
+
+  timer_disable_counter(TIM2);
+
+  timer_set_counter(TIM2,0);
+  timer_set_prescaler(TIM2, 1);
+  timer_continuous_mode(TIM2);
+  timer_set_period(TIM2, 180);
+  timer_enable_irq(TIM2, TIM_DIER_UIE);
+
+  timer_disable_oc_output(TIM2, TIM_OC1);
+  timer_disable_oc_output(TIM2, TIM_OC2);
+  timer_disable_oc_output(TIM2, TIM_OC3);
+  timer_disable_oc_output(TIM2, TIM_OC4);
+
+  timer_disable_preload(TIM2);
 }
 
 void jtag_set_frequency(uint32_t frequency) {
-  /* The period is set in microseconds */
-  /* Frequency value is in kilohertz (kHz) */
-  //period = 1000/frequency;
-  (void)frequency;
-}
-
-void jtag_clock(void) {
-  delay_us(period/2);
+  /* Ensure that the frequency is within specs */
+  if (frequency == 0) {
+    frequency = 1;
+  } else if (frequency > 1000) {
+    frequency = 1000;
+  }
   
-  gpio_set(JTAG_PORT_TCK, JTAG_PIN_TCK);
+  timer_disable_counter(TIM2);
+  timer_set_counter(TIM2, 0);
 
-  delay_us(period);
-
-  gpio_clear(JTAG_PORT_TCK, JTAG_PIN_TCK);
-  delay_us(period/2);
+  timer_set_prescaler(TIM2, 1);
+  timer_set_period(TIM2, F_CPU/(4*frequency*1000));
 }
 
 void jtag_set_tck(uint8_t value) {
@@ -192,18 +225,75 @@ void jtag_set_srst(uint8_t value) {
 }
 
 void jtag_transfer(uint16_t length, const uint8_t *in, uint8_t *out) {
-  uint16_t i;
-
   /* Set TMS low during transfer */
   jtag_set_tms(0);
 
-  /* Read TDO, then set TDI, then clock */
-  for (i = 0; i < length; i++) {
-    out[i/8] |= jtag_get_tdo() ? (0x80 >> (i%8)) : 0 ;
-    
-    jtag_set_tdi(in[i/8] & (0x80 >> (i%8)));
-    
-    jtag_clock();
+  /* Prepare transfer */
+  xfer_length = length;
+  xfer_i = 0;
+  xfer_in = (uint8_t*)in;
+  xfer_out = out;
+  xfer_clk_hi = true;
+  xfer_done = false;
+
+  timer_enable_counter(TIM2);
+  while (!xfer_done);
+  timer_disable_counter(TIM2);
+}
+
+void jtag_strobe(uint8_t pulses, bool tms, bool tdi) {
+  uint8_t buf1[8];
+
+  /* Set TMS state */
+  jtag_set_tms(tms);
+
+  /* Fill output buffer */
+  if (tdi) {
+    xfer_in = xfer_const_1;
+  } else {
+    xfer_in = xfer_const_0;
+  }
+
+  xfer_length = pulses;
+  xfer_i = 0;
+  xfer_out = buf1;
+  xfer_clk_hi = true;
+  xfer_done = false;
+
+  timer_enable_counter(TIM2);
+  while (!xfer_done);
+  timer_disable_counter(TIM2);
+}
+
+void tim2_isr(void) {
+  uint8_t bitmask;
+
+  if (TIM_SR(TIM2) & TIM_SR_UIF) {
+    if (xfer_clk_hi && xfer_i < xfer_length) {
+      bitmask = 0x80 >> (xfer_i%8) ;
+      if (GPIO_IDR(JTAG_PORT_TDO) & JTAG_PIN_TDO) {
+        xfer_out[xfer_i/8] |= bitmask;
+      }
+
+      if (xfer_in[xfer_i/8] & bitmask) {
+        GPIO_BSRR(JTAG_PORT_TDI) = JTAG_PIN_TDI;
+      } else {
+        GPIO_BSRR(JTAG_PORT_TDI) = JTAG_PIN_TDI << 16;
+      }
+      GPIO_BSRR(JTAG_PORT_TCK) = JTAG_PIN_TCK;
+
+      xfer_clk_hi = false;
+      xfer_i++;
+    } else {
+      GPIO_BSRR(JTAG_PORT_TCK) = JTAG_PIN_TCK << 16;
+      xfer_clk_hi = true;
+
+      if (xfer_i == xfer_length) {
+        xfer_done = true;
+      }
+    }
+
+    TIM_SR(TIM2) = ~TIM_SR_UIF;
   }
 }
 
