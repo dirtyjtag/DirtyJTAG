@@ -71,12 +71,6 @@
 #error "Not enough pins defined for proper JTAG operation"
 #endif
 
-#if JTAG_PORT_TDI == JTAG_PORT_TDO && \
-  JTAG_PORT_TDI == JTAG_PORT_TCK && \
-  JTAG_PORT_TDI == JTAG_PORT_TMS
-#define JTAG_UNIPORT
-#endif
-
 static const uint8_t xfer_const_1[8] = { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };
 static const uint8_t xfer_const_0[8] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
 
@@ -281,20 +275,12 @@ void tim2_isr(void) {
         xfer_out[xfer_i/8] |= bitmask;
       }
 
-#ifdef JTAG_UNIPORT
-      if (xfer_in[xfer_i/8] & bitmask) {
-        GPIO_BSRR(JTAG_PORT_TCK) = JTAG_PIN_TCK | JTAG_PIN_TDI;
-      } else {
-        GPIO_BSRR(JTAG_PORT_TCK) = JTAG_PIN_TCK | (JTAG_PIN_TDI << 16);
-      }
-#else
       if (xfer_in[xfer_i/8] & bitmask) {
         GPIO_BSRR(JTAG_PORT_TDI) = JTAG_PIN_TDI;
       } else {
         GPIO_BSRR(JTAG_PORT_TDI) = JTAG_PIN_TDI << 16;
       }
       GPIO_BSRR(JTAG_PORT_TCK) = JTAG_PIN_TCK;
-#endif
 
       xfer_clk_hi = false;
       xfer_i++;
