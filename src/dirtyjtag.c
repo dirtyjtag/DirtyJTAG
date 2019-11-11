@@ -33,6 +33,7 @@
 #define HW_stlinkv2dfu 2
 #define HW_baite 3
 #define HW_olimexstm32h103 4
+#define HW_stlinkv2white 5
 
 void clean_nvic(void) {
   uint8_t i;
