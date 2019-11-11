@@ -23,3 +23,4 @@ RUN make PLATFORM=stlinkv2
 RUN make PLATFORM=stlinkv2dfu
 RUN make PLATFORM=baite
 RUN make PLATFORM=olimexstm32h103
+RUN make PLATFORM=stlinkv2white
