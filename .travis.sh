@@ -9,3 +9,4 @@ make PLATFORM=bluepill
 make PLATFORM=stlinkv2
 make PLATFORM=stlinkv2dfu
 make PLATFORM=olimexstm32h103
+make PLATFORM=stlinkv2white
