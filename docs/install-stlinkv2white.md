@@ -1,23 +1,23 @@
 # Complete instructions for installing DirtyJTAG on a chinese ST-Link clone (white pod version)
 
-In order to follow this tutorial, you will need an SWD programmer, like a $2 ST-Link dongle.
+Those clones are a rough replica of what ST Microelectronics sells as "ST-LINK/V2" through many electronic component sellers. Unlike the official ST-Link v2, the chinese clones do not have features like I/O buffering with user settable voltage.
 
-Those clones are a rough replica of what ST Microelectronics sells as "ST-LINK/V2" through many electronic component sellers.
+## Buy an ST-Link clone
 
-## Buying an ST-Link clone
-
-These boards can be bought for around 6€ (s&h incl.) on chinese marketplaces.
+These boards are widely available on internet marketplaces (AliExpress, Amazon, taobao, etc.) for around 6€.
 
 ## Prerequisites
 
  * A second ST-Link programmer
- * Spare .1" headers
+ * Spare .1" 2x3 header
  * [OpenOCD](http://openocd.org)
  * [stlink](https://github.com/texane/stlink)
 
 ## Installing SWD headers on the ST-Link
 
-To get started you will need to take apart your ST-Link pod. There are [two screws](https://youtu.be/zXENCKrPQMc?t=106) hidden beneath the label. Solder a 2x6 0.1" male hear to the unpopulated 2x6 connector. This is the connector you will use to program DirtyJTAG. The pinout should be written on the silkscreen.
+As the ST-Link is shipped flashed there is no need for the end user for an SWD header (in a normal use case). To install one you have to take apart the ST-Link pod by unscrewing its back (there are [two screws](https://youtu.be/zXENCKrPQMc?t=106) hidden under the label) and solder a 2x3 0.1" header to the PCD.
+
+The pinout should be indicated on the PCB's silkscreen.
 
 ## Remove write protection
 
