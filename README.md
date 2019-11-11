@@ -12,10 +12,10 @@ If you prefer OpenOCD to UrJTAG, I suggest using Zoobab's fork of Versaloon firm
 
 ## Build your DirtyJTAG adapter
 
-| Bluepill                                    | ST-Link v2 clone (dongle)                                                               | ST-Link v2 clone (white case)                | "Baite" ST-Link v2 clone                |
-|:-------------------------------------------:|:---------------------------------------------------------------------------------------:|:--------------------------------------------:|:---------------------------------------:|
-| ![Bluepill icon](docs/img/bluepill-128.jpg) | ![ST-Link v2 dongle](docs/img/stlinkv2-128.jpg)                                         | ![ST-Link v2](docs/img/stlink-white-128.jpg) | ![Baite dongle](docs/img/baite-128.jpg) |
-| [Instructions](docs/install-bluepill.md)    | [SWD (recommended)](docs/install-stlinkv2-swd.md) • [DFU](docs/install-stlinkv2-dfu.md) | No instructions yet                          | No instructions yet                     |
+| Bluepill                                    | ST-Link v2 clone (dongle)                                                               | ST-Link v2 clone (white case)                 | "Baite" ST-Link v2 clone                |
+|:-------------------------------------------:|:---------------------------------------------------------------------------------------:|:---------------------------------------------:|:---------------------------------------:|
+| ![Bluepill icon](docs/img/bluepill-128.jpg) | ![ST-Link v2 dongle](docs/img/stlinkv2-128.jpg)                                         | ![ST-Link v2](docs/img/stlink-white-128.jpg)  | ![Baite dongle](docs/img/baite-128.jpg) |
+| [Instructions](docs/install-bluepill.md)    | [SWD (recommended)](docs/install-stlinkv2-swd.md) • [DFU](docs/install-stlinkv2-dfu.md) | [Instructions](docs/install-stlinkv2white.md) | No instructions yet                     |
 
 ## USB VID and PID
 
