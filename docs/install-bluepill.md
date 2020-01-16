@@ -106,6 +106,4 @@ If needed, pin definition can be modified in `src/jtag.c`.
 
 ## Blackpill compatibility
 
-The same bluepill firmware has been also been tested successfully on a Blackpill board:
-
-http://wiki.stm32duino.com/index.php?title=Black_Pill
+The same bluepill firmware has been also been tested successfully on a [Blackpill board](https://web.archive.org/web/20190220175310/http://wiki.stm32duino.com/index.php?title=Black_Pill).
