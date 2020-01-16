@@ -4,7 +4,7 @@ You can validate that your DirtyJTAG cable works by using a target.
 
 ## JTAG Validation with $2 Blue Pill board
 
-In this example we take another [Blue Pill](https://web.archive.org/web/20190527040051/http://wiki.stm32duino.com/index.php?title=Blue_Pilll) board which has JTAG pins exposed (yellow pins on the bluepill pinout):
+In this example we take another [Blue Pill](https://web.archive.org/web/20190527040051/http://wiki.stm32duino.com/index.php?title=Blue_Pill) board which has JTAG pins exposed (yellow pins on the bluepill pinout):
 
 ![Bluepill pinout](img/bluepill-pinout.gif)
 
