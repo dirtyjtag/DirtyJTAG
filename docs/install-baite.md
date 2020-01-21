@@ -51,4 +51,4 @@ st-flash write /path/to/dirtyjtag.baite.bin 0x8000000
 
 ## Pinout
 
-**TODO**
+![Pinout of the Baite dongle](img/baite-pinout.jpg)
