@@ -15,7 +15,12 @@ If you prefer OpenOCD to UrJTAG, I suggest using Zoobab's fork of Versaloon firm
 | Bluepill                                    | ST-Link v2 clone (dongle)                                                               | ST-Link v2 clone (white case)                 | "Baite" ST-Link v2 clone                |
 |:-------------------------------------------:|:---------------------------------------------------------------------------------------:|:---------------------------------------------:|:---------------------------------------:|
 | ![Bluepill icon](docs/img/bluepill-128.jpg) | ![ST-Link v2 dongle](docs/img/stlinkv2-128.jpg)                                         | ![ST-Link v2](docs/img/stlink-white-128.jpg)  | ![Baite dongle](docs/img/baite-128.jpg) |
-| [Instructions](docs/install-bluepill.md)    | [SWD (recommended)](docs/install-stlinkv2-swd.md) • [DFU](docs/install-stlinkv2-dfu.md) | [Instructions](docs/install-stlinkv2white.md) | No instructions yet                     |
+| [Instructions](docs/install-bluepill.md)    | [Instructions](docs/install-stlinkv2-swd.md) | [Instructions](docs/install-stlinkv2white.md) | [Instructions](docs/install-baite.md)       |
+
+| Olimex STM32-H103                              |
+|:----------------------------------------------:|
+| ![STM32-H103 icon](docs/img/stm32h103-128.jpg) |
+| No instructions yet                            |
 
 ## USB VID and PID
 
@@ -35,13 +40,13 @@ Dmesg also give some output where you can see the Manufacturer field as "DirtyJT
 
 ```
 $ dmesg
-[  148.223008] usb 2-1: USB disconnect, device number 2
-[  149.669794] usb 2-1: new full-speed USB device number 3 using xhci_hcd
-[  149.812853] usb 2-1: New USB device found, idVendor=1209, idProduct=c0ca
-[  149.812859] usb 2-1: New USB device strings: Mfr=1, Product=2, SerialNumber=3
-[  149.812863] usb 2-1: Product: Jean THOMAS
-[  149.812866] usb 2-1: Manufacturer: DirtyJTAG
-[  149.812869] usb 2-1: SerialNumber: no serial :-)
+(...)
+[55444.904830] usb 1-3: new full-speed USB device number 12 using xhci_hcd
+[55445.033099] usb 1-3: New USB device found, idVendor=1209, idProduct=c0ca, bcdDevice= 1.10
+[55445.033105] usb 1-3: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+[55445.033108] usb 1-3: Product: DirtyJTAG
+[55445.033111] usb 1-3: Manufacturer: Jean THOMAS
+[55445.033114] usb 1-3: SerialNumber: 55FF6E064980515631491787
 ```
 
 ## Some docs
