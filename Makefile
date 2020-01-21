@@ -1,3 +1,4 @@
+SUPPORTED_PLATFORMS = baite bluepill olimexstm32h103 stlinkv2 stlinkv2white
 PLATFORM ?= bluepill
 
 OBJS := src/dirtyjtag.o src/jtag.o src/usb.o src/delay.o src/cmd.o
@@ -42,7 +43,9 @@ all: dirtyjtag
 
 clean: dirtyjtag-clean ucmx-clean
 
-dirtyjtag: ucmx src/dirtyjtag.$(PLATFORM).elf src/dirtyjtag.$(PLATFORM).bin
+dirtyjtag: src/dirtyjtag.$(PLATFORM).elf src/dirtyjtag.$(PLATFORM).bin
+
+dirtyjtag-release: $(patsubst %, src/dirtyjtag.%.bin, $(SUPPORTED_PLATFORMS))
 
 dirtyjtag-clean:
 	$(Q)$(RM) src/*.d src/*.o src/*.map src/*.bin src/*.elf *.bin *.elf
@@ -63,4 +66,4 @@ ucmx-clean:
 %.o: %.c | ucmx
 	$(Q)$(CC) $(CFLAGS) $(CPPFLAGS) $(ARCH_FLAGS) -o $@ -c $<
 
-.PHONY: clean dirtyjtag dirtyjtag-clean ucmx ucmx-clean
+.PHONY: clean dirtyjtag dirtyjtag-release dirtyjtag-clean ucmx ucmx-clean
