@@ -1,60 +1,58 @@
-# Complete instructions for installing DirtyJTAG on a $2 chinese ST-Link clone (SWD method)
+# Installing DirtyJTAG on a "Baite" ST-Link clone
 
-In order to follow this tutorial, you will need an SWD programmer, like another $2 ST-Link dongle. If you don't have any lying around, you can follow the [DFU method](install-stlinkv2-dfu.md).
+Baite dongles are cheap SWD programmer dongles that are widely avaiable on chinese marketplaces. Unlike their [aluminium counterparts](install-stlinkv2.md), they have an extra pin for JTAG reset.
 
-The $2 chinese ST-Link clones that you can find on Aliexpress/eBay are based on a STM32F101 chip. They can be repurposed into a JTAG adapter using the DirtyJTAG firmware. However, due to the limited number of GPIO available to the user, only the bare minimum JTAG pins are available : `TDI/TDO/TMS/TCK` (no `SRST` or `TRST`).
+## Requirements
 
-## Taking apart the adapter
+ * A Baite dongle
+ * An ST Link v2-compatible SWD programmer
+ * [stlink](https://github.com/texane/stlink) and OpenOCD installed on your computer
 
-Press firmly the USB connector on a flat surface while holding the outer aluminium casing. This will release the PCB from its casing.
+## SWD wiring
+
+To gain access to the internal SWD connector in your ST-Link dongle, press firmly the USB connector againt a flat surface while holding the outer aluminium casing as shown:
 
 ![Tearing down an ST-Link programmer](img/stlinkv2-teardown.gif)
 
-## Install DirtyJTAG firmware
-
-I chose to use another $2 ST-Link programmer as my SWD programmer. Connect them together like this :
-
 ![Two ST-Link clones connected together](img/stlinkv2-programming.png)
 
-Do not plug your ST-Link (target) in a USB port yet. Install [stlink](https://github.com/texane/stlink) on your computer, and download a compiled release of DirtyJTAG for ST-Link adapters ([available here](https://github.com/jeanthom/dirtyjtag/releases)). Enter this command to program the STM32 :
+If you don't want to solder to your ST-Link dongle, you can either use [dupont header cables](img/stlinkv2-header-cable.jpg) or like zoobab hack a small jig with pogo pins ([[1]](img/stlinkv2-jig-1.jpg), [[2]](img/stlinkv2-jig-2.jpg)).
+
+## Unlocking the memory
+
+Like every other ST-Link clone on the market, its flash memory is protected against SWD readouts. To remove that protection we will have to use OpenOCD.
+
+To start OpenOCD with the adequate settings for an ST-Link v2 programmer use this command:
 
 ```
-st-flash write /path/to/dirtyjtag-stlink.bin 0x8000000
+openocd -f interface/stlink-v2.cfg -f target/stm32f1x.cfg
 ```
 
-If for some reason the flashing process fails because the reported flash size is 0, [there is a fix](https://github.com/texane/stlink/issues/172#issuecomment-347887271).
-
-If you have pogopins around, you could make your own flashing jig by soldering 4 of those on 2 pieces of stripboard, and hold them with a clothespin:
-
-![Flashing jig with 4 pogopins and a clothespin](img/stlinkv2-jig-1.jpg)
-![Flashing jig with 4 pogopins and a clothespin bis](img/stlinkv2-jig-2.jpg)
-
-Otherwise some male to female header cable works great, it fits the pad hole snugly and doesn't make a loose connection.
-
-![ST-Link connected together with header cable](img/stlinkv2-header-cable.jpg)
-
-## Using your *brand new* DirtyJTAG dongle with a JTAG target
-
-This is the new pinout for your DirtyJTAG dongle. You may want to print it and glue it to the case for practical reasons.
-
-![ST-Link v2 pinout with DirtyJTAG firmware](img/stlinkv2-pinout.svg)
-
-Install [UrJTAG with DirtyJTAG support](urjtag-dirtyjtag.md). Plug your DirtyJTAG dongle, and check with the `lsusb` command that a new device with `0x1209/0xC0CA` as its USB VID/PID has appeared.
+Then while keeping OpenOCD open, open a new terminal window and connect to OpenOCD server:
 
 ```
-$ jtag
-UrJTAG 0.10 #
-Copyright (C) 2002, 2003 ETC s.r.o.
-Copyright (C) 2007, 2008, 2009 Kolja Waschk and the respective authors
+telnet localhost 4444
+```
 
-UrJTAG is free software, covered by the GNU General Public License, and you are
-welcome to change it and/or distribute copies of it under certain conditions.
-There is absolutely no warranty for UrJTAG.
-
-warning: UrJTAG may damage your hardware!
-Type "quit" to exit, "help" for help.
-
-jtag> cable dirtyjtag
-jtag> detect
+You now have an OpenOCD prompt (congratulations!). You may now enter the following OpenOCD commands to reset the MCU flash protection (and its content by the way).
 
 ```
+halt
+stm32f1x unlock 0
+reset
+exit
+```
+
+## Flashing DirtyJTAG
+
+Download a binary version of DirtyJTAG (make sure to get the `baite` build!) or [compile it yourself](building-dirtyjtag.md), then flash it using `st-flash`:
+
+```
+st-flash write /path/to/dirtyjtag.stlinkv2.bin 0x8000000
+```
+
+## Pinout
+
+![ST-Link pinout with DirtyJTAG firmware](img/stlink-pinout.jpg)
+
+A print friendly version [is also available](img/stlinkv2-sticker.svg).
