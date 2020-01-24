@@ -1,7 +1,7 @@
 SUPPORTED_PLATFORMS = baite bluepill olimexstm32h103 stlinkv2 stlinkv2white
 PLATFORM ?= bluepill
 
-OBJS := src/dirtyjtag.o src/jtag.o src/usb.o src/delay.o src/cmd.o
+OBJS := src/dirtyjtag.$(PLATFORM).o src/jtag.$(PLATFORM).o src/usb.$(PLATFORM).o src/delay.$(PLATFORM).o src/cmd.$(PLATFORM).o
 
 PREFIX ?= arm-none-eabi
 TARGETS := stm32/f1
@@ -63,7 +63,7 @@ ucmx-clean:
 	$(Q)$(CC) $(LDFLAGS) $(ARCH_FLAGS) $(OBJS) $(LDLIBS) -o $(*).elf
 	$(Q)$(SIZE) $(*).elf
 
-%.o: %.c | ucmx
+%.$(PLATFORM).o: %.c | ucmx
 	$(Q)$(CC) $(CFLAGS) $(CPPFLAGS) $(ARCH_FLAGS) -o $@ -c $<
 
 .PHONY: clean dirtyjtag dirtyjtag-release dirtyjtag-clean ucmx ucmx-clean
