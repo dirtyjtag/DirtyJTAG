@@ -1,10 +1,10 @@
-# Installing DirtyJTAG on a "Baite" ST-Link clone
+# Installing DirtyJTAG on a ST-Link clone dongle
 
-Baite dongles are cheap SWD programmer dongles that are widely avaiable on chinese marketplaces. Unlike their [aluminium counterparts](install-stlinkv2.md), they have an extra pin for JTAG reset.
+ST-Link clone dongles are the cheap dongles you can find on AliExpress. They provide the minimum amount of signals needed for JTAG operation. They currently require an SWD programmed in order to install DirtyJTAG on it.
 
 ## Requirements
 
- * A Baite dongle
+ * ST-Link v2 dongle
  * An ST Link v2-compatible SWD programmer
  * [stlink](https://github.com/texane/stlink) and OpenOCD installed on your computer
 
