@@ -38,6 +38,19 @@ Connect the ST-Link that will act as a programmer to the target on its SWD heade
 openocd -f interface/stlink-v2.cfg -f target/stm32f1x.cfg
 ```
 
+You might get an error similar to
+```
+Warn : UNEXPECTED idcode: 0x2ba01477 Error: expected 1 of 1: 0x1ba01477
+```
+which indicates that your ST-Link V2 clone has a stm32 clone MCU.
+
+In this case, create a custom config file with the reported idcode, eg "`my-stlink-v2.cfg`" with the content:
+```
+source [find interface/stlink-v2.cfg]
+set CPUTAPID 0x2ba01477
+```
+and substitute `-f interface/stlink-v2.cfg` with `-f my-stlink-v2.cfg` when invoking openocd.
+
 Now while keeping this terminal open, open another one and connect to the OpenOCD server:
 
 ```
