@@ -76,6 +76,18 @@ With your target ST-Link connected to the programmer ST-Link you can now flash D
 st-flash write /path/to/dirtyjtag.stlinkv2white.bin 0x8000000
 ```
 
+or, [using openocd](https://www.hobbiton.be/blog/repurpose-stlink/#flashing) (use your custom config file instead of the interface script provided by openocd, if applicable):
+
+```
+openocd -f interface/stlink-v2.cfg -f target/stm32f1x.cfg -c "init" -c "halt" -c "flash write_image erase dirtyjtag.stlinkv2white.bin 0x8000000" -c "shutdown"
+```
+
+and verify the image with
+
+```
+openocd -f interface/stlink-v2.cfg -f target/stm32f1x.cfg -c "init" -c "halt" -c "verify_image dirtyjtag.stlinkv2white.bin 0x8000000" -c "shutdown"
+```
+
 ## Pinout
 
 
