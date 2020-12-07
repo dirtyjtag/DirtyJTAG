@@ -52,7 +52,7 @@ distribution (`apt-get install stm32flash` for debian/ubuntu), and flash the
 firmware with this command:
 
 ```
-$ stm32flash -w dirtyjtag.bluepill.bin -v -g 0x8000000 /dev/ttyUSB0
+$ stm32flash -w dirtyjtag.bluepill.bin -v /dev/ttyUSB0
 stm32flash 0.5
 
 http://stm32flash.sourceforge.net/
