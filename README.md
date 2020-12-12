@@ -22,6 +22,11 @@ If you prefer OpenOCD to UrJTAG, I suggest using Zoobab's fork of Versaloon firm
 | ![STM32-H103 icon](docs/img/stm32h103-128.jpg) |
 | No instructions yet                            |
 
+## Software compatible with DirtyJTAG
+
+ * [UrJTAG](docs/urjtag-dirtyjtag.md): support added in 2017.10
+ * [openFPGAloader](docs/openfpgaloader-dirtyjtag.md): support added in v0.1
+
 ## USB VID and PID
 
 All DirtyJTAG-flashed devices appear with the following USB VID=0x1209/PID=0xC0CA
@@ -52,7 +57,6 @@ $ dmesg
 ## Some docs
 
  * [Compiling DirtyJTAG yourself](docs/building-dirtyjtag.md)
- * [Compiling UrJTAG with DirtyJTAG support](docs/urjtag-dirtyjtag.md)
  * [Validate your DirtyJTAG cable with JTAG targets](docs/jtag-validation.md)
 
 ## Inspiration & links
