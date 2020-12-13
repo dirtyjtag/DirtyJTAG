@@ -4,7 +4,7 @@
 
 openFPGAloader is a JTAG tool dedicated to FPGA flashing. It is compatible with numerous FPGA families.
 
-openFPGAloader supports the DirtyJTAG probe since [v1.0](https://github.com/trabucayre/openFPGALoader/releases/tag/v0.1). Instructions for manually building openFPGAloader are available in the project repository.
+openFPGAloader supports the DirtyJTAG probe since [v0.1](https://github.com/trabucayre/openFPGALoader/releases/tag/v0.1). Instructions for manually building openFPGAloader are available in the project repository.
 
 ## Tutorials
 
