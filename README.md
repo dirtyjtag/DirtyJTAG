@@ -2,11 +2,9 @@
 
 [![Build Status](https://travis-ci.org/jeanthom/DirtyJTAG.svg?branch=master)](https://travis-ci.org/jeanthom/DirtyJTAG)
 
-DirtyJTAG is a JTAG adapter firmware for $2 ST-Link clones and generic STM32 development boards ("blue pill"/"black pill" STM32F101 and STM32F103 based ARM boards). The DirtyJTAG project was created to find an alternative to the obsolete (but cheap) LPT Wiggler cables, and expensive USB JTAG probes.
+DirtyJTAG is a JTAG adapter firmware for $2 ST-Link clones and generic STM32 development boards ("blue pill"/"black pill" STM32F101 and STM32F103 based ARM boards). The DirtyJTAG project was meant to be an alternative to the obsolete (but cheap) LPT Wiggler cables, and other expensive USB JTAG probes.
 
 DirtyJTAG is dirty and dirt cheap, but is not fast nor a perfect implementation of the JTAG protocol. Yet it is around 500 sloccount lines, therefore it is easily understandable and hackable.
-
-DirtyJTAG is supported in mainline UrJTAG, see the ["Installing UrJTAG with DirtyJTAG support"](docs/urjtag-dirtyjtag.md) page.
 
 If you prefer OpenOCD to UrJTAG, I suggest using Zoobab's fork of Versaloon firmware, which is available [on his GitHub repository](https://github.com/zoobab/versaloon).
 
