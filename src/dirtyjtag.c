@@ -28,13 +28,6 @@
 #include "usb.h"
 #include "delay.h"
 
-#define HW_bluepill 0
-#define HW_stlinkv2 1
-#define HW_stlinkv2dfu 2
-#define HW_baite 3
-#define HW_olimexstm32h103 4
-#define HW_stlinkv2white 5
-
 void clean_nvic(void) {
   uint8_t i;
 
@@ -62,6 +55,7 @@ int main(void) {
   rcc_periph_reset_pulse(RST_TIM4);
   rcc_periph_reset_pulse(RST_AFIO);
   rcc_periph_reset_pulse(RST_USB);
+  rcc_periph_reset_pulse(RST_SPI1);
 
   /* Disable watchdog */
   IWDG_KR = 0;
@@ -92,13 +86,14 @@ int main(void) {
   rcc_periph_reset_pulse(RST_GPIOA);
   rcc_periph_reset_pulse(RST_USB);
 
-  jtag_init();
+
 
   /* Turn on the onboard LED */
 #if PLATFORM == HW_bluepill
   gpio_set_mode(GPIOC, GPIO_MODE_OUTPUT_2_MHZ,
     GPIO_CNF_OUTPUT_PUSHPULL, GPIO13);
   gpio_set(GPIOC, GPIO13);
+  rcc_periph_clock_enable(RCC_SPI1);
 #elif PLATFORM == HW_stlinkv2 || PLATFORM == HW_stlinkv2dfu
   gpio_set_mode(GPIOA, GPIO_MODE_OUTPUT_2_MHZ,
     GPIO_CNF_OUTPUT_PUSHPULL, GPIO9);
@@ -109,6 +104,7 @@ int main(void) {
   gpio_clear(GPIOA, GPIO9);
 #endif
   
+  jtag_init();
   usb_init();
   
   return 0;
