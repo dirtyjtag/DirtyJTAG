@@ -24,6 +24,6 @@
  *
  * @param usbd_dev USB device
  * @param transfer Received packet
- * @return Command needs to send data back to host
+ * @return Returns 0 if it has to send data to the USB host, returns 1 otherwise
  */
 uint8_t cmd_handle(usbd_device *usbd_dev, const usbd_transfer *transfer);
