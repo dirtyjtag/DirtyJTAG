@@ -212,6 +212,10 @@ static void cmd_xfer(usbd_device *usbd_dev, const uint8_t *commands, bool extend
   transferred_bits = commands[1];
   if (extend_length) {
     transferred_bits += 256;
+    // Ensure we don't do over-read
+    if (transferred_bits > 62*8) {
+      return;
+    }
   }
   
   jtag_transfer(transferred_bits, commands+2, output_buffer);
