@@ -39,6 +39,11 @@ enum CommandIdentifier {
   CMD_SETVOLTAGE = 0x07
 };
 
+enum CommandModifier {
+  NO_READ = 0x80,
+  EXTEND_LENGTH = 0x40
+};
+
 enum SignalIdentifier {
   SIG_TCK = 1 << 1,
   SIG_TDI = 1 << 2,
