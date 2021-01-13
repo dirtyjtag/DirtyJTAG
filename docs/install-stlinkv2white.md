@@ -15,7 +15,7 @@ These boards are widely available on internet marketplaces (AliExpress, Amazon, 
 
 ## Installing SWD headers on the ST-Link
 
-As the ST-Link is shipped flashed there is no need for the end user for an SWD header (in a normal use case). To install one you have to take apart the ST-Link pod by unscrewing its back (there are [two screws](https://youtu.be/zXENCKrPQMc?t=106) hidden under the label) and solder a 0.1" header to the PCD.
+As the ST-Link is shipped flashed there is no need for the end user for an SWD header (in a normal use case). To install one you have to take apart the ST-Link pod by unscrewing its back (there are [two screws](https://youtu.be/zXENCKrPQMc?t=106) hidden under the label) and solder a 0.1" header to the PCB.
 
 This should be the pinout of the relevant signals (unless otherwise indicated on the PCB):
 
