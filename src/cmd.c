@@ -154,7 +154,7 @@ uint8_t cmd_handle(usbd_device *usbd_dev, const usbd_transfer *transfer) {
 }
 
 static void cmd_info(usbd_device *usbd_dev) {
-  char info_string[64] = "DJTAG1\n";
+  char info_string[64] = "DJTAG2\n";
 
   usb_send(usbd_dev, (uint8_t*)info_string, 64);
 }
