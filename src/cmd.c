@@ -24,6 +24,8 @@
 #include <string.h>
 #include <unicore-mx/usbd/usbd.h>
 #include <unicore-mx/stm32/gpio.h>
+#include <unicore-mx/stm32/f1/bkp.h>
+#include <unicore-mx/cm3/scb.h>
 
 #include "jtag.h"
 #include "usb.h"
@@ -37,7 +39,8 @@ enum CommandIdentifier {
   CMD_SETSIG = 0x04,
   CMD_GETSIG = 0x05,
   CMD_CLK = 0x06,
-  CMD_SETVOLTAGE = 0x07
+  CMD_SETVOLTAGE = 0x07,
+  CMD_GOTOBOOTLOADER = 0x08
 };
 
 enum CommandModifier {
@@ -122,6 +125,13 @@ static void cmd_clk(const uint8_t *commands);
  */
 static void cmd_setvoltage(const uint8_t *commands);
 
+/**
+ * @brief Handle CMD_GOTOBOOTLOADER command
+ *
+ * CMD_GOTOBOOTLOADER resets the MCU and enters its bootloader (if installed)
+ */
+static void cmd_gotobootloader(void);
+
 uint8_t cmd_handle(usbd_device *usbd_dev, const usbd_transfer *transfer) {
   uint8_t *commands = (uint8_t*)transfer->buffer;
 
@@ -162,6 +172,10 @@ uint8_t cmd_handle(usbd_device *usbd_dev, const usbd_transfer *transfer) {
     case CMD_SETVOLTAGE:
       cmd_setvoltage(commands);
       commands += 1;
+      break;
+
+    case CMD_GOTOBOOTLOADER:
+      cmd_gotobootloader();
       break;
       
     default:
@@ -256,4 +270,11 @@ static void cmd_clk(const uint8_t *commands) {
 
 static void cmd_setvoltage(const uint8_t *commands) {
   (void)commands;
+}
+
+static void cmd_gotobootloader(void) {
+  // Magic RTC values from dapboot
+  BKP_DR1 = 0x4F42;
+  BKP_DR2 = 0x544F;
+  scb_reset_system();
 }
