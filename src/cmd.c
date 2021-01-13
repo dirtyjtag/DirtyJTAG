@@ -35,7 +35,8 @@ enum CommandIdentifier {
   CMD_XFER = 0x03,
   CMD_SETSIG = 0x04,
   CMD_GETSIG = 0x05,
-  CMD_CLK = 0x06
+  CMD_CLK = 0x06,
+  CMD_SETVOLTAGE = 0x07
 };
 
 enum SignalIdentifier {
@@ -106,6 +107,15 @@ static void cmd_getsig(usbd_device *usbd_dev);
  */
 static void cmd_clk(const uint8_t *commands);
 
+/**
+ * @brief Handle CMD_SETVOLTAGE command
+ *
+ * CMD_SETVOLTAGE sets the I/O voltage for devices that support this feature.
+ *
+ * @param commands Command data
+ */
+static void cmd_setvoltage(const uint8_t *commands);
+
 uint8_t cmd_handle(usbd_device *usbd_dev, const usbd_transfer *transfer) {
   uint8_t *commands;
 
@@ -140,6 +150,11 @@ uint8_t cmd_handle(usbd_device *usbd_dev, const usbd_transfer *transfer) {
     case CMD_CLK:
       cmd_clk(commands);
       commands += 2;
+      break;
+
+    case CMD_SETVOLTAGE:
+      cmd_setvoltage(commands);
+      commands += 1;
       break;
       
     default:
@@ -223,4 +238,8 @@ static void cmd_clk(const uint8_t *commands) {
   clk_pulses = commands[2];
 
   jtag_strobe(clk_pulses, signals & SIG_TMS, signals & SIG_TDI);
+}
+
+static void cmd_setvoltage(const uint8_t *commands) {
+  (void)commands;
 }
