@@ -38,6 +38,11 @@ enum CommandIdentifier {
   CMD_CLK = 0x06
 };
 
+enum CommandModifier {
+  EXTEND_LENGTH = 0x40,
+  NO_READ       = 0x80
+};
+
 enum SignalIdentifier {
   SIG_TCK = 1 << 1,
   SIG_TDI = 1 << 2,
@@ -77,7 +82,7 @@ static void cmd_freq(const uint8_t *commands);
  * @param usbd_dev USB device
  * @param commands Command data
  */
-static void cmd_xfer(usbd_device *usbd_dev, const uint8_t *commands);
+static int cmd_xfer(usbd_device *usbd_dev, const uint8_t *commands);
 
 /**
  * @brief Handle CMD_SETSIG command
@@ -112,7 +117,7 @@ uint8_t cmd_handle(usbd_device *usbd_dev, const usbd_transfer *transfer) {
   commands = (uint8_t*)transfer->buffer;
   
   while (*commands != CMD_STOP) {
-    switch (*commands) {
+    switch ((*commands)&0x0F) {
     case CMD_INFO:
       cmd_info(usbd_dev);
       break;
@@ -123,8 +128,7 @@ uint8_t cmd_handle(usbd_device *usbd_dev, const usbd_transfer *transfer) {
       break;
 
     case CMD_XFER:
-      cmd_xfer(usbd_dev, commands);
-      return 0;
+      return cmd_xfer(usbd_dev, commands);
       break;
 
     case CMD_SETSIG:
@@ -154,7 +158,7 @@ uint8_t cmd_handle(usbd_device *usbd_dev, const usbd_transfer *transfer) {
 }
 
 static void cmd_info(usbd_device *usbd_dev) {
-  char info_string[64] = "DJTAG1\n";
+  char info_string[64] = "DJTAG2\n";
 
   usb_send(usbd_dev, (uint8_t*)info_string, 64);
 }
@@ -163,20 +167,26 @@ static void cmd_freq(const uint8_t *commands) {
   jtag_set_frequency((commands[1] << 8) | commands[2]);
 }
 
-static void cmd_xfer(usbd_device *usbd_dev, const uint8_t *commands) {
-  uint8_t transferred_bits;
-  uint8_t output_buffer[32];
+static uint8_t output_buffer[64];
+
+static int cmd_xfer(usbd_device *usbd_dev, const uint8_t *commands) {
+  uint16_t transferred_bits;
   
   /* Fill the output buffer with zeroes */
-  memset(output_buffer, 0, 32);
+  memset(output_buffer, 0, 64);
 
   /* This is the number of transfered bits in one transfer command */
-  transferred_bits = commands[1];
+  transferred_bits = commands[1] + ((commands[0]&EXTEND_LENGTH) ? 256 : 0);
   
   jtag_transfer(transferred_bits, commands+2, output_buffer);
 
   /* Send the transfer response back to host */
-  usb_send(usbd_dev, output_buffer, 32);
+  if (!(commands[0]&NO_READ))   {
+    usb_send(usbd_dev, output_buffer, (commands[0]&EXTEND_LENGTH) ? 64 : 32);
+    return 0;
+  } else {
+    return 1;
+  }
 }
 
 static void cmd_setsig(const uint8_t *commands) {
