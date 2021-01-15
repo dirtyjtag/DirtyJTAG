@@ -189,9 +189,9 @@ uint8_t cmd_handle(usbd_device *usbd_dev, const usbd_transfer *transfer) {
 }
 
 static void cmd_info(usbd_device *usbd_dev) {
-  char info_string[64] = "DJTAG2\n";
+  char info_string[10] = "DJTAG2\n";
 
-  usb_send(usbd_dev, (uint8_t*)info_string, 64);
+  usb_send(usbd_dev, (uint8_t*)info_string, 10);
 }
 
 static void cmd_freq(const uint8_t *commands) {
@@ -222,7 +222,7 @@ static void cmd_xfer(usbd_device *usbd_dev, const uint8_t *commands, bool extend
 
   /* Send the transfer response back to host */
   if (!no_read) {
-    usb_send(usbd_dev, output_buffer, extend_length ? 64 : 32);
+    usb_send(usbd_dev, output_buffer, (transferred_bits + 7)/8);
   }
 }
 
