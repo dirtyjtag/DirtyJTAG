@@ -18,7 +18,6 @@ CFLAGS += -Wall -Wextra -Werror
 CFLAGS += -fno-common -ffunction-sections -fdata-sections
 CFLAGS += -std=gnu11
 CFLAGS += -DPLATFORM='HW_$(PLATFORM)'
-#CFLAGS += -Wa,-adhlns="$@.lst"
 
 CPPFLAGS = -MD -g
 CPPFLAGS += -Wall -Wundef
@@ -64,7 +63,7 @@ ucmx-clean:
 	$(Q)$(CC) $(LDFLAGS) $(ARCH_FLAGS) $(OBJS) $(LDLIBS) -o $(*).elf
 	$(Q)$(SIZE) $(*).elf
 
-%.$(PLATFORM).o: %.c
+%.$(PLATFORM).o: %.c | ucmx
 	$(Q)$(CC) $(CFLAGS) $(CPPFLAGS) $(ARCH_FLAGS) -o $@ -c $<
 
 .PHONY: clean dirtyjtag dirtyjtag-release dirtyjtag-clean ucmx ucmx-clean

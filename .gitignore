@@ -5,7 +5,3 @@ src/*.o
 src/*.map
 *.bin
 *.elf
-/.cproject
-/.project
-/.vscode/
-/dirtyjtag Default.launch
