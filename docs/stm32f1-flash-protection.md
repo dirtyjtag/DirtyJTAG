@@ -1,26 +1,47 @@
 # Fixing STM32F1xx flash protection issues
 
-One of the most common issues when working with STM32F1 MCUs is having the flash protection bit set. The following documentation explains how to disable it through two different techniques.
+One of the most common issues when working with pre-programmed STM32F1 MCUs is having the flash protection bit set. You might encounter messages like these when the protection is activated:
 
-**Be aware: disabling flash protection will erase the whole flash.**
+```
+(..)
+2021-01-28T20:34:11 INFO flash_loader.c: Successfully loaded flash loader in sram
+2021-01-28T20:34:14 ERROR flash_loader.c: flash loader run error
+2021-01-28T20:34:14 ERROR common.c: stlink_flash_loader_run(0x8000000) failed! == -1
+stlink_fwrite_flash() == -1
+```
+
+The following documentation explains how to disable it through two different techniques. **Be aware that disabling flash protection will erase the whole flash!**
 
 ## Unlocking method #1: OpenOCD
 
 This first method requires you to connect an ST-Link programmer to your target. If you're unsure how to do so, check out [our documentation](https://github.com/jeanthom/DirtyJTAG/tree/master/docs).
 
-This procedure requires you to open two terminals. In the first terminal, start OpenOCD:
+Connect the ST-Link that will act as a programmer to the target on its SWD header. Open up a terminal and type in the following command:
 
 ```
 openocd -f interface/stlink-v2.cfg -f target/stm32f1x.cfg
 ```
 
-Then while keeping OpenOCD open, connect to OpenOCD in your other terminal:
+You might get an error similar to
+```
+Warn : UNEXPECTED idcode: 0x2ba01477 Error: expected 1 of 1: 0x1ba01477
+```
+which indicates that your ST-Link V2 clone has a STM32 clone MCU.
+
+In this case, create a custom config file with the reported idcode, eg "`my-stlink-v2.cfg`" with the content:
+```
+source [find interface/stlink-v2.cfg]
+set CPUTAPID 0x2ba01477
+```
+and substitute `-f interface/stlink-v2.cfg` with `-f my-stlink-v2.cfg` when invoking openocd.
+
+Now while keeping this terminal open, open another one and connect to the OpenOCD server:
 
 ```
 telnet localhost 4444
 ```
 
-You should now have an OpenOCD prompt (congratulations!). You may now enter the following sequence of commands to reset the MCU flash protection (and its content by the way).
+Then type in the following commands to reset the readout protection and exit the telnet session:
 
 ```
 halt
@@ -28,6 +49,8 @@ stm32f1x unlock 0
 reset
 exit
 ```
+
+You can `CTRL+C` on the OpenOCD terminal to terminate it.
 
 ## Unlocking method #2: stm32flash
 
