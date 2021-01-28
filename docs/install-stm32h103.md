@@ -11,7 +11,7 @@ Thanks Olimex for gifting us this board! You can order it [on their website](htt
 
 The SWD signals are available on the HE20 JTAG connector:
 
-![SWD pinout on the JTAG connector of STM32H103](img/stm32h103-swd-pinout.png)
+![SWD pinout on the JTAG connector of STM32H103](img/stm32h103-swd-pinout.jpg)
 
 ## Flashing DirtyJTAG
 
