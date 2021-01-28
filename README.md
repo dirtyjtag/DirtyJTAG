@@ -56,6 +56,7 @@ $ dmesg
 
  * [Compiling DirtyJTAG yourself](docs/building-dirtyjtag.md)
  * [Validate your DirtyJTAG cable with JTAG targets](docs/jtag-validation.md)
+ * [Fixing STM32F1xx flash protection issues](docs/stm32f1-flash-protection.md)
 
 ## Inspiration & links
 
