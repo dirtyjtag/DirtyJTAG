@@ -15,10 +15,10 @@ The SWD signals are available on the HE20 JTAG connector:
 
 ## Flashing DirtyJTAG
 
-Download a binary version of DirtyJTAG (make sure to get the `bluepill` build!) or [compile it yourself](building-dirtyjtag.md), then flash it using `st-flash`:
+Download a binary version of DirtyJTAG (make sure to get the `olimexstm32h103` build!) or [compile it yourself](building-dirtyjtag.md), then flash it using `st-flash`:
 
 ```
-st-flash write /path/to/dirtyjtag.bluepill.bin 0x8000000
+st-flash write /path/to/dirtyjtag.olimexstm32h103.bin 0x8000000
 ```
 
 ## Pinout
