@@ -1,6 +1,6 @@
 # Installing DirtyJTAG on a ST-Link clone dongle
 
-ST-Link clone dongles are the cheap dongles you can find on AliExpress. They provide the minimum amount of signals needed for JTAG operation. They currently require an SWD programmed in order to install DirtyJTAG on it.
+ST-Link clone dongles are the cheap dongles you can find on AliExpress. They provide the minimum amount of signals needed for JTAG operation. They currently require an SWD programmer in order to install DirtyJTAG on it.
 
 ## Requirements
 
