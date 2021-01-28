@@ -2,6 +2,8 @@
 
 ST-Link clone dongles are the cheap dongles you can find on AliExpress. They provide the minimum amount of signals needed for JTAG operation. They currently require an SWD programmed in order to install DirtyJTAG on it.
 
+If you have a CX32 or CK32 dongle [(chinese copy of the STM32 IC)](https://hackaday.com/2020/10/22/stm32-clones-the-good-the-bad-and-the-ugly/), please check out [this issue](https://github.com/jeanthom/DirtyJTAG/issues/83).
+
 ## Requirements
 
  * ST-Link v2 dongle
