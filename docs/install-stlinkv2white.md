@@ -28,7 +28,7 @@ To be safe, you should confirm the pinout with a continuity tester:
 
 A normal pin header won't fit the housing, so better use a right-angled connector, as shown in the photo. Also, you don't really need a 2x3 header, you get by with a 2x1 header for SWDIO and SWCLK and connecting 3V3 and GND to the 2x20 header.
 
-## Remove write protection
+## Remove flash protection
 
 Any ST-Link currently sold (even the clones) have their readout protection enabled. This means that when you want to flash another firmware than the factory-supplied one, you will have to disable the read protection using OpenOCD. Hopefully you will only have to do it once!
 
@@ -42,7 +42,7 @@ You might get an error similar to
 ```
 Warn : UNEXPECTED idcode: 0x2ba01477 Error: expected 1 of 1: 0x1ba01477
 ```
-which indicates that your ST-Link V2 clone has a stm32 clone MCU.
+which indicates that your ST-Link V2 clone has a STM32 clone MCU.
 
 In this case, create a custom config file with the reported idcode, eg "`my-stlink-v2.cfg`" with the content:
 ```
@@ -67,6 +67,8 @@ exit
 ```
 
 You can `CTRL+C` on the OpenOCD terminal to terminate it.
+
+More detailed explanations are available in [a separate documentation page](stm32f1-flash-protection.md).
 
 ## Flashing DirtyJTAG
 
