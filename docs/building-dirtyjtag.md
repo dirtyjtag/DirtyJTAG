@@ -11,15 +11,8 @@ In order to compile DirtyJTAG, you will need the following software :
 Clone this repository :
 
 ```
-git clone https://github.com/jeanthom/dirtyjtag
+git clone --recursive https://github.com/jeanthom/dirtyjtag
 cd dirtyjtag
-```
-
-Then download unicore-mx :
-
-```
-git submodule init
-git submodule update
 ```
 
 Then you can build the firmware :
