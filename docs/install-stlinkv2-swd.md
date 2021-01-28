@@ -20,9 +20,7 @@ If you don't want to solder to your ST-Link dongle, you can either use [dupont h
 
 ## Unlocking the memory
 
-Like every other ST-Link clone on the market, its flash memory is protected against SWD readouts. To remove that protection we will have to use OpenOCD.
-
-To start OpenOCD with the adequate settings for an ST-Link v2 programmer use this command:
+Like every other ST-Link device on the market, its flash memory is protected against SWD readouts. To remove that protection we will have to use OpenOCD, which can be launched this way:
 
 ```
 openocd -f interface/stlink-v2.cfg -f target/stm32f1x.cfg
@@ -34,7 +32,7 @@ Then while keeping OpenOCD open, open a new terminal window and connect to OpenO
 telnet localhost 4444
 ```
 
-You now have an OpenOCD prompt (congratulations!). You may now enter the following OpenOCD commands to reset the MCU flash protection (and its content by the way).
+You now have an OpenOCD prompt (congratulations!). You may now enter the following OpenOCD commands to reset both the MCU flash protection and its content:
 
 ```
 halt
@@ -42,6 +40,8 @@ stm32f1x unlock 0
 reset
 exit
 ```
+
+More detailed explanations are available in [a separate documentation page](stm32f1-flash-protection.md).
 
 ## Flashing DirtyJTAG
 
