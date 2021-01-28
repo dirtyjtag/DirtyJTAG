@@ -16,23 +16,36 @@ To gain access to the internal SWD connector in your Baite dongle, pry apart the
 
 The unpopulated connector can fit a generic 2.54mm male header if needed. When programming the Baite dongle, **it is advised to not plug the Baite dongle via USB** to avoid confusion while flashing DirtyJTAG (you might brick your ST-Link programmer!).
 
-## Unlocking the memory
+## Remove flash protection
 
-Like every other ST-Link clone on the market, its flash memory is protected against SWD readouts. To remove that protection we will have to use OpenOCD.
+Any ST-Link currently sold (even the clones) have their readout protection enabled. This means that when you want to flash another firmware than the factory-supplied one, you will have to disable the read protection using OpenOCD. Hopefully you will only have to do it once!
 
-To start OpenOCD with the adequate settings for an ST-Link v2 programmer use this command:
+Connect the ST-Link that will act as a programmer to the target on its SWD header. Open up a terminal and type in the following command:
 
 ```
 openocd -f interface/stlink-v2.cfg -f target/stm32f1x.cfg
 ```
 
-Then while keeping OpenOCD open, open a new terminal window and connect to OpenOCD server:
+You might get an error similar to
+```
+Warn : UNEXPECTED idcode: 0x2ba01477 Error: expected 1 of 1: 0x1ba01477
+```
+which indicates that your ST-Link V2 clone has a STM32 clone MCU.
+
+In this case, create a custom config file with the reported idcode, eg "`my-stlink-v2.cfg`" with the content:
+```
+source [find interface/stlink-v2.cfg]
+set CPUTAPID 0x2ba01477
+```
+and substitute `-f interface/stlink-v2.cfg` with `-f my-stlink-v2.cfg` when invoking openocd.
+
+Now while keeping this terminal open, open another one and connect to the OpenOCD server:
 
 ```
 telnet localhost 4444
 ```
 
-You now have an OpenOCD prompt (congratulations!). You may now enter the following OpenOCD commands to reset the MCU flash protection (and its content by the way).
+Then type in the following commands to reset the readout protection and exit the telnet session:
 
 ```
 halt
@@ -40,6 +53,10 @@ stm32f1x unlock 0
 reset
 exit
 ```
+
+You can `CTRL+C` on the OpenOCD terminal to terminate it.
+
+More detailed explanations are available in [a separate documentation page](stm32f1-flash-protection.md).
 
 ## Flashing DirtyJTAG
 
