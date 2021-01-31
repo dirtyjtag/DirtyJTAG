@@ -4,7 +4,7 @@
 
 DirtyJTAG is a JTAG adapter firmware for $2 ST-Link clones and generic STM32 development boards ("blue pill"/"black pill" STM32F101 and STM32F103 based ARM boards). The DirtyJTAG project was meant to be an alternative to the obsolete (but cheap) LPT Wiggler cables, and other expensive USB JTAG probes.
 
-DirtyJTAG is dirty and dirt cheap, but is not fast nor a perfect implementation of the JTAG protocol. Yet it is around 500 sloccount lines, therefore it is easily understandable and hackable.
+DirtyJTAG is dirty and dirt cheap, but is not fast nor a perfect implementation of the JTAG protocol. Yet it is around 1k sloccount lines, making it easily understandable and hackable.
 
 If you prefer OpenOCD to UrJTAG, I suggest using Zoobab's fork of Versaloon firmware, which is available [on his GitHub repository](https://github.com/zoobab/versaloon).
 
@@ -18,7 +18,7 @@ If you prefer OpenOCD to UrJTAG, I suggest using Zoobab's fork of Versaloon firm
 | Olimex STM32-H103                              |
 |:----------------------------------------------:|
 | ![STM32-H103 icon](docs/img/stm32h103-128.jpg) |
-| No instructions yet                            |
+| [Instructions](docs/install-stm32h103.md)      |
 
 ## Software compatible with DirtyJTAG
 
@@ -39,11 +39,11 @@ Bus 002 Device 003: ID 1209:c0ca InterBiometrics
 The PID was obtained through http://pid.codes, which is a registry of USB
 PID codes for open source hardware projects. More infos: http://pid.codes/1209/C0CA/
 
-Dmesg also give some output where you can see the Manufacturer field as "DirtyJTAG":
+`dmesg` also give some output where you can see the manufacturer field as "Jean THOMAS":
 
 ```
 $ dmesg
-(...)
+[...]
 [55444.904830] usb 1-3: new full-speed USB device number 12 using xhci_hcd
 [55445.033099] usb 1-3: New USB device found, idVendor=1209, idProduct=c0ca, bcdDevice= 1.10
 [55445.033105] usb 1-3: New USB device strings: Mfr=1, Product=2, SerialNumber=3
@@ -52,10 +52,13 @@ $ dmesg
 [55445.033114] usb 1-3: SerialNumber: 55FF6E064980515631491787
 ```
 
+Older versions of DirtyJTAG reported "DirtyJTAG" as the manufacturer, this bug has since been fixed.
+
 ## Some docs
 
  * [Compiling DirtyJTAG yourself](docs/building-dirtyjtag.md)
  * [Validate your DirtyJTAG cable with JTAG targets](docs/jtag-validation.md)
+ * [Fixing STM32F1xx flash protection issues](docs/stm32f1-flash-protection.md)
 
 ## Inspiration & links
 
