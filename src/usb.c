@@ -72,7 +72,9 @@ static void usb_rx_callback(usbd_device *usbd_dev, const usbd_transfer *transfer
 static void usb_tx_callback(usbd_device *usbd_dev, const usbd_transfer *transfer,
 			    usbd_transfer_status status, usbd_urb_id urb_id);
 
-uint8_t usb_buffer[DIRTYJTAG_USB_BUFFER_SIZE];
+typedef uint8_t usb_buffer[DIRTYJTAG_USB_BUFFER_SIZE];
+usb_buffer tx_usb_buffer;
+usb_buffer rx_usb_buffer[2];
 
 static const struct usb_string_descriptor string_lang_list = {
 	.bLength = USB_DT_STRING_SIZE(1),
@@ -268,7 +270,7 @@ void usb_send(usbd_device *usbd_dev, uint8_t *sent_buffer, uint8_t sent_size) {
     .ep_addr = DIRTYJTAG_WRITE_ENDPOINT,
     .ep_size = DIRTYJTAG_USB_BUFFER_SIZE,
     .ep_interval = USBD_INTERVAL_NA,
-    .buffer = usb_buffer,
+    .buffer = tx_usb_buffer,
     .length = sent_size,
     .flags = USBD_FLAG_SHORT_PACKET,
     .timeout = USBD_TIMEOUT_NEVER,
@@ -277,10 +279,12 @@ void usb_send(usbd_device *usbd_dev, uint8_t *sent_buffer, uint8_t sent_size) {
 
   /* Packets are copied into a buffer because the operation
      is done asynchronously */
-  memcpy(usb_buffer, sent_buffer, sent_size);
+  memcpy(tx_usb_buffer, sent_buffer, sent_size);
   
   usbd_transfer_submit(usbd_dev, &transfer);
 }
+
+static uint8_t submit_buffer_index = 0; 
 
 static void usb_prepare_rx(usbd_device *usbd_dev) {
   const usbd_transfer transfer = {
@@ -288,7 +292,7 @@ static void usb_prepare_rx(usbd_device *usbd_dev) {
     .ep_addr = DIRTYJTAG_READ_ENDPOINT,
     .ep_size = DIRTYJTAG_USB_BUFFER_SIZE,
     .ep_interval = USBD_INTERVAL_NA,
-    .buffer = usb_buffer,
+    .buffer = rx_usb_buffer[submit_buffer_index],
     .length = DIRTYJTAG_USB_BUFFER_SIZE,
     .flags = USBD_FLAG_SHORT_PACKET,
     .timeout = USBD_TIMEOUT_NEVER,
@@ -296,6 +300,7 @@ static void usb_prepare_rx(usbd_device *usbd_dev) {
   };
 
   usbd_transfer_submit(usbd_dev, &transfer);
+  submit_buffer_index ^= 1;
 }
 
 static void usb_rx_callback(usbd_device *usbd_dev, const usbd_transfer *transfer,
@@ -304,9 +309,8 @@ static void usb_rx_callback(usbd_device *usbd_dev, const usbd_transfer *transfer
   
   if (status == USBD_SUCCESS) {
     if (transfer->transferred) {
-      if (cmd_handle(usbd_dev, transfer)) {
-	usb_prepare_rx(usbd_dev);
-      }
+      usb_prepare_rx(usbd_dev);
+      cmd_handle(usbd_dev, transfer);
     } else {
       usbd_transfer_submit(usbd_dev, transfer); /* re-submit */
     }
@@ -317,8 +321,6 @@ static void usb_tx_callback(usbd_device *usbd_dev, const usbd_transfer *transfer
 			    usbd_transfer_status status, usbd_urb_id urb_id) {
   (void)urb_id;
   (void)transfer;
-
-  if (status == USBD_SUCCESS) {
-    usb_prepare_rx(usbd_dev);
-  }
+  (void)usbd_dev;
+  (void)status;
 }
