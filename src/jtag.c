@@ -3,17 +3,9 @@
 #include <unicore-mx/stm32/gpio.h>
 #include <unicore-mx/stm32/timer.h>
 #include <unicore-mx/cm3/nvic.h>
+#include <unicore-mx/stm32/spi.h>
 
 #include "jtag.h"
-
-#define F_CPU 72000000UL
-
-#define HW_stlinkv2 0
-#define HW_stlinkv2dfu 0
-#define HW_bluepill 1
-#define HW_olimexstm32h103 1
-#define HW_baite 2
-#define HW_stlinkv2white 3
 
 #if PLATFORM == HW_stlinkv2 /* Chinese ST-LinkV2 clone */
 
@@ -66,13 +58,13 @@
 #else /* Blue Pill platform (default) */
 
 #define JTAG_PORT_TDI GPIOA
-#define JTAG_PIN_TDI GPIO0
+#define JTAG_PIN_TDI GPIO_SPI1_MOSI       /* PA7 */
 
 #define JTAG_PORT_TDO GPIOA
-#define JTAG_PIN_TDO GPIO1
+#define JTAG_PIN_TDO GPIO_SPI1_MISO       /* PA6 */
 
 #define JTAG_PORT_TCK GPIOA
-#define JTAG_PIN_TCK GPIO2
+#define JTAG_PIN_TCK GPIO_SPI1_SCK        /* PA5 */
 
 #define JTAG_PORT_TMS GPIOA
 #define JTAG_PIN_TMS GPIO3
@@ -81,7 +73,7 @@
 #define JTAG_PIN_TRST GPIO4
 
 #define JTAG_PORT_SRST GPIOA
-#define JTAG_PIN_SRST GPIO5
+#define JTAG_PIN_SRST GPIO2
 
 #endif
 
@@ -94,6 +86,7 @@
 
 void jtag_init(void) {
   /* GPIO configuration */
+
   gpio_set_mode(JTAG_PORT_TCK,
 		GPIO_MODE_OUTPUT_50_MHZ,
 		GPIO_CNF_OUTPUT_PUSHPULL,
@@ -102,14 +95,14 @@ void jtag_init(void) {
 		GPIO_MODE_OUTPUT_50_MHZ,
 		GPIO_CNF_OUTPUT_PUSHPULL,
 		JTAG_PIN_TDI);
-  gpio_set_mode(JTAG_PORT_TMS,
-		GPIO_MODE_OUTPUT_50_MHZ,
-		GPIO_CNF_OUTPUT_PUSHPULL,
-		JTAG_PIN_TMS);
   gpio_set_mode(JTAG_PORT_TDO,
 		GPIO_MODE_INPUT,
 		GPIO_CNF_INPUT_PULL_UPDOWN,
 		JTAG_PIN_TDO);
+  gpio_set_mode(JTAG_PORT_TMS,
+		GPIO_MODE_OUTPUT_50_MHZ,
+		GPIO_CNF_OUTPUT_PUSHPULL,
+		JTAG_PIN_TMS);
 #ifdef JTAG_PORT_SRST
   gpio_set_mode(JTAG_PORT_SRST,
 		GPIO_MODE_OUTPUT_50_MHZ,
@@ -143,6 +136,15 @@ void jtag_init(void) {
   /* Set pull-down on TDO */
   gpio_clear(JTAG_PORT_TDO, JTAG_PIN_TDO);
 
+#if USE_SPI1
+  /* SPI1 init */
+  spi_reset(SPI1);
+  spi_init_master(SPI1, SPI_CR1_BAUDRATE_FPCLK_DIV_16, SPI_CR1_CPOL_CLK_TO_0_WHEN_IDLE, SPI_CR1_CPHA_CLK_TRANSITION_1,
+                  SPI_CR1_DFF_8BIT, SPI_CR1_MSBFIRST);
+  spi_enable_software_slave_management(SPI1);
+  spi_set_nss_high(SPI1);
+  spi_enable(SPI1);
+#endif
   /* TIMER2 init */
   timer_reset(TIM2);
 
@@ -166,6 +168,8 @@ void jtag_init(void) {
   timer_enable_counter(TIM2);
 }
 
+bool max_frequency = true; //default is higest speed.
+
 void jtag_set_frequency(uint32_t frequency) {
   /* Ensure that the frequency is within specs */
   if (frequency == 0) {
@@ -178,10 +182,15 @@ void jtag_set_frequency(uint32_t frequency) {
 
   timer_set_prescaler(TIM2, 0);
   if (frequency == 1500)
+  {
     timer_set_period(TIM2, 1);
+  }
   else
+  {
     timer_set_period(TIM2, F_CPU/(2*frequency*1000));
+  }
   timer_enable_counter(TIM2);
+  max_frequency = (frequency == 1500);
 }
 
 void jtag_set_tck(uint8_t value) {
@@ -236,7 +245,11 @@ void jtag_set_srst(uint8_t value) {
 #endif
 }
 
-void jtag_transfer(uint8_t length, const uint8_t *in, uint8_t *out) {
+
+
+
+
+void jtag_transfer_internal(uint16_t length, const uint8_t *in, uint8_t *out) {
   uint32_t xfer_length, xfer_i;
   const uint8_t *xfer_in;
   uint8_t *xfer_out;
@@ -247,36 +260,72 @@ void jtag_transfer(uint8_t length, const uint8_t *in, uint8_t *out) {
   xfer_i = 0;
   xfer_in = in;
   xfer_out = out;
- 
-  timer_set_counter(TIM2,0);
-  while (xfer_i < xfer_length)
+  if (max_frequency)
   {
-    uint8_t bitmask;
+    while (xfer_i < xfer_length)
+    {
+      uint8_t bitmask;
+      bitmask = 0x80 >> (xfer_i%8) ;
+
+      if (xfer_in[xfer_i/8] & bitmask) {
+        GPIO_BSRR(JTAG_PORT_TDI) = JTAG_PIN_TDI;
+        GPIO_BSRR(JTAG_PORT_TDI) = JTAG_PIN_TDI;
+      } else {
+        GPIO_BSRR(JTAG_PORT_TDI) = JTAG_PIN_TDI << 16;
+        GPIO_BSRR(JTAG_PORT_TDI) = JTAG_PIN_TDI << 16;
+      }
+
+      GPIO_BSRR(JTAG_PORT_TCK) = JTAG_PIN_TCK;
+
+      if (GPIO_IDR(JTAG_PORT_TDO) & JTAG_PIN_TDO) {
+        xfer_out[xfer_i/8] |= bitmask;
+      }
+
+      xfer_i++;
+
+
+      GPIO_BSRR(JTAG_PORT_TCK) = JTAG_PIN_TCK << 16;
+      
+    }
+  }
+  else 
+  {
+    timer_set_counter(TIM2,0);
     TIM_SR(TIM2) = ~TIM_SR_UIF;
 
-    bitmask = 0x80 >> (xfer_i%8) ;
+    while (xfer_i < xfer_length)
+    {
+      uint8_t bitmask;
 
-    if (xfer_in[xfer_i/8] & bitmask) {
-      GPIO_BSRR(JTAG_PORT_TDI) = JTAG_PIN_TDI;
-    } else {
-      GPIO_BSRR(JTAG_PORT_TDI) = JTAG_PIN_TDI << 16;
-    }
+      bitmask = 0x80 >> (xfer_i%8) ;
 
-    GPIO_BSRR(JTAG_PORT_TCK) = JTAG_PIN_TCK;
+      if (xfer_in[xfer_i/8] & bitmask) {
+        GPIO_BSRR(JTAG_PORT_TDI) = JTAG_PIN_TDI;
+      } else {
+        GPIO_BSRR(JTAG_PORT_TDI) = JTAG_PIN_TDI << 16;
+      }
 
-    while (!(TIM_SR(TIM2) & TIM_SR_UIF));
-    TIM_SR(TIM2) = ~TIM_SR_UIF;
+      while (!(TIM_SR(TIM2) & TIM_SR_UIF));
+      TIM_SR(TIM2) = ~TIM_SR_UIF;
 
-    if (GPIO_IDR(JTAG_PORT_TDO) & JTAG_PIN_TDO) {
-      xfer_out[xfer_i/8] |= bitmask;
-    }
+      GPIO_BSRR(JTAG_PORT_TCK) = JTAG_PIN_TCK;
 
-    GPIO_BSRR(JTAG_PORT_TCK) = JTAG_PIN_TCK << 16;
-   
-    xfer_i++;
+      while (!(TIM_SR(TIM2) & TIM_SR_UIF));
+      TIM_SR(TIM2) = ~TIM_SR_UIF;
+
+      if (GPIO_IDR(JTAG_PORT_TDO) & JTAG_PIN_TDO) {
+        xfer_out[xfer_i/8] |= bitmask;
+      }
+
+      xfer_i++;
+
+      GPIO_BSRR(JTAG_PORT_TCK) = JTAG_PIN_TCK << 16;
     
-    while (!(TIM_SR(TIM2) & TIM_SR_UIF));
 
+      
+      
+
+    }
   }
 
 }
@@ -285,15 +334,82 @@ void jtag_strobe(uint8_t pulses, bool tms, bool tdi) {
   /* Set TMS state */
   jtag_set_tms(tms);
   jtag_set_tdi(tdi);
-  timer_set_counter(TIM2,0);
-  while (pulses)
+  if (max_frequency)
   {
-    TIM_SR(TIM2) = ~TIM_SR_UIF;
-    GPIO_BSRR(JTAG_PORT_TCK) = JTAG_PIN_TCK;
-    while (!(TIM_SR(TIM2) & TIM_SR_UIF));
-    TIM_SR(TIM2) = ~TIM_SR_UIF;
-    GPIO_BSRR(JTAG_PORT_TCK) = JTAG_PIN_TCK << 16;
-    pulses--;
-    while (!(TIM_SR(TIM2) & TIM_SR_UIF));
+    while (pulses)
+    {
+      //double the writes to slow down the clock rate
+      GPIO_BSRR(JTAG_PORT_TCK) = JTAG_PIN_TCK;
+      GPIO_BSRR(JTAG_PORT_TCK) = JTAG_PIN_TCK;
+      GPIO_BSRR(JTAG_PORT_TCK) = JTAG_PIN_TCK << 16;
+      GPIO_BSRR(JTAG_PORT_TCK) = JTAG_PIN_TCK << 16;
+      pulses--;
+    }
+  }
+  else
+  {
+    timer_set_counter(TIM2,0);
+    while (pulses)
+    {
+      TIM_SR(TIM2) = ~TIM_SR_UIF;
+      GPIO_BSRR(JTAG_PORT_TCK) = JTAG_PIN_TCK;
+      while (!(TIM_SR(TIM2) & TIM_SR_UIF));
+      TIM_SR(TIM2) = ~TIM_SR_UIF;
+      GPIO_BSRR(JTAG_PORT_TCK) = JTAG_PIN_TCK << 16;
+      pulses--;
+      while (!(TIM_SR(TIM2) & TIM_SR_UIF));
+    }
   }
 }
+
+#if USE_SPI1
+void jtag_transfer(uint16_t length, const uint8_t *in, uint8_t *out) {
+  uint32_t byte_length = max_frequency ? length/8 : 0;
+  uint16_t remaining_length = max_frequency ? length & 7 : length;
+  uint32_t xfer_in_i = 0;
+  uint32_t xfer_out_i = 0;
+
+  if (max_frequency)
+  {
+    //set the pins in SPI mode
+    gpio_set_mode(JTAG_PORT_TCK,
+      GPIO_MODE_OUTPUT_50_MHZ,
+      GPIO_CNF_OUTPUT_ALTFN_PUSHPULL,
+      JTAG_PIN_TCK | JTAG_PIN_TDI);
+    
+    while (xfer_out_i < byte_length)
+    {
+
+      /* if the transmit reg is empty, push a byte */
+      /* this should make the transfer continuous  */ 
+      if ((SPI_SR(SPI1) & SPI_SR_TXE) && (xfer_in_i < byte_length))
+      {
+        SPI_DR(SPI1) = in[xfer_in_i++];
+      }
+      /* Wait for received byte */
+      if ((SPI_SR(SPI1) & SPI_SR_RXNE))
+      {
+        /* Read the data */
+        out[xfer_out_i++] = SPI_DR(SPI1);
+      }
+
+    }
+    
+    //set pins in GPIO mode
+    gpio_set_mode(JTAG_PORT_TCK,
+      GPIO_MODE_OUTPUT_50_MHZ,
+      GPIO_CNF_OUTPUT_PUSHPULL,
+      JTAG_PIN_TCK | JTAG_PIN_TDI);
+  }
+  
+  if (remaining_length)
+    jtag_transfer_internal(remaining_length, &in[byte_length], &out[byte_length]);
+}
+
+#else
+void jtag_transfer(uint16_t length, const uint8_t *in, uint8_t *out) {
+  jtag_transfer_internal(length, in, out);
+}
+
+
+#endif
