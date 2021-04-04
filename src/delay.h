@@ -22,7 +22,7 @@
 #define _DELAY_F_CPU 72000000ULL
 
 /**
- * @brief Initialises 
+ * @brief Initialises delay peripheral
  *
  * Halts code execution for a specified amount of time
  * expressed in microseconds. The function was copied
