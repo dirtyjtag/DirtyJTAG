@@ -223,8 +223,6 @@ static void cmd_xfer(usbd_device *usbd_dev, const uint8_t *commands, bool extend
   }
 }
 
-
-
 static void cmd_setsig(const uint8_t *commands) {
   uint8_t signal_mask, signal_status;
 

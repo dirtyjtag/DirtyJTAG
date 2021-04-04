@@ -266,10 +266,6 @@ void jtag_set_srst(uint8_t value) {
 #endif
 }
 
-
-
-
-
 void jtag_transfer_internal(uint16_t length, const uint8_t *in, uint8_t *out) {
   uint32_t xfer_length, xfer_i;
   const uint8_t *xfer_in;
