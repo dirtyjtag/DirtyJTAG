@@ -99,8 +99,9 @@ void jtag_transfer(uint16_t length, const uint8_t *in,
  * @param pulses Number of clock pulses
  * @param tms Logic state of TMS
  * @param tdi Logic state of TDI
+ * @return Last TDO state
  */
-void jtag_strobe(uint8_t pulses, bool tms, bool tdi);
+bool jtag_strobe(uint8_t pulses, bool tms, bool tdi);
 
 #define F_CPU 72000000UL
 #define HW_stlinkv2 0

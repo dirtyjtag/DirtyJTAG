@@ -40,8 +40,11 @@ enum CommandIdentifier {
 };
 
 enum CommandModifier {
+  // CMD_XFER
   NO_READ = 0x80,
-  EXTEND_LENGTH = 0x40
+  EXTEND_LENGTH = 0x40,
+  // CMD_CLK
+  READOUT = 0x80,
 };
 
 enum SignalIdentifier {
@@ -108,10 +111,11 @@ static void cmd_getsig(usbd_device *usbd_dev);
  *
  * CMD_CLK sends clock pulses with specific TMS and TDI state.
  *
+ * @param usbd_dev USB device
  * @param commands Command data
+ * @param readout Enable TDO readout
  */
-static void cmd_clk(const uint8_t *commands);
-
+ static void cmd_clk(usbd_device *usbd_dev, const uint8_t *commands, bool readout);
 
 uint8_t cmd_handle(usbd_device *usbd_dev, const usbd_transfer *transfer) {
   uint8_t *commands= (uint8_t*)transfer->buffer;
@@ -143,8 +147,12 @@ uint8_t cmd_handle(usbd_device *usbd_dev, const usbd_transfer *transfer) {
       break;
 
     case CMD_CLK:
-      cmd_clk(commands);
-      commands += 2;
+      cmd_clk(usbd_dev, commands, !!(*commands & READOUT));
+      if (*commands & READOUT) {
+        return 0;
+      } else {
+        commands += 2;
+      }
       break;
       
     default:
@@ -231,11 +239,15 @@ static void cmd_getsig(usbd_device *usbd_dev) {
   usb_send(usbd_dev, &signal_status, 1);
 }
 
-static void cmd_clk(const uint8_t *commands) {
+static void cmd_clk(usbd_device *usbd_dev, const uint8_t *commands, bool readout) {
   uint8_t signals, clk_pulses;
 
   signals = commands[1];
   clk_pulses = commands[2];
 
-  jtag_strobe(clk_pulses, signals & SIG_TMS, signals & SIG_TDI);
+  uint8_t readout_val = jtag_strobe(clk_pulses, signals & SIG_TMS, signals & SIG_TDI);
+
+  if (readout) {
+    usb_send(usbd_dev, &readout_val, 1);
+  }
 }
