@@ -2,7 +2,7 @@
 
 ## Manual build
 
-In order to compile DirtyJTAG, you will need the following software :
+In order to compile DirtyJTAG, you will need the following software:
 
  * git
  * ARM toolchain (I'm using Fedora's `arm-none-eabi-gcc-cs`/`arm-none-eabi-newline` packages)
@@ -15,21 +15,33 @@ git clone --recursive https://github.com/jeanthom/dirtyjtag
 cd dirtyjtag
 ```
 
-Then you can build the firmware :
+Then you can build all the firmware versions :
 
 ```
-make PLATFORM=bluepill
+make
 ```
-
-Currently there are two platforms :
-
- * bluepill : Default build setting
- * stlinkv2 : Chinese ST-Link clone with specific pinout (the one that looks like a USB key)
- * stlinkv2dfu : Same as above but can be loaded by the bootloader (unsupported, known to be buggy)
- * olimexstm32h103 : STM32F103 board from Olimex
- * baite : "Baite" ST-Link dongle 
 
 Once the build is completed, your freshly compiled firmware will be available in `src/` as a binary file.
+
+If you only want to build a specific configuration of DirtyJTAG, directly call the right Makefile with the correct parameters for the platform and the bootloader type:
+
+```
+make -f Makefile.stm32f1 PLATFORM=bluepill LOADER=noloader
+```
+
+`PLATFORM` could be any of the following:
+
+ * `bluepill`
+ * `stlinkv2`
+ * `stlinkv2white`
+ * `baite`
+ * `olimexstm32h103`
+
+`LOADER` could be any of the following:
+
+ * `noloader`: No bootloader
+ * `loader2k`: Bootloader is occupying 0x0-0x2000, DirtyJTAG starts at 0x2000 offset
+ * `loader2k`: Bootloader is occupying 0x0-0x4000, DirtyJTAG starts at 0x4000 offset
 
 ## Docker build
 
