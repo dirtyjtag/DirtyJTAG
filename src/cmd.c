@@ -278,11 +278,10 @@ static void cmd_clk(usbd_device *usbd_dev, const uint8_t *commands, bool readout
   signals = commands[1];
   clk_pulses = commands[2];
 
-  jtag_strobe(clk_pulses, signals & SIG_TMS, signals & SIG_TDI);
+  uint8_t readout_val = jtag_strobe(clk_pulses, signals & SIG_TMS, signals & SIG_TDI);
 
   if (readout) {
-    uint8_t signal_status = jtag_get_tdo();
-    usb_send(usbd_dev, &signal_status, 1);
+    usb_send(usbd_dev, &readout_val, 1);
   }
 }
 
