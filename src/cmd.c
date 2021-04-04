@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2017 Jean THOMAS.
+  Copyright (c) 2017-2021 The DirtyJTAG authors.
 
   Permission is hereby granted, free of charge, to any person obtaining
   a copy of this software and associated documentation files (the "Software"),
