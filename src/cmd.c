@@ -146,9 +146,6 @@ uint8_t cmd_handle(usbd_device *usbd_dev, const usbd_transfer *transfer) {
       break;
 
     case CMD_XFER:
-    case CMD_XFER|NO_READ:
-    case CMD_XFER|EXTEND_LENGTH:
-    case CMD_XFER|NO_READ|EXTEND_LENGTH:
       cmd_xfer(usbd_dev, commands, *commands & EXTEND_LENGTH, *commands & NO_READ);
       return !!(*commands & NO_READ);
       break;
