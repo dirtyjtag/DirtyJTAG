@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# escape-bootloader.py sends the right command to ST's bootloader to run the
+# main application
 
 import usb
 
