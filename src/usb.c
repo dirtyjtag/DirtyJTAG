@@ -1,6 +1,6 @@
 /*
   Copyright (c) 2017 Jean THOMAS.
-  
+
   Permission is hereby granted, free of charge, to any person obtaining
   a copy of this software and associated documentation files (the "Software"),
   to deal in the Software without restriction, including without limitation
@@ -9,7 +9,7 @@
   is furnished to do so, subject to the following conditions:
   The above copyright notice and this permission notice shall be included in
   all copies or substantial portions of the Software.
-  
+
   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
   OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -33,7 +33,7 @@
 
 /**
  * @brief Registers the callback for incomming USB packet
- * 
+ *
  * This function registers the callback which be called when
  * an incomming USB packet arrives. It must be called each time
  * you want to receive a USB packet.
@@ -136,7 +136,7 @@ const struct __attribute__((packed)) {
     .bmAttributes = 0x80,
     .bMaxPower = 0x32, /* 100mA current consumption */
   },
-  
+
   .iface = {
     .bLength = USB_DT_INTERFACE_SIZE,
     .bDescriptorType = USB_DT_INTERFACE,
@@ -148,7 +148,7 @@ const struct __attribute__((packed)) {
     .bInterfaceProtocol = 0,
     .iInterface = 0,
   },
-  
+
   .endp = {
     {
       .bLength = USB_DT_ENDPOINT_SIZE,
@@ -216,7 +216,7 @@ void usb_read_serial(void) {
 static void usb_set_config(usbd_device *usbd_dev,
 			   const struct usb_config_descriptor *cfg) {
   (void)cfg;
-  
+
   usbd_ep_prepare(usbd_dev, DIRTYJTAG_READ_ENDPOINT, USBD_EP_BULK, 64,
 		  USBD_INTERVAL_NA, USBD_EP_NONE);
   usbd_ep_prepare(usbd_dev, DIRTYJTAG_WRITE_ENDPOINT, USBD_EP_BULK, 64,
@@ -231,7 +231,7 @@ static void usb_control_request(usbd_device *usbd_dev, uint8_t ep,
 
   const uint8_t bmReqMask = USB_REQ_TYPE_TYPE | USB_REQ_TYPE_RECIPIENT;
   const uint8_t bmReqVal = USB_REQ_TYPE_CLASS | USB_REQ_TYPE_INTERFACE;
-  
+
   if ((setup_data->bmRequestType & bmReqMask) != bmReqVal) {
     /* Pass on to usb stack internal */
     usbd_ep0_setup(usbd_dev, setup_data);
@@ -250,7 +250,7 @@ void usb_init(void) {
   usbd_dev = usbd_init(USBD_STM32_FSDEV, NULL, &info);
   usbd_register_set_config_callback(usbd_dev, usb_set_config);
   usbd_register_setup_callback(usbd_dev, usb_control_request);
-  
+
   while (1) {
     usbd_poll(usbd_dev, 0);
   }
@@ -260,7 +260,7 @@ void usb_reenumerate(void) {
   gpio_set_mode(GPIOA, GPIO_MODE_OUTPUT_2_MHZ,
 		GPIO_CNF_OUTPUT_OPENDRAIN, GPIO12);
   gpio_clear(GPIOA, GPIO12);
-  
+
   delay_us(20000);
 }
 
@@ -280,11 +280,11 @@ void usb_send(usbd_device *usbd_dev, uint8_t *sent_buffer, uint8_t sent_size) {
   /* Packets are copied into a buffer because the operation
      is done asynchronously */
   memcpy(tx_usb_buffer, sent_buffer, sent_size);
-  
+
   usbd_transfer_submit(usbd_dev, &transfer);
 }
 
-static uint8_t submit_buffer_index = 0; 
+static uint8_t submit_buffer_index = 0;
 
 static void usb_prepare_rx(usbd_device *usbd_dev) {
   const usbd_transfer transfer = {
@@ -306,7 +306,7 @@ static void usb_prepare_rx(usbd_device *usbd_dev) {
 static void usb_rx_callback(usbd_device *usbd_dev, const usbd_transfer *transfer,
 			    usbd_transfer_status status, usbd_urb_id urb_id) {
   (void)urb_id;
-  
+
   if (status == USBD_SUCCESS) {
     if (transfer->transferred) {
       usb_prepare_rx(usbd_dev);
@@ -323,7 +323,4 @@ static void usb_tx_callback(usbd_device *usbd_dev, const usbd_transfer *transfer
   (void)transfer;
   (void)usbd_dev;
   (void)status;
-  // if (status == USBD_SUCCESS) {
-  //   usb_prepare_rx(usbd_dev);
-  // }
 }

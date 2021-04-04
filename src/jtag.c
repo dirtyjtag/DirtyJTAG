@@ -285,10 +285,9 @@ void jtag_transfer_internal(uint16_t length, const uint8_t *in, uint8_t *out) {
 
 
       GPIO_BSRR(JTAG_PORT_TCK) = JTAG_PIN_TCK << 16;
-      
     }
   }
-  else 
+  else
   {
     timer_set_counter(TIM2,0);
     TIM_SR(TIM2) = ~TIM_SR_UIF;
@@ -320,11 +319,6 @@ void jtag_transfer_internal(uint16_t length, const uint8_t *in, uint8_t *out) {
       xfer_i++;
 
       GPIO_BSRR(JTAG_PORT_TCK) = JTAG_PIN_TCK << 16;
-    
-
-      
-      
-
     }
   }
 
@@ -378,12 +372,11 @@ void jtag_transfer(uint16_t length, const uint8_t *in, uint8_t *out) {
       GPIO_MODE_OUTPUT_50_MHZ,
       GPIO_CNF_OUTPUT_ALTFN_PUSHPULL,
       JTAG_PIN_TCK | JTAG_PIN_TDI);
-    
     while (xfer_out_i < byte_length)
     {
 
       /* if the transmit reg is empty, push a byte */
-      /* this should make the transfer continuous  */ 
+      /* this should make the transfer continuous  */
       if ((SPI_SR(SPI1) & SPI_SR_TXE) && (xfer_in_i < byte_length))
       {
         SPI_DR(SPI1) = in[xfer_in_i++];
@@ -396,16 +389,16 @@ void jtag_transfer(uint16_t length, const uint8_t *in, uint8_t *out) {
       }
 
     }
-    
     //set pins in GPIO mode
     gpio_set_mode(JTAG_PORT_TCK,
       GPIO_MODE_OUTPUT_50_MHZ,
       GPIO_CNF_OUTPUT_PUSHPULL,
       JTAG_PIN_TCK | JTAG_PIN_TDI);
   }
-  
-  if (remaining_length)
+
+  if (remaining_length) {
     jtag_transfer_internal(remaining_length, &in[byte_length], &out[byte_length]);
+  }
 }
 
 #else

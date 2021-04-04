@@ -1,6 +1,6 @@
 /*
   Copyright (c) 2017 Jean THOMAS.
-  
+
   Permission is hereby granted, free of charge, to any person obtaining
   a copy of this software and associated documentation files (the "Software"),
   to deal in the Software without restriction, including without limitation
@@ -9,7 +9,7 @@
   is furnished to do so, subject to the following conditions:
   The above copyright notice and this permission notice shall be included in
   all copies or substantial portions of the Software.
-  
+
   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
   OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -62,7 +62,7 @@ int main(void) {
 #endif
 
   delay_init();
-  
+
   /* Peripherals reset/init */
   rcc_periph_clock_enable(RCC_GPIOA);
   rcc_periph_clock_enable(RCC_GPIOB);
@@ -103,9 +103,9 @@ int main(void) {
                 GPIO_CNF_OUTPUT_PUSHPULL, GPIO9);
   gpio_clear(GPIOA, GPIO9);
 #endif
-  
+
   jtag_init();
   usb_init();
-  
+
   return 0;
 }
