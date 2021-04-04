@@ -341,27 +341,34 @@ void jtag_transfer_internal(uint16_t length, const uint8_t *in, uint8_t *out) {
 
 }
 
-void jtag_strobe(uint8_t pulses, bool tms, bool tdi) {
-  /* Set TMS state */
+bool jtag_strobe(uint8_t pulses, bool tms, bool tdi) {
+  bool ret;
+
+  // Set initial TDI/TMS state
   jtag_set_tms(tms);
   jtag_set_tdi(tdi);
-  if (max_frequency)
-  {
-    while (pulses)
-    {
+
+  if (!pulses) {
+    ret = jtag_get_tdo();
+  } else if (max_frequency) {
+    pulses--;
+    while (pulses) {
+      pulses--;
       //double the writes to slow down the clock rate
       GPIO_BSRR(JTAG_PORT_TCK) = JTAG_PIN_TCK;
       GPIO_BSRR(JTAG_PORT_TCK) = JTAG_PIN_TCK;
       GPIO_BSRR(JTAG_PORT_TCK) = JTAG_PIN_TCK << 16;
       GPIO_BSRR(JTAG_PORT_TCK) = JTAG_PIN_TCK << 16;
-      pulses--;
     }
-  }
-  else
-  {
+    GPIO_BSRR(JTAG_PORT_TCK) = JTAG_PIN_TCK;
+    GPIO_BSRR(JTAG_PORT_TCK) = JTAG_PIN_TCK;
+    ret = jtag_get_tdo();
+    GPIO_BSRR(JTAG_PORT_TCK) = JTAG_PIN_TCK << 16;
+    GPIO_BSRR(JTAG_PORT_TCK) = JTAG_PIN_TCK << 16;
+  } else {
+    pulses--;
     timer_set_counter(TIM2,0);
-    while (pulses)
-    {
+    while (pulses) {
       TIM_SR(TIM2) = ~TIM_SR_UIF;
       GPIO_BSRR(JTAG_PORT_TCK) = JTAG_PIN_TCK;
       while (!(TIM_SR(TIM2) & TIM_SR_UIF));
@@ -370,7 +377,16 @@ void jtag_strobe(uint8_t pulses, bool tms, bool tdi) {
       pulses--;
       while (!(TIM_SR(TIM2) & TIM_SR_UIF));
     }
+    TIM_SR(TIM2) = ~TIM_SR_UIF;
+    GPIO_BSRR(JTAG_PORT_TCK) = JTAG_PIN_TCK;
+    while (!(TIM_SR(TIM2) & TIM_SR_UIF));
+    TIM_SR(TIM2) = ~TIM_SR_UIF;
+    ret = jtag_get_tdo();
+    GPIO_BSRR(JTAG_PORT_TCK) = JTAG_PIN_TCK << 16;
+    while (!(TIM_SR(TIM2) & TIM_SR_UIF));
   }
+
+  return ret;
 }
 
 #if USE_SPI1
