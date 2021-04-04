@@ -24,7 +24,9 @@
 #include <string.h>
 #include <unicore-mx/usbd/usbd.h>
 #include <unicore-mx/stm32/gpio.h>
+#ifdef STM32F1
 #include <unicore-mx/stm32/f1/bkp.h>
+#endif
 #include <unicore-mx/cm3/scb.h>
 
 #include "jtag.h"
@@ -274,8 +276,12 @@ static void cmd_setvoltage(const uint8_t *commands) {
 }
 
 static void cmd_gotobootloader(void) {
+#ifdef STM32F1
   // Magic RTC values from dapboot
   BKP_DR1 = 0x4F42;
   BKP_DR2 = 0x544F;
   scb_reset_system();
+#else
+#warning "Command CMD_GOTOBOOTLOADER is not implemented for this platform."
+#endif
 }
