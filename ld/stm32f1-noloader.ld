@@ -1,4 +1,4 @@
-/* Generic linker script for STM32F103RBT6/STM32F103R8T6 */
+/* Generic STM32F1, no bootloader */
 MEMORY {
        rom (rx) : ORIGIN = 0x08000000, LENGTH = 128K
        ram (rwx) : ORIGIN = 0x20000000, LENGTH = 20K

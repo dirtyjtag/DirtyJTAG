@@ -43,23 +43,23 @@ int main(void) {
   /* Clock init */
   rcc_clock_setup_in_hse_8mhz_out_72mhz();
 
-  /* ST-Link v2 specific */
-#if PLATFORM == HW_stlinkv2dfu
-  /* Resetting IRQs */
-  clean_nvic();
+//   /* ST-Link v2 specific */
+// #if PLATFORM == HW_stlinkv2dfu
+//   /* Resetting IRQs */
+//   clean_nvic();
 
-  /* Resetting peripherals */
-  rcc_periph_reset_pulse(RST_TIM1);
-  rcc_periph_reset_pulse(RST_TIM2);
-  rcc_periph_reset_pulse(RST_TIM3);
-  rcc_periph_reset_pulse(RST_TIM4);
-  rcc_periph_reset_pulse(RST_AFIO);
-  rcc_periph_reset_pulse(RST_USB);
-  rcc_periph_reset_pulse(RST_SPI1);
+//   /* Resetting peripherals */
+//   rcc_periph_reset_pulse(RST_TIM1);
+//   rcc_periph_reset_pulse(RST_TIM2);
+//   rcc_periph_reset_pulse(RST_TIM3);
+//   rcc_periph_reset_pulse(RST_TIM4);
+//   rcc_periph_reset_pulse(RST_AFIO);
+//   rcc_periph_reset_pulse(RST_USB);
+//   rcc_periph_reset_pulse(RST_SPI1);
 
-  /* Disable watchdog */
-  IWDG_KR = 0;
-#endif
+//   /* Disable watchdog */
+//   IWDG_KR = 0;
+// #endif
 
   delay_init();
 
@@ -94,7 +94,7 @@ int main(void) {
     GPIO_CNF_OUTPUT_PUSHPULL, GPIO13);
   gpio_set(GPIOC, GPIO13);
   rcc_periph_clock_enable(RCC_SPI1);
-#elif PLATFORM == HW_stlinkv2 || PLATFORM == HW_stlinkv2dfu
+#elif PLATFORM == HW_stlinkv2
   gpio_set_mode(GPIOA, GPIO_MODE_OUTPUT_2_MHZ,
     GPIO_CNF_OUTPUT_PUSHPULL, GPIO9);
   gpio_set(GPIOA, GPIO9);
