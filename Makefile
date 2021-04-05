@@ -1,6 +1,11 @@
 MAKE := make
 
-all:
+all: stm32f1-builds
+
+unicore-mx/lib/libucmx_stm32f1.a:
+	$(MAKE) -C unicore-mx lib/stm32/f1
+
+stm32f1-builds:
 	$(MAKE) -f Makefile.stm32f1 PLATFORM=bluepill LOADER=noloader
 	$(MAKE) -f Makefile.stm32f1 PLATFORM=baite LOADER=noloader
 	$(MAKE) -f Makefile.stm32f1 PLATFORM=olimexstm32h103 LOADER=noloader
@@ -18,6 +23,7 @@ all:
 	$(MAKE) -f Makefile.stm32f1 PLATFORM=stlinkv2white LOADER=loader4k
 
 clean:
+	$(MAKE) -C unicore-mx clean
 	$(MAKE) -f Makefile.stm32f1 clean
 
-.PHONY: all clean
+.PHONY: all clean stm32f1-builds

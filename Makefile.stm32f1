@@ -40,22 +40,10 @@ AS := $(PREFIX)-as
 SIZE := $(PREFIX)-size
 OBJCOPY := $(PREFIX)-objcopy
 
-all: dirtyjtag
+all: src/dirtyjtag.$(PLATFORM).$(LOADER).elf src/dirtyjtag.$(PLATFORM).$(LOADER).bin
 
-clean: dirtyjtag-clean ucmx-clean
-
-dirtyjtag: src/dirtyjtag.$(PLATFORM).$(LOADER).elf src/dirtyjtag.$(PLATFORM).$(LOADER).bin
-
-#dirtyjtag-release: $(patsubst %, src/dirtyjtag.%.bin, $(SUPPORTED_PLATFORMS))
-
-dirtyjtag-clean:
+clean:
 	$(Q)$(RM) src/*.d src/*.o src/*.map src/*.bin src/*.elf *.bin *.elf
-
-ucmx:
-	$(Q)$(MAKE) -C $(UCMX_DIR) lib/stm32/f1
-
-ucmx-clean:
-	$(Q)$(MAKE) -C $(UCMX_DIR) clean
 
 %.bin: %.elf
 	$(Q)$(OBJCOPY) -Obinary $(*).elf $(*).bin
@@ -64,7 +52,7 @@ ucmx-clean:
 	$(Q)$(CC) $(LDFLAGS) $(ARCH_FLAGS) $(OBJS) $(LDLIBS) -o $(*).$(LOADER).elf
 	$(Q)$(SIZE) $(*).$(LOADER).elf
 
-%.$(PLATFORM).o: %.c | ucmx
+%.$(PLATFORM).o: %.c $(UCMX_LIB_DIR)/libucmx_stm32f1.a
 	$(Q)$(CC) $(CFLAGS) $(CPPFLAGS) $(ARCH_FLAGS) -o $@ -c $<
 
-.PHONY: clean dirtyjtag dirtyjtag-release dirtyjtag-clean ucmx ucmx-clean
+.PHONY: all clean
