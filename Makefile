@@ -5,7 +5,6 @@ all: stm32f1-builds
 unicore-mx/lib/libucmx_stm32f1.a:
 	$(MAKE) -C unicore-mx lib/stm32/f1
 
-stm32f1-builds:
 stm32f1-builds: unicore-mx/lib/libucmx_stm32f1.a
 	$(MAKE) -f Makefile.stm32f1 PLATFORM=bluepill LOADER=noloader
 	$(MAKE) -f Makefile.stm32f1 PLATFORM=baite LOADER=noloader
