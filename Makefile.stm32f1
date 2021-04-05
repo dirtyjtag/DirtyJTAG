@@ -1,11 +1,9 @@
-SUPPORTED_PLATFORMS = baite bluepill olimexstm32h103 stlinkv2 stlinkv2white
 PLATFORM ?= bluepill
 LOADER ?= noloader
 
 OBJS := src/dirtyjtag.$(PLATFORM).o src/jtag.$(PLATFORM).o src/usb.$(PLATFORM).o src/delay.$(PLATFORM).o src/cmd.$(PLATFORM).o
 
 PREFIX ?= arm-none-eabi
-TARGETS := stm32/f1
 DEFS += -DSTM32F1
 ARCH_FLAGS := -mthumb -mcpu=cortex-m3 -msoft-float -mfix-cortex-m3-ldrd
 LD_SCRIPT := ld/stm32f1-$(LOADER).ld
