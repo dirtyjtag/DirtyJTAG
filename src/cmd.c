@@ -208,8 +208,6 @@ static void cmd_freq(const uint8_t *commands) {
   jtag_set_frequency((commands[1] << 8) | commands[2]);
 }
 
-//static uint8_t output_buffer[64];
-
 static void cmd_xfer(usbd_device *usbd_dev, const uint8_t *commands, bool extend_length, bool no_read) {
   uint16_t transferred_bits;
   uint8_t output_buffer[64];
