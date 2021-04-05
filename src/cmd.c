@@ -25,6 +25,7 @@
 #include <unicore-mx/usbd/usbd.h>
 #include <unicore-mx/stm32/gpio.h>
 #ifdef STM32F1
+#include <unicore-mx/stm32/pwr.h>
 #include <unicore-mx/stm32/f1/bkp.h>
 #endif
 #include <unicore-mx/cm3/scb.h>
@@ -292,6 +293,7 @@ static void cmd_setvoltage(const uint8_t *commands) {
 static void cmd_gotobootloader(void) {
 #ifdef STM32F1
   // Magic RTC values from dapboot
+  pwr_disable_backup_domain_write_protect();
   BKP_DR1 = 0x4F42;
   BKP_DR2 = 0x544F;
   scb_reset_system();
