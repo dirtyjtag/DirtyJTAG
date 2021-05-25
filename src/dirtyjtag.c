@@ -1,6 +1,6 @@
 /*
-  Copyright (c) 2017 Jean THOMAS.
-  
+  Copyright (c) 2017-2021 The DirtyJTAG authors.
+
   Permission is hereby granted, free of charge, to any person obtaining
   a copy of this software and associated documentation files (the "Software"),
   to deal in the Software without restriction, including without limitation
@@ -9,7 +9,7 @@
   is furnished to do so, subject to the following conditions:
   The above copyright notice and this permission notice shall be included in
   all copies or substantial portions of the Software.
-  
+
   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
   OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -43,26 +43,26 @@ int main(void) {
   /* Clock init */
   rcc_clock_setup_in_hse_8mhz_out_72mhz();
 
-  /* ST-Link v2 specific */
-#if PLATFORM == HW_stlinkv2dfu
-  /* Resetting IRQs */
-  clean_nvic();
+//   /* ST-Link v2 specific */
+// #if PLATFORM == HW_stlinkv2dfu
+//   /* Resetting IRQs */
+//   clean_nvic();
 
-  /* Resetting peripherals */
-  rcc_periph_reset_pulse(RST_TIM1);
-  rcc_periph_reset_pulse(RST_TIM2);
-  rcc_periph_reset_pulse(RST_TIM3);
-  rcc_periph_reset_pulse(RST_TIM4);
-  rcc_periph_reset_pulse(RST_AFIO);
-  rcc_periph_reset_pulse(RST_USB);
-  rcc_periph_reset_pulse(RST_SPI1);
+//   /* Resetting peripherals */
+//   rcc_periph_reset_pulse(RST_TIM1);
+//   rcc_periph_reset_pulse(RST_TIM2);
+//   rcc_periph_reset_pulse(RST_TIM3);
+//   rcc_periph_reset_pulse(RST_TIM4);
+//   rcc_periph_reset_pulse(RST_AFIO);
+//   rcc_periph_reset_pulse(RST_USB);
+//   rcc_periph_reset_pulse(RST_SPI1);
 
-  /* Disable watchdog */
-  IWDG_KR = 0;
-#endif
+//   /* Disable watchdog */
+//   IWDG_KR = 0;
+// #endif
 
   delay_init();
-  
+
   /* Peripherals reset/init */
   rcc_periph_clock_enable(RCC_GPIOA);
   rcc_periph_clock_enable(RCC_GPIOB);
@@ -94,7 +94,7 @@ int main(void) {
     GPIO_CNF_OUTPUT_PUSHPULL, GPIO13);
   gpio_set(GPIOC, GPIO13);
   rcc_periph_clock_enable(RCC_SPI1);
-#elif PLATFORM == HW_stlinkv2 || PLATFORM == HW_stlinkv2dfu
+#elif PLATFORM == HW_stlinkv2
   gpio_set_mode(GPIOA, GPIO_MODE_OUTPUT_2_MHZ,
     GPIO_CNF_OUTPUT_PUSHPULL, GPIO9);
   gpio_set(GPIOA, GPIO9);
@@ -103,9 +103,9 @@ int main(void) {
                 GPIO_CNF_OUTPUT_PUSHPULL, GPIO9);
   gpio_clear(GPIOA, GPIO9);
 #endif
-  
+
   jtag_init();
   usb_init();
-  
+
   return 0;
 }

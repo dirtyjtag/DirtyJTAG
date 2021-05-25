@@ -1,6 +1,6 @@
 /*
-  Copyright (c) 2017 Jean THOMAS.
-  
+  Copyright (c) 2017-2021 The DirtyJTAG authors.
+
   Permission is hereby granted, free of charge, to any person obtaining
   a copy of this software and associated documentation files (the "Software"),
   to deal in the Software without restriction, including without limitation
@@ -9,7 +9,7 @@
   is furnished to do so, subject to the following conditions:
   The above copyright notice and this permission notice shall be included in
   all copies or substantial portions of the Software.
-  
+
   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
   OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -24,7 +24,10 @@
 #include <string.h>
 #include <unicore-mx/usbd/usbd.h>
 #include <unicore-mx/stm32/gpio.h>
+#ifdef STM32F1
+#include <unicore-mx/stm32/pwr.h>
 #include <unicore-mx/stm32/f1/bkp.h>
+#endif
 #include <unicore-mx/cm3/scb.h>
 
 #include "jtag.h"
@@ -44,8 +47,11 @@ enum CommandIdentifier {
 };
 
 enum CommandModifier {
+  // CMD_XFER
   NO_READ = 0x80,
-  EXTEND_LENGTH = 0x40
+  EXTEND_LENGTH = 0x40,
+  // CMD_CLK
+  READOUT = 0x80,
 };
 
 enum SignalIdentifier {
@@ -102,7 +108,7 @@ static void cmd_setsig(const uint8_t *commands);
  * @brief Handle CMD_GETSIG command
  *
  * CMD_GETSIG gets the current signal state.
- * 
+ *
  * @param usbd_dev USB device
  */
 static void cmd_getsig(usbd_device *usbd_dev);
@@ -112,9 +118,12 @@ static void cmd_getsig(usbd_device *usbd_dev);
  *
  * CMD_CLK sends clock pulses with specific TMS and TDI state.
  *
+ * @param usbd_dev USB device
  * @param commands Command data
+ * @param readout Enable TDO readout
  */
-static void cmd_clk(const uint8_t *commands);
+static void cmd_clk(usbd_device *usbd_dev, const uint8_t *commands, bool readout);
+
 /**
  * @brief Handle CMD_SETVOLTAGE command
  *
@@ -133,22 +142,19 @@ static void cmd_gotobootloader(void);
 
 uint8_t cmd_handle(usbd_device *usbd_dev, const usbd_transfer *transfer) {
   uint8_t *commands= (uint8_t*)transfer->buffer;
-  
+
   while (*commands != CMD_STOP) {
     switch ((*commands)&0x0F) {
     case CMD_INFO:
       cmd_info(usbd_dev);
       break;
-      
+
     case CMD_FREQ:
       cmd_freq(commands);
       commands += 2;
       break;
 
     case CMD_XFER:
-    case CMD_XFER|NO_READ:
-    case CMD_XFER|EXTEND_LENGTH:
-    case CMD_XFER|NO_READ|EXTEND_LENGTH:
       cmd_xfer(usbd_dev, commands, *commands & EXTEND_LENGTH, *commands & NO_READ);
       return !!(*commands & NO_READ);
       break;
@@ -164,10 +170,14 @@ uint8_t cmd_handle(usbd_device *usbd_dev, const usbd_transfer *transfer) {
       break;
 
     case CMD_CLK:
-      cmd_clk(commands);
-      commands += 2;
+      cmd_clk(usbd_dev, commands, !!(*commands & READOUT));
+      if (*commands & READOUT) {
+        return 0;
+      } else {
+        commands += 2;
+      }
       break;
-      
+
     case CMD_SETVOLTAGE:
       cmd_setvoltage(commands);
       commands += 1;
@@ -176,7 +186,7 @@ uint8_t cmd_handle(usbd_device *usbd_dev, const usbd_transfer *transfer) {
     case CMD_GOTOBOOTLOADER:
       cmd_gotobootloader();
       break;
-      
+
     default:
       return 1; /* Unsupported command, halt */
       break;
@@ -198,12 +208,10 @@ static void cmd_freq(const uint8_t *commands) {
   jtag_set_frequency((commands[1] << 8) | commands[2]);
 }
 
-//static uint8_t output_buffer[64];
-
 static void cmd_xfer(usbd_device *usbd_dev, const uint8_t *commands, bool extend_length, bool no_read) {
   uint16_t transferred_bits;
   uint8_t output_buffer[64];
-  
+
   /* Fill the output buffer with zeroes */
   if (!no_read) {
     memset(output_buffer, 0, sizeof(output_buffer));
@@ -226,8 +234,6 @@ static void cmd_xfer(usbd_device *usbd_dev, const uint8_t *commands, bool extend
   }
 }
 
-
-
 static void cmd_setsig(const uint8_t *commands) {
   uint8_t signal_mask, signal_status;
 
@@ -245,7 +251,7 @@ static void cmd_setsig(const uint8_t *commands) {
   if (signal_mask & SIG_TMS) {
     jtag_set_tms(signal_status & SIG_TMS);
   }
-  
+
   if (signal_mask & SIG_TRST) {
     jtag_set_trst(signal_status & SIG_TRST);
   }
@@ -257,7 +263,7 @@ static void cmd_setsig(const uint8_t *commands) {
 
 static void cmd_getsig(usbd_device *usbd_dev) {
   uint8_t signal_status = 0;
-  
+
   if (jtag_get_tdo()) {
     signal_status |= SIG_TDO;
   }
@@ -265,13 +271,17 @@ static void cmd_getsig(usbd_device *usbd_dev) {
   usb_send(usbd_dev, &signal_status, 1);
 }
 
-static void cmd_clk(const uint8_t *commands) {
+static void cmd_clk(usbd_device *usbd_dev, const uint8_t *commands, bool readout) {
   uint8_t signals, clk_pulses;
 
   signals = commands[1];
   clk_pulses = commands[2];
 
-  jtag_strobe(clk_pulses, signals & SIG_TMS, signals & SIG_TDI);
+  uint8_t readout_val = jtag_strobe(clk_pulses, signals & SIG_TMS, signals & SIG_TDI);
+
+  if (readout) {
+    usb_send(usbd_dev, &readout_val, 1);
+  }
 }
 
 static void cmd_setvoltage(const uint8_t *commands) {
@@ -279,8 +289,13 @@ static void cmd_setvoltage(const uint8_t *commands) {
 }
 
 static void cmd_gotobootloader(void) {
+#ifdef STM32F1
   // Magic RTC values from dapboot
+  pwr_disable_backup_domain_write_protect();
   BKP_DR1 = 0x4F42;
   BKP_DR2 = 0x544F;
   scb_reset_system();
+#else
+#warning "Command CMD_GOTOBOOTLOADER is not implemented for this platform."
+#endif
 }

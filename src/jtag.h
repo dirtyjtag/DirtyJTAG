@@ -1,6 +1,6 @@
 /*
-  Copyright (c) 2017 Jean THOMAS.
-  
+  Copyright (c) 2017-2021 The DirtyJTAG authors.
+
   Permission is hereby granted, free of charge, to any person obtaining
   a copy of this software and associated documentation files (the "Software"),
   to deal in the Software without restriction, including without limitation
@@ -9,7 +9,7 @@
   is furnished to do so, subject to the following conditions:
   The above copyright notice and this permission notice shall be included in
   all copies or substantial portions of the Software.
-  
+
   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
   OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -21,7 +21,7 @@
 
 /**
  * @brief Initialize JTAG
- * 
+ *
  * Set GPIO in correct state for JTAG operation
  */
 void jtag_init(void);
@@ -99,12 +99,12 @@ void jtag_transfer(uint16_t length, const uint8_t *in,
  * @param pulses Number of clock pulses
  * @param tms Logic state of TMS
  * @param tdi Logic state of TDI
+ * @return Last TDO state
  */
-void jtag_strobe(uint8_t pulses, bool tms, bool tdi);
+bool jtag_strobe(uint8_t pulses, bool tms, bool tdi);
 
 #define F_CPU 72000000UL
 #define HW_stlinkv2 0
-#define HW_stlinkv2dfu 0
 #define HW_bluepill 1
 #define HW_olimexstm32h103 1
 #define HW_baite 2
