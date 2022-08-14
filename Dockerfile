@@ -1,26 +1,20 @@
-FROM debian:jessie-slim
+FROM alpine:3.14 as build-stage
 MAINTAINER Benjamin Henrion <zoobab@gmail.com>
 LABEL Description="DirtyJTAG firmware for STM32 Bluepill board" 
 
-RUN DEBIAN_FRONTEND=noninteractive apt-get update -y -q && apt-get install -y -q sudo make python gcc-arm-none-eabi git-core libnewlib-arm-none-eabi
+RUN apk add --no-cache make python3 gcc-arm-none-eabi newlib-arm-none-eabi
+RUN ln -sf python3 /usr/bin/python
 
-ENV user dirtyjtag
-RUN useradd -d /home/$user -m -s /bin/bash $user
-RUN echo "$user ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/$user
-RUN chmod 0440 /etc/sudoers.d/$user
+ADD . /dirtyjtag
+WORKDIR /dirtyjtag
 
-USER $user
-WORKDIR /home/$user
-RUN mkdir -pv code
-COPY . ./code/
-RUN sudo chown $user.$user -R /home/$user/code
-WORKDIR /home/$user/code/
-RUN git submodule init
-RUN git submodule sync
-RUN git submodule update
 RUN make PLATFORM=bluepill
 RUN make PLATFORM=stlinkv2
 RUN make PLATFORM=stlinkv2dfu
 RUN make PLATFORM=baite
 RUN make PLATFORM=olimexstm32h103
 RUN make PLATFORM=stlinkv2white
+
+FROM scratch AS export-stage
+COPY --from=build-stage /dirtyjtag/src/dirtyjtag.*.bin /
+COPY --from=build-stage /dirtyjtag/src/dirtyjtag.*.elf /
