@@ -7,9 +7,7 @@ packages:
 sources:
   - https://github.com/jeanthom/dirtyjtag
 tasks:
-  - setup-system: |
-      ln -sf python3 /usr/bin/python
-  - setup-sources: |
+  - setup: |
       cd dirtyjtag
       git submodule init
       git submodule update
