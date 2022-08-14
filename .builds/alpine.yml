@@ -1,13 +1,15 @@
 image: alpine/edge
 packages:
-  - python2
+  - python3
   - make
   - gcc-arm-none-eabi
   - newlib-arm-none-eabi
 sources:
   - https://github.com/jeanthom/dirtyjtag
 tasks:
-  - setup: |
+  - setup-system: |
+      ln -sf python3 /usr/bin/python
+  - setup-sources: |
       cd dirtyjtag
       git submodule init
       git submodule update
