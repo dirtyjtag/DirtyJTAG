@@ -15,10 +15,10 @@ If you prefer OpenOCD to UrJTAG, I suggest using Zoobab's fork of Versaloon firm
 | ![Bluepill icon](docs/img/bluepill-128.jpg) | ![ST-Link v2 dongle](docs/img/stlinkv2-128.jpg)                                         | ![ST-Link v2](docs/img/stlink-white-128.jpg)  | ![Baite dongle](docs/img/baite-128.jpg) |
 | [Instructions](docs/install-bluepill.md)    | [Instructions](docs/install-stlinkv2-swd.md) | [Instructions](docs/install-stlinkv2white.md) | [Instructions](docs/install-baite.md)       |
 
-| Olimex STM32-H103                              |
-|:----------------------------------------------:|
-| ![STM32-H103 icon](docs/img/stm32h103-128.jpg) |
-| [Instructions](docs/install-stm32h103.md)      |
+| Olimex STM32-H103                              | Raspberry Pi Pico                                              |
+|:----------------------------------------------:|:--------------------------------------------------------------:|
+| ![STM32-H103 icon](docs/img/stm32h103-128.jpg) | ![Raspberry Pi Pico board](docs/img/pi-pico.jpg)               |
+| [Instructions](docs/install-stm32h103.md)      | [External project](https://github.com/phdussud/pico-dirtyJtag) |
 
 ## Software compatible with DirtyJTAG
 
