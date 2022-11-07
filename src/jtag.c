@@ -126,9 +126,9 @@ void jtag_init(void) {
 		JTAG_PIN_TMS);
 #ifdef JTAG_PORT_SRST
   gpio_set_mode(JTAG_PORT_SRST,
-		GPIO_MODE_OUTPUT_50_MHZ,
-		GPIO_CNF_OUTPUT_PUSHPULL,
-		JTAG_PIN_SRST);
+    GPIO_MODE_OUTPUT_50_MHZ,
+    GPIO_CNF_OUTPUT_OPENDRAIN,
+    JTAG_PIN_SRST);
 #endif
 #ifdef JTAG_PORT_TRST
   gpio_set_mode(JTAG_PORT_TRST,
