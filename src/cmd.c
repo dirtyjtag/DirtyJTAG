@@ -73,7 +73,7 @@ enum SignalIdentifier {
  *
  * @param usbd_dev USB device
  */
-static void cmd_info(usbd_device *usbd_dev);
+static uint32_t cmd_info(uint8_t *buffer);
 
 /**
  * @brief Handle CMD_FREQ command
@@ -93,7 +93,7 @@ static void cmd_freq(const uint8_t *commands);
  * @param usbd_dev USB device
  * @param commands Command data
  */
-static void cmd_xfer(usbd_device *usbd_dev, const uint8_t *commands, bool extend_length, bool no_read);
+static uint32_t cmd_xfer(const uint8_t *commands, bool extend_length, bool no_read, uint8_t *output_buffer);
 
 /**
  * @brief Handle CMD_SETSIG command
@@ -111,7 +111,7 @@ static void cmd_setsig(const uint8_t *commands);
  *
  * @param usbd_dev USB device
  */
-static void cmd_getsig(usbd_device *usbd_dev);
+static uint32_t cmd_getsig(uint8_t *output_buffer);
 
 /**
  * @brief Handle CMD_CLK command
@@ -122,7 +122,7 @@ static void cmd_getsig(usbd_device *usbd_dev);
  * @param commands Command data
  * @param readout Enable TDO readout
  */
-static void cmd_clk(usbd_device *usbd_dev, const uint8_t *commands, bool readout);
+static uint32_t cmd_clk(const uint8_t *commands, bool readout, uint8_t *output_buffer);
 
 /**
  * @brief Handle CMD_SETVOLTAGE command
@@ -140,44 +140,53 @@ static void cmd_setvoltage(const uint8_t *commands);
  */
 static void cmd_gotobootloader(void);
 
-uint8_t cmd_handle(usbd_device *usbd_dev, const usbd_transfer *transfer) {
-  uint8_t *commands= (uint8_t*)transfer->buffer;
+static uint8_t tx_buffer[64];
 
-  while (*commands != CMD_STOP) {
+uint8_t cmd_handle(usbd_device *usbd_dev, const usbd_transfer *transfer) {
+  uint8_t *rxbuf = (uint8_t *)transfer->buffer;
+  uint32_t count = transfer->transferred;
+  uint8_t *commands = rxbuf;
+  uint8_t *output_buffer = tx_buffer;
+
+  while ((commands < (rxbuf + count)) && (*commands != CMD_STOP))
+  {
     switch ((*commands)&0x0F) {
     case CMD_INFO:
-      cmd_info(usbd_dev);
+    {
+      uint32_t trbytes = cmd_info(output_buffer);
+      output_buffer += trbytes;
       break;
-
+    }
     case CMD_FREQ:
       cmd_freq(commands);
       commands += 2;
       break;
-
     case CMD_XFER:
-      cmd_xfer(usbd_dev, commands, *commands & EXTEND_LENGTH, *commands & NO_READ);
-      return !!(*commands & NO_READ);
+    {
+      bool no_read = *commands & NO_READ;
+      uint32_t trbytes = cmd_xfer(commands, *commands & EXTEND_LENGTH, no_read, output_buffer);
+      commands += 1 + trbytes;
+      output_buffer += (no_read ? 0 : trbytes);
       break;
-
+    }
     case CMD_SETSIG:
       cmd_setsig(commands);
       commands += 2;
       break;
 
     case CMD_GETSIG:
-      cmd_getsig(usbd_dev);
-      return 0;
+    {
+      uint32_t trbytes = cmd_getsig(output_buffer);
+      output_buffer += trbytes;
       break;
-
+    }
     case CMD_CLK:
-      cmd_clk(usbd_dev, commands, !!(*commands & READOUT));
-      if (*commands & READOUT) {
-        return 0;
-      } else {
-        commands += 2;
-      }
+    {
+      uint32_t trbytes = cmd_clk(commands, !!(*commands & READOUT), output_buffer);
+      output_buffer += trbytes;
+      commands += 2;
       break;
-
+    }
     case CMD_SETVOLTAGE:
       cmd_setvoltage(commands);
       commands += 1;
@@ -194,44 +203,45 @@ uint8_t cmd_handle(usbd_device *usbd_dev, const usbd_transfer *transfer) {
 
     commands++;
   }
-
+  /* Send the transfer response back to host */
+  if (tx_buffer != output_buffer)
+    usb_send(usbd_dev, tx_buffer, output_buffer - tx_buffer);
   return 1;
 }
 
-static void cmd_info(usbd_device *usbd_dev) {
+static uint32_t cmd_info(uint8_t *buffer)
+{
   char info_string[10] = "DJTAG2\n";
-
-  usb_send(usbd_dev, (uint8_t*)info_string, 10);
+  memcpy(buffer, info_string, 10);
+  return 10;
 }
 
 static void cmd_freq(const uint8_t *commands) {
   jtag_set_frequency((commands[1] << 8) | commands[2]);
 }
 
-static void cmd_xfer(usbd_device *usbd_dev, const uint8_t *commands, bool extend_length, bool no_read) {
-  uint16_t transferred_bits;
-  uint8_t output_buffer[64];
-
-  /* Fill the output buffer with zeroes */
-  if (!no_read) {
-    memset(output_buffer, 0, sizeof(output_buffer));
-  }
+static uint32_t cmd_xfer(const uint8_t *commands, bool extend_length, bool no_read, uint8_t *output_buffer) {
+  uint16_t transferred_bits = commands[1];
+  
 
   /* This is the number of transfered bits in one transfer command */
   transferred_bits = commands[1];
-  if (extend_length) {
+  if (extend_length)
     transferred_bits += 256;
-    // Ensure we don't do over-read
-    if (transferred_bits > 62*8) {
-      return;
-    }
+  // Ensure we don't do over-read
+  if (transferred_bits > 62 * 8)
+  {
+    transferred_bits = 62 * 8;
   }
-  jtag_transfer(transferred_bits, commands+2, output_buffer);
 
-  /* Send the transfer response back to host */
-  if (!no_read) {
-    usb_send(usbd_dev, output_buffer, (transferred_bits + 7)/8);
+  /* Fill the output buffer with zeroes */
+  if (!no_read)
+  {
+    memset(output_buffer, 0, (transferred_bits + 7) / 8);
   }
+
+  jtag_transfer(transferred_bits, commands+2, output_buffer);
+  return (transferred_bits + 7) / 8;
 }
 
 static void cmd_setsig(const uint8_t *commands) {
@@ -261,27 +271,30 @@ static void cmd_setsig(const uint8_t *commands) {
   }
 }
 
-static void cmd_getsig(usbd_device *usbd_dev) {
+static uint32_t cmd_getsig(uint8_t *output_buffer) {
   uint8_t signal_status = 0;
 
   if (jtag_get_tdo()) {
     signal_status |= SIG_TDO;
   }
-
-  usb_send(usbd_dev, &signal_status, 1);
+  output_buffer[0] = signal_status;
+  return 1;
 }
 
-static void cmd_clk(usbd_device *usbd_dev, const uint8_t *commands, bool readout) {
+static uint32_t cmd_clk(const uint8_t *commands, bool readout, uint8_t *output_buffer)
+{
   uint8_t signals, clk_pulses;
 
   signals = commands[1];
   clk_pulses = commands[2];
 
-  uint8_t readout_val = jtag_strobe(clk_pulses, signals & SIG_TMS, signals & SIG_TDI);
+  bool readout_val = jtag_strobe(clk_pulses, signals & SIG_TMS, signals & SIG_TDI);
 
-  if (readout) {
-    usb_send(usbd_dev, &readout_val, 1);
+  if (readout)
+  {
+    output_buffer[0] = readout_val ? 0xFF : 0;
   }
+  return readout ? 1 : 0;
 }
 
 static void cmd_setvoltage(const uint8_t *commands) {
