@@ -33,4 +33,10 @@ Once the build is completed, your freshly compiled firmware will be available in
 
 ## Docker build
 
-If you have [Docker](https://www.docker.com/) installed on your computer, you can run the `./build.sh` script that will automatically build DirtyJTAG and copy the firmware files out of the container.
+If you have [Docker](https://www.docker.com/) (or podman) installed on your computer, you can also choose to build inside a container:
+
+```
+docker build https://github.com/jeanthom/DirtyJTAG.git --output type=tar,dest=dirtyjtag.tar
+```
+
+At the end of the build process, you'll find a `dirtyjtag.tar` archive containing all the build artifacts.
