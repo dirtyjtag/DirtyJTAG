@@ -1,3 +1,24 @@
+/*
+  Copyright (c) 2017-2022 The DirtyJTAG authors.
+
+  Permission is hereby granted, free of charge, to any person obtaining
+  a copy of this software and associated documentation files (the "Software"),
+  to deal in the Software without restriction, including without limitation
+  the rights to use, copy, modify, merge, publish, distribute, sublicense,
+  and/or sell copies of the Software, and to permit persons to whom the Software
+  is furnished to do so, subject to the following conditions:
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+  OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+  IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+  CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+  TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
+  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+
 #include <stdint.h>
 #include <string.h>
 #include <unicore-mx/stm32/gpio.h>
@@ -245,10 +266,6 @@ void jtag_set_srst(uint8_t value) {
 #endif
 }
 
-
-
-
-
 void jtag_transfer_internal(uint16_t length, const uint8_t *in, uint8_t *out) {
   uint32_t xfer_length, xfer_i;
   const uint8_t *xfer_in;
@@ -285,10 +302,9 @@ void jtag_transfer_internal(uint16_t length, const uint8_t *in, uint8_t *out) {
 
 
       GPIO_BSRR(JTAG_PORT_TCK) = JTAG_PIN_TCK << 16;
-      
     }
   }
-  else 
+  else
   {
     timer_set_counter(TIM2,0);
     TIM_SR(TIM2) = ~TIM_SR_UIF;
@@ -320,11 +336,6 @@ void jtag_transfer_internal(uint16_t length, const uint8_t *in, uint8_t *out) {
       xfer_i++;
 
       GPIO_BSRR(JTAG_PORT_TCK) = JTAG_PIN_TCK << 16;
-    
-
-      
-      
-
     }
   }
 
@@ -378,12 +389,11 @@ void jtag_transfer(uint16_t length, const uint8_t *in, uint8_t *out) {
       GPIO_MODE_OUTPUT_50_MHZ,
       GPIO_CNF_OUTPUT_ALTFN_PUSHPULL,
       JTAG_PIN_TCK | JTAG_PIN_TDI);
-    
     while (xfer_out_i < byte_length)
     {
 
       /* if the transmit reg is empty, push a byte */
-      /* this should make the transfer continuous  */ 
+      /* this should make the transfer continuous  */
       if ((SPI_SR(SPI1) & SPI_SR_TXE) && (xfer_in_i < byte_length))
       {
         SPI_DR(SPI1) = in[xfer_in_i++];
@@ -396,16 +406,16 @@ void jtag_transfer(uint16_t length, const uint8_t *in, uint8_t *out) {
       }
 
     }
-    
     //set pins in GPIO mode
     gpio_set_mode(JTAG_PORT_TCK,
       GPIO_MODE_OUTPUT_50_MHZ,
       GPIO_CNF_OUTPUT_PUSHPULL,
       JTAG_PIN_TCK | JTAG_PIN_TDI);
   }
-  
-  if (remaining_length)
+
+  if (remaining_length) {
     jtag_transfer_internal(remaining_length, &in[byte_length], &out[byte_length]);
+  }
 }
 
 #else
