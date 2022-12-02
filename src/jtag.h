@@ -87,7 +87,7 @@ void jtag_set_srst(uint8_t value);
  * @param in Input data
  * @param out Output data
  */
-void jtag_transfer(uint8_t length, const uint8_t *in,
+void jtag_transfer(uint16_t length, const uint8_t *in,
 		   uint8_t *out);
 
 /**
@@ -110,7 +110,7 @@ void jtag_strobe(uint8_t pulses, bool tms, bool tdi);
 #define HW_baite 2
 #define HW_stlinkv2white 3
 
-#if (PLATFORM == HW_bluepill) ||  (PLATFORM == HW_stlinkv2white)
+#if (PLATFORM == HW_bluepill)  || (PLATFORM == HW_stlinkv2white)
 #define USE_SPI1 1
 #else
 #define USE_SPI1 0
