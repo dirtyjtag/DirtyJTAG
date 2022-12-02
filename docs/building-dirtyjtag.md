@@ -23,9 +23,10 @@ make
 
 Once the build is completed, your freshly compiled firmware will be available in `src/` as a binary file.
 
-If you only want to build a specific configuration of DirtyJTAG, directly call the right Makefile with the correct parameters for the platform and the bootloader type:
+If you only want to build a specific configuration of DirtyJTAG, directly call the right Makefile with the correct parameters for the platform and the bootloader type. Before that, make sure you have a build of unicore-mx.
 
 ```
+make -C unicore-mx all
 make -f Makefile.stm32f1 PLATFORM=bluepill LOADER=noloader
 ```
 
