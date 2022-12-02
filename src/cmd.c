@@ -20,6 +20,7 @@
 */
 
 #include <stdint.h>
+#include <stdbool.h>
 #include <string.h>
 #include <unicore-mx/usbd/usbd.h>
 #include <unicore-mx/stm32/gpio.h>
@@ -36,6 +37,11 @@ enum CommandIdentifier {
   CMD_SETSIG = 0x04,
   CMD_GETSIG = 0x05,
   CMD_CLK = 0x06
+};
+
+enum CommandModifier {
+  NO_READ = 0x80,
+  EXTEND_LENGTH = 0x40
 };
 
 enum SignalIdentifier {
@@ -77,7 +83,7 @@ static void cmd_freq(const uint8_t *commands);
  * @param usbd_dev USB device
  * @param commands Command data
  */
-static void cmd_xfer(usbd_device *usbd_dev, const uint8_t *commands);
+static void cmd_xfer(usbd_device *usbd_dev, const uint8_t *commands, bool extend_length, bool no_read);
 
 /**
  * @brief Handle CMD_SETSIG command
@@ -106,13 +112,12 @@ static void cmd_getsig(usbd_device *usbd_dev);
  */
 static void cmd_clk(const uint8_t *commands);
 
-uint8_t cmd_handle(usbd_device *usbd_dev, const usbd_transfer *transfer) {
-  uint8_t *commands;
 
-  commands = (uint8_t*)transfer->buffer;
+uint8_t cmd_handle(usbd_device *usbd_dev, const usbd_transfer *transfer) {
+  uint8_t *commands= (uint8_t*)transfer->buffer;
   
   while (*commands != CMD_STOP) {
-    switch (*commands) {
+    switch ((*commands)&0x0F) {
     case CMD_INFO:
       cmd_info(usbd_dev);
       break;
@@ -123,8 +128,8 @@ uint8_t cmd_handle(usbd_device *usbd_dev, const usbd_transfer *transfer) {
       break;
 
     case CMD_XFER:
-      cmd_xfer(usbd_dev, commands);
-      return 0;
+      cmd_xfer(usbd_dev, commands, *commands & EXTEND_LENGTH, *commands & NO_READ);
+      return !!(*commands & NO_READ);
       break;
 
     case CMD_SETSIG:
@@ -154,7 +159,7 @@ uint8_t cmd_handle(usbd_device *usbd_dev, const usbd_transfer *transfer) {
 }
 
 static void cmd_info(usbd_device *usbd_dev) {
-  char info_string[64] = "DJTAG1\n";
+  char info_string[64] = "DJTAG2\n";
 
   usb_send(usbd_dev, (uint8_t*)info_string, 64);
 }
@@ -163,21 +168,33 @@ static void cmd_freq(const uint8_t *commands) {
   jtag_set_frequency((commands[1] << 8) | commands[2]);
 }
 
-static void cmd_xfer(usbd_device *usbd_dev, const uint8_t *commands) {
-  uint8_t transferred_bits;
-  uint8_t output_buffer[32];
+static void cmd_xfer(usbd_device *usbd_dev, const uint8_t *commands, bool extend_length, bool no_read) {
+  uint16_t transferred_bits;
+  uint8_t output_buffer[64];
   
   /* Fill the output buffer with zeroes */
-  memset(output_buffer, 0, 32);
+  if (!no_read) {
+    memset(output_buffer, 0, sizeof(output_buffer));
+  }
 
   /* This is the number of transfered bits in one transfer command */
   transferred_bits = commands[1];
-  
+  if (extend_length) {
+    transferred_bits += 256;
+    // Ensure we don't do over-read
+    if (transferred_bits > 62*8) {
+      return;
+    }
+  }
   jtag_transfer(transferred_bits, commands+2, output_buffer);
 
   /* Send the transfer response back to host */
-  usb_send(usbd_dev, output_buffer, 32);
+  if (!no_read) {
+    usb_send(usbd_dev, output_buffer, (transferred_bits + 7)/8);
+  }
 }
+
+
 
 static void cmd_setsig(const uint8_t *commands) {
   uint8_t signal_mask, signal_status;
