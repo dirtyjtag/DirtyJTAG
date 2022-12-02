@@ -1,6 +1,6 @@
-image: alpine/edge
+image: alpine/3.14
 packages:
-  - python3
+  - python2
   - make
   - gcc-arm-none-eabi
   - newlib-arm-none-eabi
