@@ -1,6 +1,6 @@
 /*
-  Copyright (c) 2017 Jean THOMAS.
-  
+  Copyright (c) 2017-2022 The DirtyJTAG authors.
+
   Permission is hereby granted, free of charge, to any person obtaining
   a copy of this software and associated documentation files (the "Software"),
   to deal in the Software without restriction, including without limitation
@@ -9,7 +9,7 @@
   is furnished to do so, subject to the following conditions:
   The above copyright notice and this permission notice shall be included in
   all copies or substantial portions of the Software.
-  
+
   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
   OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -98,7 +98,7 @@ static void cmd_setsig(const uint8_t *commands);
  * @brief Handle CMD_GETSIG command
  *
  * CMD_GETSIG gets the current signal state.
- * 
+ *
  * @param usbd_dev USB device
  */
 static void cmd_getsig(usbd_device *usbd_dev);
@@ -115,13 +115,13 @@ static void cmd_clk(const uint8_t *commands);
 
 uint8_t cmd_handle(usbd_device *usbd_dev, const usbd_transfer *transfer) {
   uint8_t *commands= (uint8_t*)transfer->buffer;
-  
+
   while (*commands != CMD_STOP) {
     switch ((*commands)&0x0F) {
     case CMD_INFO:
       cmd_info(usbd_dev);
       break;
-      
+
     case CMD_FREQ:
       cmd_freq(commands);
       commands += 2;
@@ -171,7 +171,7 @@ static void cmd_freq(const uint8_t *commands) {
 static void cmd_xfer(usbd_device *usbd_dev, const uint8_t *commands, bool extend_length, bool no_read) {
   uint16_t transferred_bits;
   uint8_t output_buffer[64];
-  
+
   /* Fill the output buffer with zeroes */
   if (!no_read) {
     memset(output_buffer, 0, sizeof(output_buffer));
@@ -194,8 +194,6 @@ static void cmd_xfer(usbd_device *usbd_dev, const uint8_t *commands, bool extend
   }
 }
 
-
-
 static void cmd_setsig(const uint8_t *commands) {
   uint8_t signal_mask, signal_status;
 
@@ -213,7 +211,7 @@ static void cmd_setsig(const uint8_t *commands) {
   if (signal_mask & SIG_TMS) {
     jtag_set_tms(signal_status & SIG_TMS);
   }
-  
+
   if (signal_mask & SIG_TRST) {
     jtag_set_trst(signal_status & SIG_TRST);
   }
@@ -225,7 +223,7 @@ static void cmd_setsig(const uint8_t *commands) {
 
 static void cmd_getsig(usbd_device *usbd_dev) {
   uint8_t signal_status = 0;
-  
+
   if (jtag_get_tdo()) {
     signal_status |= SIG_TDO;
   }
