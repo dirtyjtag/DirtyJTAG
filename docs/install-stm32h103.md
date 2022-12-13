@@ -25,4 +25,4 @@ st-flash write /path/to/dirtyjtag.olimexstm32h103.bin 0x8000000
 
 The STM32H103 uses currently the same pinout as Bluepill (if flashed with the `bluepill` firmware):
 
-![JTAG pinout of STM32H103](img/stm32h103-pinout.jpg)
+![JTAG pinout of STM32H103](img/stm32h103-pinout.png)
