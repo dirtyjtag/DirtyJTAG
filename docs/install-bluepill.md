@@ -102,6 +102,8 @@ The `bluepill` build of DirtyJTAG has the following pinout :
 | PA4   | TRST |
 | PA5   | SRST |
 
+![JTAG pinout of Blue Pill](img/bluepill-pinout.png)
+
 If needed, pin definition can be modified in `src/jtag.c`.
 
 ## Blackpill compatibility
