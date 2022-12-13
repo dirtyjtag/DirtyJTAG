@@ -138,10 +138,12 @@ uint8_t cmd_handle(usbd_device *usbd_dev, const usbd_transfer *transfer) {
       break;
 
     case CMD_XFER:
-      bool no_read = *commands & NO_READ;
-      uint32_t trbytes = cmd_xfer(commands, *commands & EXTEND_LENGTH, no_read, output_buffer);
-      commands += 1 + trbytes;
-      output_buffer += (no_read ? 0 : trbytes);
+      {
+        bool no_read = *commands & NO_READ;
+        uint32_t trbytes = cmd_xfer(commands, *commands & EXTEND_LENGTH, no_read, output_buffer);
+        commands += 1 + trbytes;
+        output_buffer += (no_read ? 0 : trbytes);
+      }
       break;
 
     case CMD_SETSIG:
