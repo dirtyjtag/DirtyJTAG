@@ -24,7 +24,8 @@ If you prefer OpenOCD to UrJTAG, I suggest using Zoobab's fork of Versaloon firm
 
  * [UrJTAG](docs/urjtag-dirtyjtag.md): support added in 2017.10
  * [openFPGAloader](docs/openfpgaloader-dirtyjtag.md): support added in v0.1
- * [flashrom](https://www.flashrom.org): mainline since [001c87d](https://github.com/flashrom/flashrom/commit/001c87d9014b5b2dbb8adc9f64ab7023359a38b4)
+ * [flashrom](https://www.flashrom.org): support added in [001c87d](https://github.com/flashrom/flashrom/commit/001c87d9014b5b2dbb8adc9f64ab7023359a38b4)
+ * [OpenOCD](https://openocd.org): patch [in review](https://review.openocd.org/c/openocd/+/7344)
 
 ## USB VID and PID
 
