@@ -95,12 +95,12 @@ The `bluepill` build of DirtyJTAG has the following pinout :
 
 | STM32 | JTAG |
 |-------|------|
-| PA0   | TDI  |
-| PA1   | TDO  |
-| PA2   | TCK  |
+| PA7   | TDI  |
+| PA6   | TDO  |
+| PA5   | TCK  |
 | PA3   | TMS  |
 | PA4   | TRST |
-| PA5   | SRST |
+| PA2   | SRST |
 
 ![JTAG pinout of Blue Pill](img/bluepill-pinout.png)
 
