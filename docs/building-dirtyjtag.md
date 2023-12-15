@@ -42,7 +42,9 @@ make -f Makefile.stm32f1 PLATFORM=bluepill LOADER=noloader
 
  * `noloader`: No bootloader
  * `loader2k`: Bootloader is occupying 0x0-0x2000, DirtyJTAG starts at 0x2000 offset
- * `loader2k`: Bootloader is occupying 0x0-0x4000, DirtyJTAG starts at 0x4000 offset
+ * `loader4k`: Bootloader is occupying 0x0-0x4000, DirtyJTAG starts at 0x4000 offset
+
+You should use the `noloader` variant if your microcontroller hasn't been programmed with a bootloader. If you are using a bootloader (eg. [dapboot](https://github.com/devanlai/dapboot)), you may use the `loader2k` or `loader4k` options depending on the base address that will be executed by the bootloader (`loader2k` => 0x08002000, `loader4k` => 0x08004000).
 
 ## Docker build
 
