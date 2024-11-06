@@ -27,3 +27,7 @@ clean:
 	$(MAKE) -f Makefile.stm32f1 clean
 
 .PHONY: all clean stm32f1-builds
+
+# New target to run the automated JTAG test script
+run-automated-jtag-test:
+	python3 scripts/automated_jtag_test.py

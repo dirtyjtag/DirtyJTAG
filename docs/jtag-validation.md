@@ -75,3 +75,16 @@ Initialized bus 5, active bus 0
 jtag> detectflash 0x1fc00000
 Segmentation fault (core dumped)
 ```
+
+## Automated JTAG Test Procedure
+
+To automate the JTAG test procedure using STM32 dev boards, follow these steps:
+
+1. Ensure you have the necessary hardware and software setup as described in the previous sections.
+2. Run the automated JTAG test script `scripts/automated_jtag_test.py` using the following command:
+
+```
+python3 scripts/automated_jtag_test.py
+```
+
+The script will initialize the JTAG connection, run tests, and validate the results. Check the script's output for any errors or test results.
