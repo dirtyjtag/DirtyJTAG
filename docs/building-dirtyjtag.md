@@ -55,3 +55,17 @@ docker build https://github.com/jeanthom/DirtyJTAG.git --output type=tar,dest=di
 ```
 
 At the end of the build process, you'll find a `dirtyjtag.tar` archive containing all the build artifacts.
+
+## Docker multistage build
+
+The Dockerfile has been updated to use a multistage build process that includes only the necessary binaries and flashing tools. This ensures that the final image is as small as possible.
+
+To build the Docker image using the multistage build process, run the following command:
+
+```
+docker build -t dirtyjtag:latest .
+```
+
+This will create a Docker image named `dirtyjtag:latest` that contains only the binaries and flashing tools.
+
+Note: The final stage of the Docker multistage build includes only the binaries and flashing tools.
