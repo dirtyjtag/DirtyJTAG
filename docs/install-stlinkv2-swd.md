@@ -73,3 +73,58 @@ st-flash write /path/to/dirtyjtag.stlinkv2.bin 0x8000000
 ![ST-Link pinout with DirtyJTAG firmware](img/stlink-pinout.jpg)
 
 A print friendly version [is also available](img/stlinkv2-sticker.svg).
+
+## Reflashing TI MSP432P401R builtin XDS 110 JTAG programmer firmware using DirtyJtag+openocd
+
+To reflash the TI MSP432P401R builtin XDS 110 JTAG programmer firmware using DirtyJtag+openocd, follow these steps:
+
+1. Connect the DirtyJTAG adapter to the TI MSP432P401R device using the appropriate JTAG connections.
+2. Create an OpenOCD configuration file for the TI MSP432P401R device. You can use the following example as a starting point:
+
+```
+#
+# TI MSP432P401R Chip
+#
+# Author : 
+# Version : 
+#
+source [find interface/dirtyjtag.cfg]
+# transport select jtag
+
+set WORKAREASIZE 0x8000
+set CHIPNAME msp432p401r
+source [find target/stellaris.cfg]
+```
+
+3. Launch OpenOCD with the configuration file:
+
+```
+openocd -f /path/to/your/config/file.cfg
+```
+
+4. In a separate terminal, connect to the OpenOCD server using telnet:
+
+```
+telnet localhost 4444
+```
+
+5. Use the following commands to reflash the firmware:
+
+```
+halt
+flash write_image erase /path/to/your/firmware.bin 0x00000000
+reset
+exit
+```
+
+## Troubleshooting
+
+### Error: 103 214 bitq.c:308 bitq_execute_queue(): missing data from bitq interface
+
+This error might be due to a lack of response from the TI chip, a bug in the openocd driver, or the DirtyJTAG firmware. To troubleshoot this issue, you can try the following steps:
+
+1. Ensure that the JTAG connections are secure and correctly wired.
+2. Use a Logic Analyzer to spy on the JTAG interface and see if the exchange right before the error message makes sense.
+3. Try using an older version of the DirtyJTAG support for OpenOCD, which can be found [here](https://sourceforge.net/u/phdussud/openocd/).
+4. Verify that you are using the correct OpenOCD configuration file for the TI MSP432P401R device.
+5. Check for any updates or patches to the DirtyJTAG firmware or OpenOCD that might address this issue.
