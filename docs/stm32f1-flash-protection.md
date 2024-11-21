@@ -14,7 +14,7 @@ The following documentation explains how to disable it through two different tec
 
 ## Unlocking method #1: OpenOCD
 
-This first method requires you to connect an ST-Link programmer to your target. If you're unsure how to do so, check out [our documentation](https://github.com/jeanthom/DirtyJTAG/tree/master/docs).
+This first method requires you to connect an ST-Link programmer to your target. If you're unsure how to do so, check out [our documentation](https://github.com/dirtyjtag/DirtyJTAG/tree/master/docs).
 
 Connect the ST-Link that will act as a programmer to the target on its SWD header. Open up a terminal and type in the following command:
 

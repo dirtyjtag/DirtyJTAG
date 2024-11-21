@@ -11,7 +11,7 @@ In order to compile DirtyJTAG, you will need the following software:
 Clone this repository :
 
 ```
-git clone --recursive https://github.com/jeanthom/dirtyjtag
+git clone --recursive https://github.com/dirtyjtag/dirtyjtag
 cd dirtyjtag
 ```
 
@@ -51,7 +51,7 @@ You should use the `noloader` variant if your microcontroller hasn't been progra
 If you have [Docker](https://www.docker.com/) (or podman) installed on your computer, you can also choose to build inside a container:
 
 ```
-docker build https://github.com/jeanthom/DirtyJTAG.git --output type=tar,dest=dirtyjtag.tar
+docker build https://github.com/dirtyjtag/DirtyJTAG.git --output type=tar,dest=dirtyjtag.tar
 ```
 
 At the end of the build process, you'll find a `dirtyjtag.tar` archive containing all the build artifacts.

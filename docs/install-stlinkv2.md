@@ -14,7 +14,7 @@ In order to install a newer firmware, you will need a SWD programmer. I chose to
 
 ![Two ST-Link clones connected together](img/stlinkv2-programming.png)
 
-Do not plug your ST-Link (target) in a USB port yet. Install [stlink](https://github.com/texane/stlink) on your computer, and download a compiled release of DirtyJTAG for ST-Link adapters ([available here](https://github.com/jeanthom/dirtyjtag/releases)). Enter this command to program the STM32 :
+Do not plug your ST-Link (target) in a USB port yet. Install [stlink](https://github.com/texane/stlink) on your computer, and download a compiled release of DirtyJTAG for ST-Link adapters ([available here](https://github.com/dirtyjtag/dirtyjtag/releases)). Enter this command to program the STM32 :
 
 ```
 st-flash write /path/to/dirtyjtag-stlink.bin 0x8000000

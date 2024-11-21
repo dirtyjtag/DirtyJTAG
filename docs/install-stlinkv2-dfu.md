@@ -4,7 +4,7 @@ The DFU method needs fewer hardware (only an ST-Link dongle with its original fi
 
 ## Uploading the firmware
 
-Compile [stlink-tool](https://github.com/jeanthom/stlink-tool), and download the [DFU version](https://github.com/jeanthom/DirtyJTAG/releases) of the DirtyJTAG firmware.
+Compile [stlink-tool](https://github.com/jeanthom/stlink-tool), and download the [DFU version](https://github.com/dirtyjtag/DirtyJTAG/releases) of the DirtyJTAG firmware.
 
 Then run:
 
