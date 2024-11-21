@@ -5,7 +5,7 @@ packages:
   - gcc-arm-none-eabi
   - newlib-arm-none-eabi
 sources:
-  - https://github.com/jeanthom/dirtyjtag
+  - https://github.com/dirtyjtag/dirtyjtag
 tasks:
   - setup: |
       cd dirtyjtag
