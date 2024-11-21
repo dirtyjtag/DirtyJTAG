@@ -1,7 +1,5 @@
 # DirtyJTAG
 
-[![builds.sr.ht status](https://builds.sr.ht/~jeanthomas/dirtyjtag.svg)](https://builds.sr.ht/~jeanthomas/dirtyjtag?)
-
 DirtyJTAG is a JTAG adapter firmware for $2 ST-Link clones and generic STM32 development boards ("blue pill"/"black pill" STM32F101 and STM32F103 based ARM boards). The DirtyJTAG project was meant to be an alternative to the obsolete (but cheap) LPT Wiggler cables, and other expensive USB JTAG probes.
 
 DirtyJTAG is dirty and dirt cheap, but is not fast nor a perfect implementation of the JTAG protocol. Yet it is around 1k lines of code, making it easily understandable and hackable.

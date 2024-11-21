@@ -1,0 +1,31 @@
+name: Firmware builds
+
+on:
+  push:
+    branches: [ master ]
+    path-ignore:
+      - 'docs/**'
+      - 'contrib/**'
+  pull_request:
+    path-ignore:
+      - 'docs/**'
+      - 'contrib/**'
+
+jobs:
+  default:
+    runs-on: ubuntu-24.04
+    steps:
+    - name: Fetch Sources
+      uses: actions/checkout@v4
+      with:
+        submodules: true
+    - name: Install build dependencies
+      run: sudo apt-get install -y gcc-arm-none-eabi libnewlib-arm-none-eabi make
+    - name: Build
+      run: |
+        make PLATFORM=bluepill
+        make PLATFORM=stlinkv2
+        make PLATFORM=stlinkv2dfu
+        make PLATFORM=baite
+        make PLATFORM=olimexstm32h103
+        make PLATFORM=stlinkv2white
