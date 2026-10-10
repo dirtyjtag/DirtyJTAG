@@ -1,10 +1,10 @@
 # DirtyJTAG
 
-DirtyJTAG is a JTAG adapter firmware for $2 ST-Link clones and generic STM32 development boards ("blue pill"/"black pill" STM32F101 and STM32F103 based ARM boards). The DirtyJTAG project was meant to be an alternative to the obsolete (but cheap) LPT Wiggler cables, and other expensive USB JTAG probes.
+DirtyJTAG started its life almost a decade ago as a JTAG adapter firmware for $2 ST-Link clones and generic STM32 development boards ("blue pill"/"black pill" STM32F101 and STM32F103 based ARM boards). The DirtyJTAG project was meant to be an alternative to the obsolete (but cheap) LPT Wiggler cables, and other expensive USB JTAG probes.
 
-DirtyJTAG is dirty and dirt cheap, but is not fast nor a perfect implementation of the JTAG protocol. Yet it is around 1k lines of code, making it easily understandable and hackable.
+DirtyJTAG has become over the time a simple, target-agnostic way to implement JTAG protocol. You can run ports of DirtyJTAG on RP2040 and BL616. There are even [commercial products shipping with DirtyJTAG](https://www.olimex.com/Products/FPGA/GateMate/GateMateA1-EVB/open-source-hardware)!
 
-If you prefer OpenOCD to UrJTAG, I suggest using Zoobab's fork of Versaloon firmware, which is available [on his GitHub repository](https://github.com/zoobab/versaloon).
+DirtyJTAG may not be the most accurate JTAG probe, nor the most performant one. Yet it is around a thousand lines of code, so that you don't need an LLM to figure out how it works and hack on it.
 
 ## Build your DirtyJTAG adapter
 
@@ -52,7 +52,7 @@ $ dmesg
 [55445.033114] usb 1-3: SerialNumber: 55FF6E064980515631491787
 ```
 
-Older versions of DirtyJTAG reported "DirtyJTAG" as the manufacturer, this bug has since been fixed.
+Older versions of DirtyJTAG had "Product" and "Manufacturer" fields swapped, this bug has since been fixed.
 
 ## Some docs
 
