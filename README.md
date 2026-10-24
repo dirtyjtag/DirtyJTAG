@@ -13,10 +13,10 @@ DirtyJTAG may not be the most accurate JTAG probe, nor the most performant one. 
 | ![Bluepill icon](docs/img/bluepill-128.jpg) | ![ST-Link v2 dongle](docs/img/stlinkv2-128.jpg)                                         | ![ST-Link v2](docs/img/stlink-white-128.jpg)  | ![Baite dongle](docs/img/baite-128.jpg) |
 | [Instructions](docs/install-bluepill.md)    | [Instructions](docs/install-stlinkv2-swd.md) | [Instructions](docs/install-stlinkv2white.md) | [Instructions](docs/install-baite.md)       |
 
-| Olimex STM32-H103                              | Raspberry Pi Pico                                              | Tang Nano 20k                                                      |
-|:----------------------------------------------:|:--------------------------------------------------------------:|:------------------------------------------------------------------:|
-| ![STM32-H103 icon](docs/img/stm32h103-128.jpg) | ![Raspberry Pi Pico board](docs/img/pi-pico.jpg)               | ![Tang Nano 20k board](docs/img/tang-nano-20k.jpg)                 |
-| [Instructions](docs/install-stm32h103.md)      | [External project](https://github.com/phdussud/pico-dirtyJtag) | [External project](https://github.com/pepijndevos/bl616_dirtyjtag) |
+| Olimex STM32-H103                              | Raspberry Pi Pico                                              | Tang Nano 20k                                                      | ST-Link v2 clone (blue plastic case)                    |
+|:----------------------------------------------:|:--------------------------------------------------------------:|:------------------------------------------------------------------:|:-------------------------------------------------------:|
+| ![STM32-H103 icon](docs/img/stm32h103-128.jpg) | ![Raspberry Pi Pico board](docs/img/pi-pico.jpg)               | ![Tang Nano 20k board](docs/img/tang-nano-20k.jpg)                 | ![Blue ST-Link clone](docs/img/stlinkv2-blue-128.jpg)   |
+| [Instructions](docs/install-stm32h103.md)      | [External project](https://github.com/phdussud/pico-dirtyJtag) | [External project](https://github.com/pepijndevos/bl616_dirtyjtag) | [Instructions](docs/install-stlinkv2-blue.md)           |
 
 ## Software compatible with DirtyJTAG
 

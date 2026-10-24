@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="620" viewBox="0 0 900 620" font-family="Consolas, 'DejaVu Sans Mono', monospace">
+  <rect width="900" height="620" fill="#1f3fae" rx="24"/>
+  <text x="450" y="62" fill="#fff" font-size="40" font-weight="bold" text-anchor="middle">DirtyJTAG</text>
+  <text x="450" y="98" fill="#cfd8ff" font-size="20" text-anchor="middle">Blue plastic ST-Link V2 clone · stlinkv2 build · USB 1209:C0CA</text>
+
+  <!-- header outline: same orientation as the label printed on the case -->
+  <!-- shroud with key slot centred on the odd-pin side (pins 1/3/5/7/9) -->
+  <!-- shroud wall: frame between outer (366..534) and inner (384..516), gap in the right wall -->
+  <path fill="#e8ecff" fill-rule="evenodd" d="
+    M366 124 H534 V290 H516 V142 H384 V508 H516 V360 H534 V526 H366 Z"/>
+  <rect x="384" y="142" width="132" height="366" fill="#183493"/>
+  <text x="525" y="325" fill="#fff" font-size="13" font-weight="bold" text-anchor="middle" transform="rotate(90 525 325)">KEY</text>
+  <!-- pin 1 marker, like the triangle on the shroud -->
+  <path d="M485 495 L477 507 L493 507 Z" fill="#fff"/>
+
+  <g font-size="26" fill="#fff">
+    <!-- rows top to bottom: 9/10, 7/8, 5/6, 3/4, 1/2 ; even pins left, odd pins right -->
+    <g transform="translate(0,170)">
+      <circle cx="415" cy="0" r="22" fill="none" stroke="#fff" stroke-width="3"/><text x="415" y="9" text-anchor="middle">10</text>
+      <circle cx="485" cy="0" r="22" fill="none" stroke="#fff" stroke-width="3"/><text x="485" y="9" text-anchor="middle">9</text>
+      <text x="352" y="9" text-anchor="end" fill="#ffb3b3">5V</text>
+      <text x="548" y="9" fill="#ffb3b3">5V</text>
+    </g>
+    <g transform="translate(0,245)">
+      <circle cx="415" cy="0" r="22" fill="none" stroke="#fff" stroke-width="3"/><text x="415" y="9" text-anchor="middle">8</text>
+      <circle cx="485" cy="0" r="22" fill="none" stroke="#fff" stroke-width="3"/><text x="485" y="9" text-anchor="middle">7</text>
+      <text x="352" y="9" text-anchor="end" fill="#ffd9a0">3.3V out</text>
+      <text x="548" y="9" fill="#ffd9a0">3.3V out</text>
+    </g>
+    <g transform="translate(0,320)">
+      <circle cx="415" cy="0" r="22" fill="none" stroke="#fff" stroke-width="3"/><text x="415" y="9" text-anchor="middle">6</text>
+      <circle cx="485" cy="0" r="22" fill="none" stroke="#fff" stroke-width="3"/><text x="485" y="9" text-anchor="middle">5</text>
+      <text x="352" y="9" text-anchor="end">GND</text>
+      <text x="548" y="9">GND</text>
+    </g>
+    <g transform="translate(0,395)" font-weight="bold">
+      <circle cx="415" cy="0" r="22" fill="#3ddc84" stroke="#fff" stroke-width="3"/><text x="415" y="9" text-anchor="middle" fill="#0b2a12">4</text>
+      <circle cx="485" cy="0" r="22" fill="#ffd34d" stroke="#fff" stroke-width="3"/><text x="485" y="9" text-anchor="middle" fill="#3a2b00">3</text>
+      <text x="352" y="9" text-anchor="end" fill="#3ddc84">TDO</text>
+      <text x="548" y="9" fill="#ffd34d">TDI</text>
+    </g>
+    <g transform="translate(0,470)" font-weight="bold">
+      <circle cx="415" cy="0" r="22" fill="#6ec6ff" stroke="#fff" stroke-width="3"/><text x="415" y="9" text-anchor="middle" fill="#00263d">2</text>
+      <circle cx="485" cy="0" r="22" fill="#ff8ad8" stroke="#fff" stroke-width="3"/><text x="485" y="9" text-anchor="middle" fill="#3d0029">1</text>
+      <text x="352" y="9" text-anchor="end" fill="#6ec6ff">TCK</text>
+      <text x="548" y="9" fill="#ff8ad8">TMS</text>
+    </g>
+  </g>
+
+  <!-- old labels, small, for reference -->
+  <g font-size="15" fill="#aab8f0">
+    <text x="240" y="400" text-anchor="end">(was SWDIO)</text>
+    <text x="240" y="475" text-anchor="end">(was SWCLK)</text>
+    <text x="660" y="400">(was SWIM)</text>
+    <text x="660" y="475">(was RST)</text>
+  </g>
+
+  <text x="450" y="565" fill="#cfd8ff" font-size="18" text-anchor="middle">Same layout as the pin map printed on an ST-Link V2 case · no TRST/SRST</text>
+  <text x="450" y="592" fill="#cfd8ff" font-size="18" text-anchor="middle">3.3V is an output: don't tie it to a target with its own supply</text>
+</svg>
